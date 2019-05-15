@@ -50,7 +50,7 @@ CREATE TABLE Association(
 CREATE TABLE Element(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     description TEXT NOT NULL,
-    photos TEXT NOT NULL,
+    photo TEXT NOT NULL,
     id_Equipement INTEGER REFERENCES Equipement(id) ON DELETE SET NULL,
     id_Salle INTEGER NOT NULL REFERENCES Salle(id) ON DELETE CASCADE,
     id_Association INTEGER NOT NULL REFERENCES Association(id) ON DELETE CASCADE
