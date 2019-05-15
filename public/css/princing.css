@@ -1,0 +1,72 @@
+html {
+    font-size: 14px;
+  }
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+  .container {
+    max-width: 960px;
+  }
+  
+  .pricing-header {
+    max-width: 700px;
+
+  }
+  
+  .card-deck .card {
+    min-width: 220px;
+  }
+  
+
+  #menu{
+      background-color: rgb(0, 168, 232);
+      color: white;
+  }
+
+  .btn-secondary{
+      background-color: rgb(0, 168, 232);
+      border-color: white;
+
+  }
+  .selected{
+    background-color: white;
+    color: black;
+    
+}
+
+.Critere {
+    border: groove;
+    border-radius: 10px;
+    border-color: grey;
+    border-width: 2px;
+}
+
+.item {
+    border: groove;
+    border-radius: 10px;
+    border-color: grey;
+    border-width: 2px;
+}
+
+#Recherche{
+  padding: 10px 30px;
+
+}
+
+#labelrecherche{
+  position:relative;
+
+}
+#labelrecherche:before{
+  position:absolute;
+  content: "";
+  left:10px;
+  top:0;
+  bottom:0;
+  width: 20px;
+  background:url(./image/search.svg) center / contain no-repeat;
+  
+}
