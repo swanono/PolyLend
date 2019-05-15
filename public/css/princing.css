@@ -129,3 +129,10 @@ html {
 .reserve{
     background-color: red;
 }
+
+
+/*ADMINISTRATION*/
+.en-attente{
+    color:orange;
+    font-weight: bold;
+}
