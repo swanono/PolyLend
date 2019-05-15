@@ -1,127 +1,251 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.5">
-    <title>PolyLend</title>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Jekyll v3.8.5">
+        <title>PolyLend</title>
 
+        <!-- Bootstrap core CSS -->
+        <link href="./css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <!-- Bootstrap core CSS -->
-<link href="./css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="./css/princing.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3  border-bottom shadow-sm" id= "menu">
-  <h5 class="my-0 mr-md-auto font-weight-normal">PolyLend</h5>
-  <nav class="my-2 my-md-0 mr-md-3">
-    <!--<a class="p-2 text-dark" href="#">Features</a>
-    <a class="p-2 text-dark" href="#">Enterprise</a>
-    <a class="p-2 text-dark" href="#">Support</a>
-    <a class="p-2 text-dark" href="#">Pricing</a>-->
-    <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-secondary selected"><img src="./image/materiel.svg" width="70px"><br/>Matériel</button>
-            <button type="button" class="btn btn-secondary"><img src="./image/salle.svg" width="70px"><br/>Salle</button>
-            <button type="button" class="btn btn-secondary"><img src="./image/MesReservations.svg" width="70px"><br/>Réservation</button>
-          </div>
-  </nav>
-
- <a href="#"> <img src="./image/Notification.svg" width="40px"></a>
-  Nom
- <a href="#"> <img src="./image/logOut.svg" width="40px"></a>
-</div>
-
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-3">
-            <div class= "Critere">
-              <strong>Critère</strong>
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text"><img src="./image/search.svg" width="20px"></div>
+        <style>
+            .bd-placeholder-img {
+                font-size: 1.125rem;
+                text-anchor: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            @media (min-width: 768px) {
+                .bd-placeholder-img-lg {
+                    font-size: 3.5rem;
+                }
+            }
+        </style>
+        <!-- Custom styles for this template -->
+        <link href="./css/princing.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3  border-bottom shadow-sm" id= "menu">
+            <h5 class="my-0 mr-md-auto font-weight-normal p-2 bd-highlight">PolyLend</h5>
+            <nav class="my-2 my-md-0 mr-md-3 p-2 flex-grow-1 bd-highlight" style="text-align: center;">
+                <!--<a class="p-2 text-dark" href="#">Features</a>
+                <a class="p-2 text-dark" href="#">Enterprise</a>
+                <a class="p-2 text-dark" href="#">Support</a>
+                <a class="p-2 text-dark" href="#">Pricing</a>-->
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-secondary selected"><img src="./image/materiel.svg" width="70px"><br/>Matériel</button>
+                    <button type="button" class="btn btn-secondary"><img src="./image/salle.svg" width="70px"><br/>Salle</button>
+                    <button type="button" class="btn btn-secondary"><img src="./image/MesReservations.svg" width="70px"><br/>Réservation</button>
                 </div>
-                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Username">
-              </div>
-              <hr>
-              <p>Disponibilités</p>
-              <p>Du:</p>
-              <p>Au:</p>
-              <p>Tri:</p>
-              <p>Type:</p>
+            </nav>
+
+            <a href="#"> <img src="./image/Notification.svg" width="40px"></a>
+            Nom
+            <a href="#"> <img src="./image/logOut.svg" width="40px"></a>
+        </div>
+
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <div class= "Critere">
+                        <strong>Critère</strong>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><img src="./image/search.svg" width="20px"></div>
+                            </div>
+                            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="">
+                        </div>
+                        <hr>
+                        
+                        <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
+                        <div class="form-group form-check float-right">
+                            <input type="checkbox" class="form-check-input" id="disponibilite" checked>
+                        </div>
+                        
+                        <p>Du: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
+                        <p>Au: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
+                        <p>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                    <option>Par date de disponibilité</option>
+                                    <option>Par date de disponibilité décroissant</option>
+                                </select>
+                            </div>
+                        </p>
+                        <p>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1"><strong>Type :</strong></label>
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                    <option>Informatique</option>
+                                    <option>Mobilier</option>
+                                </select>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="liste">
+                        <div class="item row">
+                            <div class="gauche col-6">
+                                <img src="https://via.placeholder.com/100" class="float-left">
+                                <h2><strong>Cable Reseau</strong></h2>
+                                <p class="description">Vous permet de vous connecter pour faire des LAN par exemple.</p>
+                            </div>
+                            <div class="droite col-6">
+                                <p class="disponible">Disponible selon vos critères</p>
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning complet</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Réserver</button>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="item row item-indisponible">
+                            <div class="gauche col-6">
+                                <img src="https://via.placeholder.com/100" class="float-left">
+                                <h2><strong>Projecteur</strong></h2>
+                                <p class="description">Attention pas de connecteur HDMI, Résolution 1024x600.</p>
+                            </div>
+                            <div class="droite col-6">
+                                <p><span class="indisponible">Réservé par :</span> Jean Valjean, BDE</p>
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning complet</button>
+                                <button type="button" class="btn btn-primary">Message</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-9">
-            <div class="liste">
-                <div class="item">Cable Reseau</div>
-                <br/>
-                <div class="item">Projecteur</div>
-            
+
+
+<!-- Modals -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" class="btn btn-danger col-2">Annuler</button>
+                <h5 class="modal-title col-8 text-center" id="exampleModalLongTitle">Réserver</h5>
+                <button type="button" class="btn btn-primary col-2">Réserver</button>
+            </div>
+            <div class="modal-body">
+                <div class="item row">
+                    <div class="gauche col-6">
+                        <img src="https://via.placeholder.com/100" class="float-left">
+                        <h2><strong>Cable Reseau</strong></h2>
+                        <p class="description">Vous permet de vous connecter pour faire des LAN par exemple.</p>
+                    </div>
+                    <div class="droite col-6">
+                        <p class="disponible">Disponible selon vos critères</p>
+                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning complet</button>
+                    </div>
+                </div>
+                <p class= "modal-date">Réserver du: <input type="date"><input type="time"> Au: <input type="date"><input type="time"></p>
             </div>
         </div>
     </div>
-  
 </div>
 
-  <footer class="pt-4 my-md-5 pt-md-5 border-top">
-    <div class="row">
-      <div class="col-12 col-md">
-        <img class="mb-2" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
-        <small class="d-block mb-3 text-muted">&copy; 2017-2019</small>
-      </div>
-      <div class="col-6 col-md">
-        <h5>Features</h5>
-        <ul class="list-unstyled text-small">
-          <li><a class="text-muted" href="#">Cool stuff</a></li>
-          <li><a class="text-muted" href="#">Random feature</a></li>
-          <li><a class="text-muted" href="#">Team feature</a></li>
-          <li><a class="text-muted" href="#">Stuff for developers</a></li>
-          <li><a class="text-muted" href="#">Another one</a></li>
-          <li><a class="text-muted" href="#">Last time</a></li>
-        </ul>
-      </div>
-      <div class="col-6 col-md">
-        <h5>Resources</h5>
-        <ul class="list-unstyled text-small">
-          <li><a class="text-muted" href="#">Resource</a></li>
-          <li><a class="text-muted" href="#">Resource name</a></li>
-          <li><a class="text-muted" href="#">Another resource</a></li>
-          <li><a class="text-muted" href="#">Final resource</a></li>
-        </ul>
-      </div>
-      <div class="col-6 col-md">
-        <h5>About</h5>
-        <ul class="list-unstyled text-small">
-          <li><a class="text-muted" href="#">Team</a></li>
-          <li><a class="text-muted" href="#">Locations</a></li>
-          <li><a class="text-muted" href="#">Privacy</a></li>
-          <li><a class="text-muted" href="#">Terms</a></li>
-        </ul>
-      </div>
+<!-- Modals calendrier -->
+<div class="modal fade" id="calendrier1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-calendrier">
+                <h5 class="modal-title col-11 text-center" id="exampleModalLongTitle">Janvier 2019</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-body-calendrier calendrier">
+                <table width="100%">
+                  <tr>
+                    <th>Lun<br></th>
+                    <th>Mar</th>
+                    <th>Mer</th>
+                    <th>Jeu</th>
+                    <th>Ven</th>
+                    <th>Sam</th>
+                    <th>Dim</th>
+                  </tr>
+                  <tr>
+                    <td class="dispo">1<br/><br/></td>
+                    <td class="dispo">2<br/><br/></td>
+                    <td class="reserve">3<br/>14h00</td>
+                    <td class="reserve">4<br/><br/></td>
+                    <td class="reserve">5<br/><br/></td>
+                    <td class="reserve">6<br/><br/></td>
+                    <td class="reserve">7<br/><br/></td>
+                  </tr>
+                  <tr>
+                    <td class="reserve">8<br/><br/></td>
+                    <td class="reserve">9<br/>16h00</td>
+                    <td>10<br/><br/></td>
+                    <td>11<br/><br/></td>
+                    <td>12<br/><br/></td>
+                    <td>13<br/><br/></td>
+                    <td>14<br/><br/></td>
+                  </tr>
+                  <tr>
+                    <td>15<br/><br/></td>
+                    <td>16<br/><br/></td>
+                    <td>17<br/><br/></td>
+                    <td>18<br/><br/></td>
+                    <td>19<br/><br/></td>
+                    <td>20<br/><br/></td>
+                    <td>21<br/><br/></td>
+                  </tr>
+                  <tr>
+                    <td>22<br/><br/></td>
+                    <td>23<br/><br/></td>
+                    <td>24<br/><br/></td>
+                    <td>25<br/><br/></td>
+                    <td>26<br/><br/></td>
+                    <td>27<br/><br/></td>
+                    <td>28<br/><br/></td>
+                  </tr>
+                  <tr>
+                    <td>29<br/><br/></td>
+                    <td>30<br/><br/></td>
+                    <td>31<br/><br/></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+            </div>
+      <!--<div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>-->
+        </div>
     </div>
-  </footer>
 </div>
-</body>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="./js/bootstrap.bundle.min.js "></script>
+    <!--<script src="./js/bootstrap.min.js"></script>-->
+
+<script>
+$(function() {
+  $("[data-toggle=popover]").popover({
+    html: true,
+    content: function() {
+      var content = $(this).attr("data-popover-content");
+      return $(content).children(".popover-body").html();
+    },
+    title: function() {
+      var title = $(this).attr("data-popover-content");
+      return $(title).children(".popover-heading").html();
+    }
+  });
+});
+</script>
+    </body>
 </html>

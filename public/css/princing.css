@@ -8,7 +8,7 @@ html {
   }
   
   .container {
-    max-width: 960px;
+    max-width: 1280px;
   }
   
   .pricing-header {
@@ -42,6 +42,8 @@ html {
     border-radius: 10px;
     border-color: grey;
     border-width: 2px;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .item {
@@ -49,6 +51,7 @@ html {
     border-radius: 10px;
     border-color: grey;
     border-width: 2px;
+    padding-top: 10px;
 }
 
 #Recherche{
@@ -69,4 +72,60 @@ html {
   width: 20px;
   background:url(./image/search.svg) center / contain no-repeat;
   
+}
+
+.disponible{
+    color: green;
+    font-weight: bold;
+}
+
+.indisponible{
+    color: red;
+    font-weight: bold;
+}
+
+.item-indisponible{
+    background-color: rgb(254,230,230);
+}
+
+.description{
+    color:grey;
+}
+
+.float-left{
+    padding: 5px;
+}
+
+.modal-header{
+    background-color: rgb(238,238,238);
+    font-weight: bold;
+}
+.modal-body{
+    margin:0px 12px 0px 12px;
+}
+
+.modal-date{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.calendrier th{
+    background-color: rgb(238,238,238);
+}
+.modal-header-calendrier{
+    background-color: rgb(204,204,204);
+    font-weight: bold;
+}
+.modal-body-calendrier{
+    margin:0 0 0 0;
+}
+
+.dispo{
+    background-color: green;
+}
+.en-cours{
+    background-color: orange;
+}
+.reserve{
+    background-color: red;
 }
