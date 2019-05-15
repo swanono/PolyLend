@@ -10,7 +10,7 @@
     "sqlite3": "^4.0.6"
   },
   "scripts": {
-    "createDB": "",
+    "createDB": "sqlite3 Database-PolyLend.db < createDB.sql",
     "start": "nodemon server.js"
   },
   "devDependencies": {
