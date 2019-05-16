@@ -136,3 +136,14 @@ html {
     color:orange;
     font-weight: bold;
 }
+.table td{
+    padding: 0;
+}
+#tableau-sans-bordure td{
+    vertical-align: 0;
+    text-align: center;
+}
+#tableau-sans-bordure .row{
+    margin-left: 0;
+    margin-right:0;
+}
