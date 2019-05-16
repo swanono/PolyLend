@@ -11,9 +11,17 @@
   },
   "scripts": {
     "createDB": "sqlite3 Database-PolyLend.db < createDB.sql",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "node ./node_modules/gulp/bin/gulp.js"
   },
   "devDependencies": {
-    "nodemon": "^1.19.0"
+    "nodemon": "^1.19.0",
+    "gulp": "^3.9.1",
+    "gulp-cached": "^1.1.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-watch": "^4.3.11",
+    "gulp-html-validator": "0.0.5",
+    "gulp-w3c-css": "^1.0.1",
+    "map-stream": "0.0.6"
   }
 }
