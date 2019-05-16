@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS Reservation;
 
 CREATE TABLE Equipement(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL,
     date_achat TEXT NOT NULL,
     etat TEXT NOT NULL
 );
