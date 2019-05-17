@@ -58,6 +58,7 @@ const run = sql => new Promise(function (resolve, reject) {
 });
 
 
+// Objet permettant d'accéder à la table élément
 module.exports.Element = {
     byId: id => get(`SELECT * FROM Element WHERE id = ${id};`),
 
@@ -68,7 +69,7 @@ module.exports.Element = {
     all: () => all('SELECT * FROM Element;'),
 };
 
-
+// promesse permettant de vérifier si l'objet equipData donné en paramètre est correct
 const checkEquipData = equipData => new Promise(function (resolve, reject) {
     if (equipData.nom === undefined || equipData.date_achat === undefined || equipData.etat === undefined) {
         reject('Attributs de l\'équipement mal renseignés (nom - date_achat - etat)');
@@ -82,7 +83,9 @@ const checkEquipData = equipData => new Promise(function (resolve, reject) {
     }
 });
 
+// Objet dont les attributs sont des promesses renvoyant le résultat des requêtes correspondantes
 module.exports.Equipement = {
+    // insertion d'une ligne dans la table Equipement et une ligne dans la table Element
     insert: equipData => new Promise(function (resolve, reject) {
         checkEquipData(equipData)
         .then(function (equipData) {
@@ -111,14 +114,18 @@ module.exports.Equipement = {
         .catch(err => reject(err));
     }),
 
+    // récupération d'une ligne grace au nom de l'équipement
     byName: name => get(`SELECT * FROM Equipement JOIN Element ON Element.id_Equipement = Equipement.id WHERE Equipement.nom = ${name};`),
 
+    // récupération d'une ligne grace à l'id de l'équipement
     byId: id => get(`SELECT * FROM Equipement JOIN Element ON Element.id_Equipement = Equipement.id WHERE Equipement.id = ${id};`),
 
+    // récupération de toutes les lignes d'équipement
     all: () => all('SELECT * FROM Equipement JOIN Element ON Element.id_Equipement = Equipement.id'),
 };
 
 
+// promesse permettant de vérifier si l'objet salleData donné en paramètre est correct
 const checkSalleData = salleData => new Promise(function (resolve, reject) {
     let hasBasicAttr = !(salleData.numero_salle === undefined || salleData.video_proj === undefined
         || salleData.nom_batiment === undefined || salleData.nom_aile === undefined);
@@ -143,7 +150,9 @@ const checkSalleData = salleData => new Promise(function (resolve, reject) {
     }
 });
 
+// Objet dont les attributs sont des promesses renvoyant le résultat des requêtes correspondantes
 module.exports.Salle = {
+    // insertion d'une ligne dans la table Salle et possiblement une ligne dans la table Element
     insert: salleData => new Promise(function (resolve, reject) {
         checkSalleData(salleData)
         .then(function (result) {
@@ -189,6 +198,7 @@ module.exports.Salle = {
 };
 
 
+// promesse permettant de vérifier si l'objet assoData donné en paramètre est correct
 const checkAssoData = assoData => new Promise(function (resolve, reject) {
     if (assoData.nom === undefined || assoData.nb_adherents === undefined || assoData.id_Salle === undefined) {
         reject('Attributs de l\'association mal renseignés (nom - nb_adherents - id_Salle)');
@@ -198,7 +208,9 @@ const checkAssoData = assoData => new Promise(function (resolve, reject) {
     }
 });
 
+// Objet dont les attributs sont des promesses renvoyant le résultat des requêtes correspondantes
 module.exports.Association = {
+    // insertion d'une ligne dans la table Association
     insert: assoData => new Promise(function (resolve, reject) {
         checkAssoData(assoData)
         .then(function (assoData) {
@@ -226,6 +238,7 @@ module.exports.Association = {
 };
 
 
+// promesse permettant de vérifier si l'objet userData donné en paramètre est correct
 const checkUserData = userData => new Promise(function (resolve, reject) {
     if (userData.numero_etudiant === undefined || userData.nom === undefined
         || userData.prenom === undefined || userData.mot_de_passe === undefined) {
@@ -239,7 +252,9 @@ const checkUserData = userData => new Promise(function (resolve, reject) {
     }
 });
 
+// Objet dont les attributs sont des promesses renvoyant le résultat des requêtes correspondantes
 module.exports.Utilisateur = {
+    // insertion d'une ligne dans la table Utilisateur
     insert: userData => new Promise(function (resolve, reject) {
         checkUserData(userData)
         .then(function (hasIdAsso) {
@@ -265,6 +280,7 @@ module.exports.Utilisateur = {
 };
 
 
+// promesse permettant de vérifier si l'objet crenData donné en paramètre est correct
 const checkCrenData = crenData => new Promise(function (resolve, reject) {
     if (crenData.date_heure_debut === undefined || crenData.date_heure_fin === undefined
         || crenData.etat === undefined || crenData.id_Element === undefined) {
@@ -275,7 +291,9 @@ const checkCrenData = crenData => new Promise(function (resolve, reject) {
     }
 });
 
+// Objet dont les attributs sont des promesses renvoyant le résultat des requêtes correspondantes
 module.exports.Creneau = {
+    // insertion d'une ligne dans la table Creneau
     insert: crenData => new Promise(function (resolve, reject) {
         checkCrenData(crenData)
         .then(function (crenData) {
@@ -302,6 +320,7 @@ module.exports.Creneau = {
 };
 
 
+// promesse permettant de vérifier si l'objet reservData donné en paramètre est correct
 const checkReservData = reservData => new Promise(function (resolve, reject) {
     if (reservData.nombre_de_personnes === undefined || reservData.raison === undefined
         || reservData.id_Utilisateur === undefined || reservData.id_Creneau === undefined) {
@@ -312,7 +331,9 @@ const checkReservData = reservData => new Promise(function (resolve, reject) {
     }
 });
 
+// Objet dont les attributs sont des promesses renvoyant le résultat des requêtes correspondantes
 module.exports.Reservation = {
+    // insertion d'une ligne dans la table Réservation
     insert: reservData => new Promise(function (resolve, reject) {
         checkReservData(reservData)
         .then(function (reservData) {
