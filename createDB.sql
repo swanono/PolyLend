@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS Utilisateur;
 DROP TABLE IF EXISTS Reservation;
 DROP TABLE IF EXISTS MotCle;
 
+PRAGMA foreign_keys = ON;
 
 --
 -- Table Element
@@ -29,7 +30,8 @@ CREATE TABLE Materiel(
     quantite INT NOT NULL,
     categorie TEXT NOT NULL,
     lieu TEXT NOT NULL,
-    id_Element INTEGER NOT NULL REFERENCES Element(id) ON DELETE CASCADE
+    id_Element INTEGER NOT NULL,
+	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -43,7 +45,8 @@ CREATE TABLE Salle(
     etage INT NOT NULL,
     capacite INT NOT NULL,
     equipement TEXT NOT NULL,
-    id_Element INTEGER NOT NULL REFERENCES Element(id) ON DELETE CASCADE
+    id_Element INTEGER NOT NULL,
+	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -55,7 +58,8 @@ CREATE TABLE Creneau(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     date_heure_debut TEXT NOT NULL,
     date_heure_fin TEXT NOT NULL,
-    id_Element INTEGER NOT NULL REFERENCES Element(id) ON DELETE CASCADE
+    id_Element INTEGER NOT NULL,
+	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -82,8 +86,10 @@ CREATE TABLE Reservation(
     validation INT DEFAULT 0 NOT NULL CHECK(validation IN (-1, 0, 1)),
     date_heure_debut TEXT NOT NULL,
     date_heure_fin TEXT NOT NULL,
-    id_Utilisateur TEXT NOT NULL REFERENCES Utilisateur(numero_etudiant) ON DELETE CASCADE,
-    id_Creneau INTEGER NOT NULL REFERENCES Creneau(id) ON DELETE CASCADE
+    id_Utilisateur TEXT NOT NULL,
+    id_Creneau INTEGER NOT NULL,
+	FOREIGN KEY (id_Utilisateur) REFERENCES Utilisateur(numero_etudiant) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (id_Creneau) REFERENCES Creneau(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -92,7 +98,8 @@ CREATE TABLE Reservation(
 --
 
 CREATE TABLE MotCle(
-    id_Element INTEGER NOT NULL REFERENCES Element(id) ON DELETE CASCADE,
+    id_Element INTEGER NOT NULL,
     mot TEXT NOT NULL,
-    PRIMARY KEY(id_Element, mot)
+    PRIMARY KEY (id_Element, mot),
+	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

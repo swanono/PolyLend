@@ -95,9 +95,9 @@ module.exports.Element = {
 
     all: () => all('SELECT * FROM Element;'),
 
-	deleteById: id => run(`DELETE FROM Element WHERE id = ${id};`),
+    deleteById: id => run(`DELETE FROM Element WHERE id = ${id};`),
 
-	deleteByName: name => run(`DELETE FROM Element WHERE nom = "${name}";`),
+    deleteByName: name => run(`DELETE FROM Element WHERE nom = "${name}";`),
 };
 
 // promesse permettant de vérifier si l'objet matData donné en paramètre est correct
@@ -155,40 +155,40 @@ module.exports.Materiel = {
 
     // récupération de toutes les lignes du matériel
     all: () => all('SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id;'),
-	
-	// déletion de l'élément puis du matériel grace à l'id du matériel
-	deleteById: id => new Promise(function (resolve, reject) {
-		get(`SELECT * FROM Materiel WHERE id = ${id};`)
-		.then(function (mat) {
-			run(`DELETE FROM Element WHERE id = ${mat.id_Element};`)
-			.then(function () {
-				run(`DELETE FROM Materiel WHERE id = ${mat.id};`)
-				.then(function () {
-					resolve(mat);
-				})
-				.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
-			})
-			.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
-		})
-		.catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
-	}),
-	
-	// déletion de l'élément puis du matériel grace au nom du matériel
-	deleteByName: name => new Promise(function (resolve, reject) {
-		get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE nom = ${name};`)
-		.then(function (mat) {
-			run(`DELETE FROM Element WHERE id = ${mat.id_Element};`)
-			.then(function () {
-				run(`DELETE FROM Materiel WHERE id = ${mat.id};`)
-				.then(function () {
-					resolve(mat);
-				})
-				.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
-			})
-			.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
-		})
-		.catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
-	}),
+
+    // déletion de l'élément puis du matériel grace à l'id du matériel
+    deleteById: id => new Promise(function (resolve, reject) {
+        get(`SELECT * FROM Materiel WHERE id = ${id};`)
+        .then(function (mat) {
+            run(`DELETE FROM Element WHERE id = ${mat.id_Element};`)
+            .then(function () {
+                run(`DELETE FROM Materiel WHERE id = ${mat.id};`)
+                .then(function () {
+                    resolve(mat);
+                })
+                .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            })
+            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+        })
+        .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+    }),
+
+    // déletion de l'élément puis du matériel grace au nom du matériel
+    deleteByName: name => new Promise(function (resolve, reject) {
+        get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE nom = ${name};`)
+        .then(function (mat) {
+            run(`DELETE FROM Element WHERE id = ${mat.id_Element};`)
+            .then(function () {
+                run(`DELETE FROM Materiel WHERE id = ${mat.id};`)
+                .then(function () {
+                    resolve(mat);
+                })
+                .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            })
+            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+        })
+        .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+    }),
 };
 
 
@@ -240,47 +240,49 @@ module.exports.Salle = {
         })
         .catch(err => reject(err));
     }),
-	
-    // récupération d'une ligne grace au nom du matériel
+
+    // récupération d'une ligne grace au nom de la salle
     byName: name => get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Element.nom = "${name}";`),
 
+    // récupération d'une ligne grace à l'id de la salle
     byId: id => get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.id = ${id};`),
 
+    // récupération de toutes les salles de la base
     all: () => all('SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id;'),
-	
-	// déletion de l'élément puis de la salle grace à l'id de la salle
-	deleteById: id => new Promise(function (resolve, reject) {
-		get(`SELECT * FROM Salle WHERE id = ${id};`)
-		.then(function (salle) {
-			run(`DELETE FROM Element WHERE id = ${salle.id_Element};`)
-			.then(function () {
-				run(`DELETE FROM Salle WHERE id = ${salle.id};`)
-				.then(function () {
-					resolve(salle);
-				})
-				.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
-			})
-			.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
-		})
-		.catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
-	}),
-	
-	// déletion de l'élément puis de la salle grace au nom de la salle
-	deleteByName: name => new Promise(function (resolve, reject) {
-		get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE nom = ${name};`)
-		.then(function (salle) {
-			run(`DELETE FROM Element WHERE id = ${salle.id_Element};`)
-			.then(function () {
-				run(`DELETE FROM Salle WHERE id = ${salle.id};`)
-				.then(function () {
-					resolve(salle);
-				})
-				.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
-			})
-			.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
-		})
-		.catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
-	}),
+
+    // déletion de l'élément puis de la salle grace à l'id de la salle
+    deleteById: id => new Promise(function (resolve, reject) {
+        get(`SELECT * FROM Salle WHERE id = ${id};`)
+        .then(function (salle) {
+            run(`DELETE FROM Element WHERE id = ${salle.id_Element};`)
+            .then(function () {
+                run(`DELETE FROM Salle WHERE id = ${salle.id};`)
+                .then(function () {
+                    resolve(salle);
+                })
+                .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            })
+            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+        })
+        .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+    }),
+
+    // déletion de l'élément puis de la salle grace au nom de la salle
+    deleteByName: name => new Promise(function (resolve, reject) {
+        get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE nom = ${name};`)
+        .then(function (salle) {
+            run(`DELETE FROM Element WHERE id = ${salle.id_Element};`)
+            .then(function () {
+                run(`DELETE FROM Salle WHERE id = ${salle.id};`)
+                .then(function () {
+                    resolve(salle);
+                })
+                .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            })
+            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+        })
+        .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+    }),
 };
 
 // promesse permettant de vérifier si l'objet userData donné en paramètre est correct
@@ -313,11 +315,14 @@ module.exports.Utilisateur = {
         .catch(err => reject(err));
     }),
 
+    // récupération d'une ligne grace au numéro étudiant voulu
     byNumEt: numEt => get(`SELECT * FROM Utilisateur WHERE numero_etudiant = "${numEt}";`),
 
+    // récupération de tous les utiisateurs de la base
     all: () => all('SELECT * FROM Utilisateur;'),
-	
-	deleteByNumEt: numEt => run(`DELETE * FROM Utilisateur WHERE numero_etudiant = "${numEt}";`),
+
+    // délétion d'un utilisateur grace à son id
+    deleteByNumEt: numEt => run(`DELETE * FROM Utilisateur WHERE numero_etudiant = "${numEt}";`),
 };
 
 
@@ -351,15 +356,20 @@ module.exports.Creneau = {
         .catch(err => reject(err));
     }),
 
+    // récupération d'une ligne grace à l'id du créneau
     byId: id => get(`SELECT * FROM Creneau WHERE id = ${id};`),
 
+    // récupération de tous les créneaux associés à un élément
     allByElem: idElem => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem};`),
 
+    // récupération de tous les créneaux de la base
     all: () => all('SELECT * FROM Creneau;'),
-	
-	deleteById: id => run(`DELETE FROM Creneau WHERE id = ${id};`),
-	
-	deleteAllByElem: idElem => run(`DELETE FROM Creneau WHERE id_Element = ${idElem};`),
+
+    // délétion d'un créneau grace à son id
+    deleteById: id => run(`DELETE FROM Creneau WHERE id = ${id};`),
+
+    // délétion de tous les créneaux liés à un élément
+    deleteAllByElem: idElem => run(`DELETE FROM Creneau WHERE id_Element = ${idElem};`),
 };
 
 
@@ -398,15 +408,25 @@ module.exports.Reservation = {
         .catch(err => reject(err));
     }),
 
+    // récupération d'un élément grace à l'id de sa réservation
     getElemData: id => get(`SELECT * FROM Element LEFT OUTER JOIN (SELECT Reservation.id as id, Creneau.id_Element FROM Reservation JOIN Creneau ON Reservation.id_Creneau = Creneau.id) WHERE Reservation.id = ${id};`),
 
+    // récupération d'une ligne grace à l'id de la réservation
     byId: id => get(`SELECT * FROM Reservation WHERE id = ${id};`),
 
-    allByUserId: userId => all(`SELECT * FROM Reservation WHERE id_Utilisateur = ${userId};`),
+	// récupération de toutes les réservations liées à un élément
+    allByElemId: elemId => all(`SELECT * FROM Reservation LEFT OUTER JOIN (SELECT * FROM Creneau WHERE id_Element = ${elemId});`),
 
+    // récupération de toutes les réservations d'un utilisateur
+    allByUserId: userId => all(`SELECT * FROM Reservation WHERE id_Utilisateur = "${userId}";`),
+
+    // récupération de toutes les réservations de la base
     all: () => all('SELECT * FROM Reservation;'),
-	
-	deleteById: id => run(`DELETE FROM Reservation WHERE id = ${id};`),
+
+    // délétion d'une réservation grace à son id
+    deleteById: id => run(`DELETE FROM Reservation WHERE id = ${id};`),
+
+    // TODO : delete et get via elemId
 };
 
 
@@ -444,35 +464,41 @@ const checkMotcleData = motcleData => new Promise(function (resolve, reject) {
 });
 
 module.exports.MotCle = {
+    // insertion d'une ou plusieurs lignes dans la table MotCle
     insert: motcleData => new Promise(function (resolve, reject) {
         checkMotcleData(motcleData)
         .then(function (motcleData) {
-			let promises = motcleData.mots.map(mot => run(`INSERT INTO MotCle VALUES(${motcleData.id_Element}, "${mot}");`));
-			Promise.all(promises)
-			.then(function () {
-				all(`SELECT * FROM MotCle WHERE id_Element = ${motcleData.id_Element};`)
-				.then(res => resolve(res))
-				.catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
-			})
-			.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            let promises = motcleData.mots.map(mot => run(`INSERT INTO MotCle VALUES(${motcleData.id_Element}, "${mot}");`));
+            Promise.all(promises)
+            .then(function () {
+                all(`SELECT * FROM MotCle WHERE id_Element = ${motcleData.id_Element};`)
+                .then(res => resolve(res))
+                .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+            })
+            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
         })
         .catch(err => reject(err));
     }),
 
+    // récupération de toutes les lignes concernant un certain élément
     byElemId: elemId => all(`SELECT * FROM MotCle WHERE id_Element = ${elemId};`),
 
+    // récupération de toutes les lignes concernant un certain mot
     byWord: word => all(`SELECT * FROM MotCle WHERE mot = "${word}";`),
 
+    // récupération de toutes les lignes de la base
     all: () => all('SELECT * FROM MotCle;'),
-	
-	deleteByElem: elemId => run(`DELETE FROM MotCle WHERE id_Element = ${elemId};`),
-	
-	deleteByPair: (word, elemId) => run(`DELETE FROM MotCle WHERE id_Element = ${elemId} AND mot = "${word}";`),
+
+    // délétion de toutes les lignes liées à un élément
+    deleteByElem: elemId => run(`DELETE FROM MotCle WHERE id_Element = ${elemId};`),
+
+    // délétion de la ligne contenant un mot précis et un élément précis
+    deleteByPair: (word, elemId) => run(`DELETE FROM MotCle WHERE id_Element = ${elemId} AND mot = "${word}";`),
 };
 
 
 /*
-aller voir les url :
+aller voir l'url :
 http://www.sqlitetutorial.net/sqlite-nodejs/
 */
 
