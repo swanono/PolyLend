@@ -91,9 +91,13 @@ module.exports.Element = {
 
     byId: id => get(`SELECT * FROM Element WHERE id = ${id};`),
 
-    byName: name => get(`SELECT * FROM Element WHERE nom = ${name};`),
+    byName: name => get(`SELECT * FROM Element WHERE nom = "${name}";`),
 
     all: () => all('SELECT * FROM Element;'),
+
+	deleteById: id => run(`DELETE FROM Element WHERE id = ${id};`),
+
+	deleteByName: name => run(`DELETE FROM Element WHERE nom = "${name}";`),
 };
 
 // promesse permettant de vérifier si l'objet matData donné en paramètre est correct
@@ -112,7 +116,7 @@ const checkMatData = matData => new Promise(function (resolve, reject) {
 
 // Objet dont les attributs sont des promesses renvoyant le résultat des requêtes correspondantes
 module.exports.Materiel = {
-    // insertion d'une ligne dans la table Materiel et une ligne dans la table Element
+    // insertion d'une ligne dans la table Element puis une ligne dans la table Materiel grace à l'id de l'élément créé
     insert: matData => new Promise(function (resolve, reject) {
         checkMatData(matData)
         .then(function (matData) {
@@ -143,14 +147,48 @@ module.exports.Materiel = {
         .catch(err => reject(err));
     }),
 
-    // récupération d'une ligne grace au nom de l'équipement
-    byName: name => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Element.nom = ${name};`),
+    // récupération d'une ligne grace au nom du matériel
+    byName: name => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Element.nom = "${name}";`),
 
-    // récupération d'une ligne grace à l'id de l'équipement
+    // récupération d'une ligne grace à l'id du matériel
     byId: id => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Materiel.id = ${id};`),
 
-    // récupération de toutes les lignes d'équipement
+    // récupération de toutes les lignes du matériel
     all: () => all('SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id;'),
+	
+	// déletion de l'élément puis du matériel grace à l'id du matériel
+	deleteById: id => new Promise(function (resolve, reject) {
+		get(`SELECT * FROM Materiel WHERE id = ${id};`)
+		.then(function (mat) {
+			run(`DELETE FROM Element WHERE id = ${mat.id_Element};`)
+			.then(function () {
+				run(`DELETE FROM Materiel WHERE id = ${mat.id};`)
+				.then(function () {
+					resolve(mat);
+				})
+				.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+			})
+			.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+		})
+		.catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+	}),
+	
+	// déletion de l'élément puis du matériel grace au nom du matériel
+	deleteById: name => new Promise(function (resolve, reject) {
+		get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE nom = ${name};`)
+		.then(function (mat) {
+			run(`DELETE FROM Element WHERE id = ${mat.id_Element};`)
+			.then(function () {
+				run(`DELETE FROM Materiel WHERE id = ${mat.id};`)
+				.then(function () {
+					resolve(mat);
+				})
+				.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+			})
+			.catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+		})
+		.catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+	}),
 };
 
 

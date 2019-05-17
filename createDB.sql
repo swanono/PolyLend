@@ -68,7 +68,7 @@ CREATE TABLE Utilisateur(
     nom TEXT NOT NULL,
     prenom TEXT NOT NULL,
     mot_de_passe TEXT NOT NULL,
-    admin INT DEFAULT 0 NOT NULL CHECK(admin IN (0, 1)),
+    admin INT DEFAULT 0 NOT NULL CHECK(admin IN (0, 1))
 );
 
 
