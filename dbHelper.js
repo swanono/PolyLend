@@ -331,9 +331,60 @@ module.exports.Reservation = {
 
 // promesse permettant de vérifier si l'objet motcleData donné en paramètre est correct
 const checkMotcleData = motcleData => new Promise(function (resolve, reject) {
+    if (motcleData.id_Element === undefined) {
+        reject('Attributs de l\'objet mot clé mal renseignés (id_Element - mots)');
+    }
+    else if (motcleData.mots === undefined) {
+        resolve({id_Element: motcleData.id_Element, mots: ['']});
+    }
+    else {
+        if ((typeof motcleData) === 'string' || (motcleData instanceof String)) {
+            resolve({id_Element: motcleData.id_Element, mots: motcleData.split(' ')});
+        }
+        else if (Array.isArray(motcleData.mots)) {
+            let isStringArray = true;
+            motcleData.mots.forEach(function (mot) {
+                if ((typeof mot) !== 'string' && !(mot instanceof String)) {
+                    isStringArray = false;
+                }
+            });
 
+            if (isStringArray) {
+                resolve(motcleData);
+            }
+            else {
+                reject('L\'array fourni n\'est pas constitué uniquement de string');
+            }
+        }
+        else {
+            reject('L\'objet mot clé fourni n\'est pas de type string ou n\'est pas un array de string');
+        }
+    }
 });
 
+module.exports.MotCle = {
+    insert: motcleData => new Promise(function (resolve, reject) {
+        checkMotcleData(motcleData)
+        .then(function (motcleData) {
+            motcleData.mots.forEach(function (mot) {
+                run(`INSERT INTO MotCle VALUES(${motcleData.id_Element}, "${mot}");`)
+                .then(function () {
+                    all(`SELECT * FROM MotCle WHERE id_Element = ${motcleData.id_Element};`)
+                    .then(res => resolve(res))
+                    .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+                })
+                .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            });
+        })
+        .catch(err => reject(err));
+    }),
+
+    byElemId: elemId => all(`SELECT * FROM MotCle WHERE id_Element = ${elemId};`),
+
+    byWord: word => all(`SELECT * FROM MotCle WHERE mot = ${word};`),
+
+    all: () => all('SELECT * FROM MotCle;'),
+};
 
 
 /*
