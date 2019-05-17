@@ -58,50 +58,79 @@ const run = sql => new Promise(function (resolve, reject) {
 });
 
 
+// promesse permettant de vérifier si l'objet elemData donné en paramètre est correct
+const checkElemData = elemData => new Promise(function (resolve, reject) {
+    if (elemData.nom === undefined || elemData.description === undefined
+        || elemData.photo === undefined || elemData.validation_auto === undefined) {
+        reject('Attributs de l\'élément mal renseignés (nom - description - photo - validation_auto)');
+    }
+    else {
+        resolve(elemData);
+    }
+});
+
 // Objet permettant d'accéder à la table élément
 module.exports.Element = {
+    insert: elemData => new Promise(function (resolve, reject) {
+        checkElemData(elemData)
+        .then(function (elemData) {
+            run(`INSERT INTO Element (nom, description, photo, validation_auto)
+                VALUES ("${elemData.nom}",
+                        "${elemData.description}",
+                        "${elemData.photo}",
+                        ${elemData.validation_auto});`)
+            .then(function () {
+                get('SELECT * FROM Element WHERE (SELECT MAX(id) FROM Element) = id;')
+                .then(res => resolve(res))
+                .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+            })
+            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+        })
+        .catch(err => reject(err));
+    }),
+
     byId: id => get(`SELECT * FROM Element WHERE id = ${id};`),
 
-    bySalleId: salleId => get(`SELECT * FROM Element WHERE id_Salle = ${salleId};`),
-
-    byEquipId: equipId => get(`SELECT * FROM Element WHERE id_Equipement = ${equipId};`),
+    byName: name => get(`SELECT * FROM Element WHERE nom = ${name};`),
 
     all: () => all('SELECT * FROM Element;'),
 };
 
-// promesse permettant de vérifier si l'objet equipData donné en paramètre est correct
-const checkEquipData = equipData => new Promise(function (resolve, reject) {
-    if (equipData.nom === undefined || equipData.date_achat === undefined || equipData.etat === undefined) {
-        reject('Attributs de l\'équipement mal renseignés (nom - date_achat - etat)');
+// promesse permettant de vérifier si l'objet matData donné en paramètre est correct
+const checkMatData = matData => new Promise(function (resolve, reject) {
+    if (matData.quantite === undefined || matData.categorie === undefined || matData.lieu === undefined) {
+        reject('Attributs de l\'équipement mal renseignés (quantite - categorie - lieu)');
     }
-    else if (equipData.description === undefined || equipData.photo === undefined
-        || equipData.id_Salle === undefined || equipData.id_Association === undefined) {
-        reject('Attributs de l\'élément mal renseignés (description - photo - id_Salle - id_Association)');
+    else if (matData.nom === undefined || matData.description === undefined
+        || matData.photo === undefined || matData.validation_auto === undefined) {
+        reject('Attributs de l\'élément mal renseignés (nom - description - photo - validation_auto)');
     }
     else {
-        resolve(equipData);
+        resolve(matData);
     }
 });
 
 // Objet dont les attributs sont des promesses renvoyant le résultat des requêtes correspondantes
-module.exports.Equipement = {
-    // insertion d'une ligne dans la table Equipement et une ligne dans la table Element
-    insert: equipData => new Promise(function (resolve, reject) {
-        checkEquipData(equipData)
-        .then(function (equipData) {
-            run(`INSERT INTO Equipement (nom, date_achat, etat)
-                VALUES ("${equipData.nom}", "${equipData.date_achat}", "${equipData.etat}");`)
+module.exports.Materiel = {
+    // insertion d'une ligne dans la table Materiel et une ligne dans la table Element
+    insert: matData => new Promise(function (resolve, reject) {
+        checkMatData(matData)
+        .then(function (matData) {
+            run(`INSERT INTO Element (nom, description, photo, validation_auto)
+                VALUES ("${matData.nom}",
+                        "${matData.description}",
+                        "${matData.photo}",
+                        ${!matData.validation_auto ? 0 : 1});`)
             .then(function () {
-                get('SELECT MAX(id) as id FROM Equipement;')
-                .then(function (maxid) {
-                    run(`INSERT INTO Element (description, photo, id_Equipement, id_Salle, id_Association)
-                        VALUES ("${equipData.description}",
-                                "${equipData.photo}",
-                                ${maxid.id},
-                                ${equipData.id_Salle},
-                                ${equipData.id_Association});`)
+                get('SELECT * FROM Element WHERE (SELECT MAX(id) FROM Element) = id;')
+                .then(function (elem) {
+                    run(`INSERT INTO Materiel (quantite, categorie, lieu, id_Element)
+                        VALUES (${matData.quantite},
+                                "${matData.categorie}",
+                                "${matData.lieu}",
+                                ${elem.id});`)
                     .then(function () {
-                        get('SELECT * FROM Equipement JOIN Element ON Element.id_Equipement = Equipement.id WHERE (SELECT MAX(id) FROM Equipement) = Equipement.id;')
+                        get('SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE (SELECT MAX(id) FROM Materiel) = Materiel.id;')
                         .then(res => resolve(res))
                         .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
                     })
@@ -115,38 +144,28 @@ module.exports.Equipement = {
     }),
 
     // récupération d'une ligne grace au nom de l'équipement
-    byName: name => get(`SELECT * FROM Equipement JOIN Element ON Element.id_Equipement = Equipement.id WHERE Equipement.nom = ${name};`),
+    byName: name => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Element.nom = ${name};`),
 
     // récupération d'une ligne grace à l'id de l'équipement
-    byId: id => get(`SELECT * FROM Equipement JOIN Element ON Element.id_Equipement = Equipement.id WHERE Equipement.id = ${id};`),
+    byId: id => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Materiel.id = ${id};`),
 
     // récupération de toutes les lignes d'équipement
-    all: () => all('SELECT * FROM Equipement JOIN Element ON Element.id_Equipement = Equipement.id'),
+    all: () => all('SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id;'),
 };
 
 
 // promesse permettant de vérifier si l'objet salleData donné en paramètre est correct
 const checkSalleData = salleData => new Promise(function (resolve, reject) {
-    let hasBasicAttr = !(salleData.numero_salle === undefined || salleData.video_proj === undefined
-        || salleData.nom_batiment === undefined || salleData.nom_aile === undefined);
-    let hasElemAttr = !(salleData.description === undefined || salleData.photo === undefined
-        || salleData.id_Association === undefined);
-    let hasSomeAttr = !(salleData.description === undefined && salleData.photo === undefined
-        && salleData.id_Association === undefined);
-
-    if (hasBasicAttr) {
-        if (hasElemAttr) {
-            resolve(true);
-        }
-        else if (hasSomeAttr) {
-            reject('Attributs de l\'élément mal renseignés (description - photo - id_Salle - id_Association)');
-        }
-        else {
-            resolve(false);
-        }
+    if (salleData.batiment === undefined || salleData.etage === undefined
+        || salleData.capacite === undefined || salleData.equipement === undefined) {
+        reject('Attributs de la salle mal renseignés (batiment - etage - capacite - equipement)');
+    }
+    else if (salleData.nom === undefined || salleData.description === undefined
+        || salleData.photo === undefined || salleData.validation_auto === undefined) {
+        reject('Attributs de l\'élément mal renseignés (nom - description - photo - validation_auto)');
     }
     else {
-        reject('Attributs de la salle mal renseignés (numero_salle - video_proj - nom_batiment - nom_aile)');
+        resolve(salleData);
     }
 });
 
@@ -155,72 +174,28 @@ module.exports.Salle = {
     // insertion d'une ligne dans la table Salle et possiblement une ligne dans la table Element
     insert: salleData => new Promise(function (resolve, reject) {
         checkSalleData(salleData)
-        .then(function (result) {
-            run(`INSERT INTO Salle (numero_salle, video_proj, nom_batiment, nom_aile)
-                VALUES (${salleData.numero_salle},
-                        ${!salleData.video_proj ? 0 : 1},
-                        "${salleData.nom_batiment}",
-                        "${salleData.nom_aile}");`)
+        .then(function (salleData) {
+            run(`INSERT INTO Element (nom, description, photo, validation_auto)
+                VALUES ("${salleData.nom}",
+                        "${salleData.description}",
+                        "${salleData.photo}",
+                        ${!salleData.validation_auto ? 0 : 1});`)
             .then(function () {
-                if (result) {
-                    get('SELECT MAX(id) as id FROM Salle;')
-                    .then(function (maxid) {
-                        run(`INSERT INTO Element (description, photo, id_Salle, id_Association)
-                            VALUES ("${salleData.description}",
-                                    "${salleData.photo}",
-                                    ${maxid.id},
-                                    ${salleData.id_Association});`);
+                get('SELECT * FROM Element WHERE (SELECT MAX(id) FROM Element) = id;')
+                .then(function (elem) {
+                    run(`INSERT INTO Salle (batiment, etage, capacite, equipement, id_Element)
+                        VALUES ("${salleData.batiment}",
+                                ${salleData.etage},
+                                ${salleData.capacite},
+                                "${salleData.equipement}"
+                                ${elem.id});`)
+                    .then(function () {
+                        get('SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE (SELECT MAX(id) FROM Salle) = Salle.id;')
+                        .then(res => resolve(res))
+                        .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
                     })
-                    .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
-                }
-
-                get(`SELECT * FROM Salle ${result ? 'JOIN Element ON Salle.id = Element.id_Salle' : ''} WHERE (SELECT MAX(id) FROM Salle) = Salle.id;`)
-                .then(res => resolve(res))
-                .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
-            })
-            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
-
-        })
-        .catch(err => reject(err));
-    }),
-
-    byId: id => get(`SELECT * FROM Salle WHERE Salle.id = ${id};`),
-
-    byIdFull: id => get(`SELECT * FROM Salle JOIN Element ON Element.id_Salle = Salle.id WHERE Salle.id = ${id};`),
-
-    byNum: num => get(`SELECT * FROM Salle WHERE Salle.numero_salle = ${num};`),
-
-    byNumFull: num => get(`SELECT * FROM Salle JOIN Element ON Element.id_Salle = Salle.id WHERE Salle.numero_salle = ${num};`),
-
-    all: () => all('SELECT * FROM Salle'),
-
-    allFull: () => all('SELECT * FROM Salle JOIN Element ON Element.id_Salle = Salle.id;'),
-};
-
-
-// promesse permettant de vérifier si l'objet assoData donné en paramètre est correct
-const checkAssoData = assoData => new Promise(function (resolve, reject) {
-    if (assoData.nom === undefined || assoData.nb_adherents === undefined || assoData.id_Salle === undefined) {
-        reject('Attributs de l\'association mal renseignés (nom - nb_adherents - id_Salle)');
-    }
-    else {
-        resolve(assoData);
-    }
-});
-
-// Objet dont les attributs sont des promesses renvoyant le résultat des requêtes correspondantes
-module.exports.Association = {
-    // insertion d'une ligne dans la table Association
-    insert: assoData => new Promise(function (resolve, reject) {
-        checkAssoData(assoData)
-        .then(function (assoData) {
-            run(`INSERT INTO Association (nom, nb_adherents, id_Salle)
-                VALUES ("${assoData.nom}",
-                        ${assoData.nb_adherents},
-                        ${assoData.id_Salle});`)
-            .then(function () {
-                get('SELECT * FROM Association WHERE (SELECT MAX(id) FROM Association) = id;')
-                .then(res => resolve(res))
+                    .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+                })
                 .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
             })
             .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
@@ -228,27 +203,19 @@ module.exports.Association = {
         .catch(err => reject(err));
     }),
 
-    byId: id => get(`SELECT * FROM Association WHERE id = ${id};`),
+    byId: id => get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.id = ${id};`),
 
-    byName: name => get(`SELECT * FROM Association WHERE nom = "${name}";`),
-
-    bySalleId: id => get(`SELECT * FROM Association WHERE id_Salle = ${id};`),
-
-    all: () => all('SELECT * FROM Association;'),
+    all: () => all('SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id;'),
 };
-
 
 // promesse permettant de vérifier si l'objet userData donné en paramètre est correct
 const checkUserData = userData => new Promise(function (resolve, reject) {
     if (userData.numero_etudiant === undefined || userData.nom === undefined
         || userData.prenom === undefined || userData.mot_de_passe === undefined) {
-        reject('Attributs de l\'utilisateur mal renseignés (nom - prenom - numero_etudiant - mot_de_passe - [id_Association])');
-    }
-    else if (userData.id_Association === undefined) {
-        resolve(false);
+        reject('Attributs de l\'utilisateur mal renseignés (nom - prenom - numero_etudiant - mot_de_passe)');
     }
     else {
-        resolve(true);
+        resolve(userData);
     }
 });
 
@@ -258,12 +225,11 @@ module.exports.Utilisateur = {
     insert: userData => new Promise(function (resolve, reject) {
         checkUserData(userData)
         .then(function (hasIdAsso) {
-            run(`INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe${hasIdAsso ? ', id_Association' : ''})
+            run(`INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe)
                 VALUES ("${userData.numero_etudiant}",
                         "${userData.nom}",
                         "${userData.prenom}",
-                        "${userData.mot_de_passe}"
-                        ${hasIdAsso ? (', ' + userData.id_Association) : ''});`)
+                        "${userData.mot_de_passe}");`)
             .then(function () {
                 get(`SELECT * FROM Utilisateur WHERE numero_etudiant = "${userData.numero_etudiant}";`)
                 .then(res => resolve(res))
@@ -282,9 +248,8 @@ module.exports.Utilisateur = {
 
 // promesse permettant de vérifier si l'objet crenData donné en paramètre est correct
 const checkCrenData = crenData => new Promise(function (resolve, reject) {
-    if (crenData.date_heure_debut === undefined || crenData.date_heure_fin === undefined
-        || crenData.etat === undefined || crenData.id_Element === undefined) {
-        reject('Attributs du créneau mal renseignés (date_heure_debut - date_heure_fin - etat - id_Element)');
+    if (crenData.date_heure_debut === undefined || crenData.date_heure_fin === undefined || crenData.id_Element === undefined) {
+        reject('Attributs du créneau mal renseignés (date_heure_debut - date_heure_fin - id_Element)');
     }
     else {
         resolve(crenData);
@@ -297,10 +262,9 @@ module.exports.Creneau = {
     insert: crenData => new Promise(function (resolve, reject) {
         checkCrenData(crenData)
         .then(function (crenData) {
-            run(`INSERT INTO Creneau (date_heure_debut, date_heure_fin, etat, id_Element)
+            run(`INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element)
                 VALUES ("${crenData.date_heure_debut}",
                         "${crenData.date_heure_fin}",
-                        ${crenData.etat},
                         ${crenData.id_Element});`)
             .then(function () {
                 get('SELECT * FROM Creneau WHERE (SELECT MAX(id) FROM Creneau) = id;')
@@ -323,8 +287,9 @@ module.exports.Creneau = {
 // promesse permettant de vérifier si l'objet reservData donné en paramètre est correct
 const checkReservData = reservData => new Promise(function (resolve, reject) {
     if (reservData.nombre_de_personnes === undefined || reservData.raison === undefined
+        || reservData.date_heure_debut === undefined || reservData.date_heure_fin === undefined
         || reservData.id_Utilisateur === undefined || reservData.id_Creneau === undefined) {
-        reject('Attributs de la réservation mal renseignés (nombre_de_personnes - raison - id_Utilisateur - id_Creneau)');
+        reject('Attributs de la réservation mal renseignés (nombre_de_personnes - raison - date_heure_debut - date_heure_fin - id_Utilisateur - id_Creneau)');
     }
     else {
         resolve(reservData);
@@ -337,13 +302,15 @@ module.exports.Reservation = {
     insert: reservData => new Promise(function (resolve, reject) {
         checkReservData(reservData)
         .then(function (reservData) {
-            run(`INSERT INTO Reservation VALUES (
-                ${reservData.nombre_de_personnes},
-                "${reservData.raison}",
-                "${reservData.id_Utilisateur}",
-                ${reservData.id_Creneau});`)
+            run(`INSERT INTO Reservation (nombre_de_personnes, raison, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau)
+                VALUES (${reservData.nombre_de_personnes},
+                        "${reservData.raison}",
+                        "${reservData.date_heure_debut}",
+                        "${reservData.date_heure_fin}",
+                        "${reservData.id_Utilisateur}",
+                        ${reservData.id_Creneau});`)
             .then(function () {
-                get(`SELECT * FROM Reservation WHERE id_Creneau = ${reservData.id_Creneau};`)
+                get(`SELECT * FROM Reservation WHERE (SELECT MAX(id) FROM Reservation) = id;`)
                 .then(res => resolve(res))
                 .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
             })
@@ -354,14 +321,23 @@ module.exports.Reservation = {
 
     getCrenData: crenId => get(`SELECT * FROM Reservation JOIN Creneau ON Reservation.id_Creneau = Creneau.id WHERE Reservation.id_Creneau = ${crenId};`),
 
-    byCrenId: crenId => get(`SELECT * FROM Reservation WHERE id_Creneau = ${crenId};`),
+    byId: id => get(`SELECT * FROM Reservation WHERE id = ${id};`),
 
     allByUserId: userId => all(`SELECT * FROM Reservation WHERE id_Utilisateur = ${userId};`),
 
     all: () => all('SELECT * FROM Reservation;'),
 };
 
+
+// promesse permettant de vérifier si l'objet motcleData donné en paramètre est correct
+const checkMotcleData = motcleData => new Promise(function (resolve, reject) {
+
+});
+
+
+
 /*
 aller voir les url :
 http://www.sqlitetutorial.net/sqlite-nodejs/
 */
+
