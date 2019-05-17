@@ -224,7 +224,7 @@ module.exports.Utilisateur = {
     // insertion d'une ligne dans la table Utilisateur
     insert: userData => new Promise(function (resolve, reject) {
         checkUserData(userData)
-        .then(function (hasIdAsso) {
+        .then(function (userData) {
             run(`INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe)
                 VALUES ("${userData.numero_etudiant}",
                         "${userData.nom}",
@@ -310,7 +310,7 @@ module.exports.Reservation = {
                         "${reservData.id_Utilisateur}",
                         ${reservData.id_Creneau});`)
             .then(function () {
-                get(`SELECT * FROM Reservation WHERE (SELECT MAX(id) FROM Reservation) = id;`)
+                get('SELECT * FROM Reservation WHERE (SELECT MAX(id) FROM Reservation) = id;')
                 .then(res => resolve(res))
                 .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
             })
