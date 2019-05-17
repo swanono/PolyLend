@@ -131,7 +131,7 @@
                             </div>
                             <div class="droite col-6">
                                 <p class="disponible">Disponible selon vos critères</p>
-                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning</button>
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier2">Planning</button>
                                 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter1">Modifier</button>
                                 <button type="button" class="btn btn-danger"><img src="./image/poubelle.svg" width="22px"></button>
                             </div>
@@ -389,16 +389,136 @@
                             <p>Au: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
                         </div>
                     </div>-->
-                
+
+
+
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modals calendrier -->
+<div class="modal fade" id="calendrier2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header modal-header-calendrier">
+                    <h5 class="modal-title col-11 text-center" id="exampleModalLongTitle">Janvier 2019</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-calendrier calendrier">
+                    <table width="100%">
+                    <tr>
+                        <th>Lun<br></th>
+                        <th>Mar</th>
+                        <th>Mer</th>
+                        <th>Jeu</th>
+                        <th>Ven</th>
+                        <th>Sam</th>
+                        <th>Dim</th>
+                    </tr>
+                    <tr>
+                        <td>1<br/><br/></td>
+                        <td>2<br/><br/></td>
+                        <td>3<br/></td><br/></td>
+                        <td>4<br/><br/></td>
+                        <td>5<br/><br/></td>
+                        <td>6<br/><br/></td>
+                        <td>7<br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>8<br/><br/></td>
+                        <td>9<br/><br/></td>
+                        <td class= "en-cours">10<br/>10h00</td>
+                        <td class= "en-cours">11<br/><br/><a href="#" data-toggle="popover" title="Action" data-content="Accepeter / refuser"></a></td>
+                        <td class= "en-cours">12<br/>14h00</td>
+                        <td>13<br/><br/></td>
+                        <td>14<br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>15<br/><br/></td>
+                        <td>16<br/><br/></td>
+                        <td>17<br/><br/></td>
+                        <td>18<br/><br/></td>
+                        <td>19<br/><br/></td>
+                        <td>20<br/><br/></td>
+                        <td>21<br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>22<br/><br/></td>
+                        <td>23<br/><br/></td>
+                        <td>24<br/><br/></td>
+                        <td>25<br/><br/></td>
+                        <td>26<br/><br/></td>
+                        <td>27<br/><br/></td>
+                        <td>28<br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>29<br/><br/></td>
+                        <td>30<br/><br/></td>
+                        <td>31<br/><br/></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </table>
+                </div>
+        <!--<div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>-->
+            </div>
+        </div>
+    </div>
 
+<div id="dialog-confirm" title="Empty the recycle bin?">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="./js/bootstrap.bundle.min.js "></script>
     <!--<script src="./js/bootstrap.min.js"></script>-->
+    <script type="text/javascript">
+        /*$(function () {
+          $('[data-toggle="popover"]').popover()
+        })
+
+        $(".en-cours").click(function()
+        {
+            /*alert("coucou");
+            $('.example-popover').popover({
+                container: 'body'
+            })*/
+            /*$('[data-toggle="popover"]').popover(); 
+        }
+        )*/
+
+        /*$(document).ready(function(){
+            $('[data-toggle="popover"]').popover();   
+        });*/
+        $(".en-cours").click(function()
+        {
+
+            //alert("test");
+            $( "#dialog-confirm" ).dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Delete all items": function() {
+                        $( this ).dialog( "close" );
+                    },
+                    Cancel: function() {
+                        $( this ).dialog( "close" );
+                    }
+                }
+            });
+            $("#dialog-confirm").dialog( "open" );
+        })
+    </script>
     </body>
 </html>
+
