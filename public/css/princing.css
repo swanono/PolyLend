@@ -88,6 +88,13 @@ html {
     background-color: rgb(254,230,230);
 }
 
+.item-en-attente{
+    background-color:#ffc733;
+}
+.item-disponible{
+  background-color: #e3f897;
+}
+
 .description{
     color:grey;
 }
