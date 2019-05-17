@@ -17,4 +17,6 @@ module.exports = (passport) => {
     app.post('/element/equipement/add', function (req, res, next) {
         console.log(req.body);
     });
+
+    return app;
 }
