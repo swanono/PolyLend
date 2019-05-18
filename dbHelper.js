@@ -268,7 +268,7 @@ module.exports.Salle = {
                         VALUES ("${salleData.batiment}",
                                 ${salleData.etage},
                                 ${salleData.capacite},
-                                "${salleData.equipement}"
+                                "${salleData.equipement}",
                                 ${elem.id});`)
                     .then(function () {
                         get('SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE (SELECT MAX(id) FROM Salle) = Salle.id;')
@@ -394,7 +394,7 @@ module.exports.Utilisateur = {
     all: () => all('SELECT * FROM Utilisateur;'),
 
     // changement du statut admin de l'utilisateur voulu
-    grantAdminRights: (id, grant = true) => run(`UPDATE Utilisateur SET admin = ${grant ? '1' : '0'} WHERE id = ${id};`),
+    grantAdminRights: (numEt, grant = true) => run(`UPDATE Utilisateur SET admin = ${grant ? '1' : '0'} WHERE numero_etudiant = "${numEt}";`),
 
     // délétion d'un utilisateur grace à son id
     deleteByNumEt: numEt => run(`DELETE * FROM Utilisateur WHERE numero_etudiant = "${numEt}";`),
@@ -455,10 +455,10 @@ module.exports.Creneau = {
 
 // promesse permettant de vérifier si l'objet reservData donné en paramètre est correct
 const checkReservData = reservData => new Promise(function (resolve, reject) {
-    if (reservData.nombre_de_personnes === undefined || reservData.raison === undefined
+    if (reservData.raison === undefined
         || reservData.date_heure_debut === undefined || reservData.date_heure_fin === undefined
         || reservData.id_Utilisateur === undefined || reservData.id_Creneau === undefined) {
-        reject('Attributs de la réservation mal renseignés (nombre_de_personnes - raison - date_heure_debut - date_heure_fin - id_Utilisateur - id_Creneau)');
+        reject('Attributs de la réservation mal renseignés (raison - date_heure_debut - date_heure_fin - id_Utilisateur - id_Creneau)');
     }
     else {
         get(`SELECT * FROM Creneau JOIN Element ON Creneau.id_Element = Element.id WHERE Creneau.id = ${reservData.id_Creneau};`)
@@ -473,9 +473,8 @@ module.exports.Reservation = {
     insert: reservData => new Promise(function (resolve, reject) {
         checkReservData(reservData)
         .then(function (valid_auto) {
-            run(`INSERT INTO Reservation (nombre_de_personnes, raison, ${valid_auto ? 'validation, ' : ''}date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau)
-                VALUES (${reservData.nombre_de_personnes},
-                        "${reservData.raison}",
+            run(`INSERT INTO Reservation (raison, ${valid_auto ? 'validation, ' : ''}date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau)
+                VALUES ("${reservData.raison}",
                         ${valid_auto ? 1 + ',' : ''}
                         "${reservData.date_heure_debut}",
                         "${reservData.date_heure_fin}",
