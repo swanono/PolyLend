@@ -2,13 +2,15 @@
 
 const sqlite3 = require('sqlite3').verbose();
 
-const db = new sqlite3.Database('./Database-PolyLend.db', sqlite3.OPEN_READWRITE, function (err) {
+const dbName = 'Database-PolyLend.db';
+
+const db = new sqlite3.Database('./' + dbName, sqlite3.OPEN_READWRITE, function (err) {
     if (err) {
         console.error(err + '\n' + 'run "npm run createDB" to create a database file');
         require('process').exit(-1);
     }
     else {
-        console.log('Connected to Database-PolyLend.db');
+        console.log('Connected to ' + dbName);
     }
 });
 
@@ -91,6 +93,21 @@ module.exports.Element = {
 
     byId: id => get(`SELECT * FROM Element WHERE id = ${id};`),
 
+    byIdFull: id => new Promise(function (resolve, reject) {
+        get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Element.id = ${id};`)
+        .then(function (result) {
+            if (result) {
+                resolve(result);
+            }
+            else {
+                get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Element.id = ${id};`)
+                .then(result => resolve(result))
+                .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+            }
+        })
+        .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+    }),
+
     byName: name => get(`SELECT * FROM Element WHERE nom = "${name}";`),
 
     all: () => all('SELECT * FROM Element;'),
@@ -152,6 +169,32 @@ module.exports.Materiel = {
 
     // récupération d'une ligne grace à l'id du matériel
     byId: id => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Materiel.id = ${id};`),
+
+    // récupération de tous les matériels d'une certaine catégorie
+    allByCategory: cat => all(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE categorie = ${cat};`),
+
+    // récupération de tous les matériels répondant à des critères donnés
+    allByParams: params => new Promise(function (resolve, reject) {
+        hasQuant = (params.quantite !== undefined);
+        hasLoc = (params.lieu !== undefined);
+        hasName = (params.nom !== undefined);
+        hasCateg = (params.categorie !== undefined);
+        hasDesc = (params.description !== undefined);
+
+        all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE (
+            ${hasName ? 'nom = "' + params.nom + '" ' : ''}
+            ${(hasName && (hasQuant || hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
+            ${hasQuant ? 'quantite = ' + params.quantite + ' ' : ''}
+            ${((hasName || hasQuant) && (hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
+            ${hasLoc ? 'lieu LIKE "%' + params.lieu + '%" ' : ''}
+            ${((hasName || hasQuant || hasLoc) && (hasCateg || hasDesc)) ? 'AND ' : ''}
+            ${hasCateg ? 'categorie = "' + params.categorie + '" ' : ''}
+            ${((hasName || hasQuant || hasLoc || hasCateg) && (hasDesc)) ? 'AND ' : ''}
+            ${hasDesc ? 'description LIKE "%' + params.description + '%" ' : ''}
+        );`)
+        .then(res => resolve(res))
+        .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+    }),
 
     // récupération de toutes les lignes du matériel
     all: () => all('SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id;'),
@@ -247,6 +290,35 @@ module.exports.Salle = {
     // récupération d'une ligne grace à l'id de la salle
     byId: id => get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.id = ${id};`),
 
+    // récupération de toutes les salles d'un batiment
+    allByBat: bat => all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.batiment = "${bat}";`),
+
+    // récupération de toutes les salles ayant une capacité minimum demandée
+    allByMinCap: cap => all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.capacite >= ${cap};`),
+
+    // récupération de toutes les salles répondant aux paramètres fournis
+    allByParams: params => new Promise(function (resolve, reject) {
+        let hasName = (params.nom !== undefined);
+        let hasBat = (params.batiment !== undefined);
+        let hasMinCap = (params.capacite !== undefined);
+        let hasEtage = (params.etage !== undefined);
+        let hasDesc = (params.description !== undefined);
+
+        all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE (
+            ${hasName ? 'nom = "' + params.nom + '" ' : ''}
+            ${(hasName && (hasBat || hasMinCap || hasEtage || hasDesc)) ? 'AND ' : ''}
+            ${hasBat ? 'batiment = "' + params.batiment + '" ' : ''}
+            ${((hasName || hasBat) && (hasMinCap || hasEtage || hasDesc)) ? 'AND ' : ''}
+            ${hasMinCap ? 'capacite >= ' + params.capacite + ' ' : ''}
+            ${((hasName || hasBat || hasMinCap) && (hasEtage || hasDesc)) ? 'AND ' : ''}
+            ${hasEtage ? 'etage = ' + params.etage + ' ' : ''}
+            ${((hasName || hasBat || hasMinCap || hasEtage) && (hasDesc)) ? 'AND ' : ''}
+            ${hasDesc ? 'description LIKE "%' + params.description + '%" ' : ''}
+        );`)
+        .then(res => resolve(res))
+        .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+    }),
+
     // récupération de toutes les salles de la base
     all: () => all('SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id;'),
 
@@ -321,6 +393,9 @@ module.exports.Utilisateur = {
     // récupération de tous les utiisateurs de la base
     all: () => all('SELECT * FROM Utilisateur;'),
 
+    // changement du statut admin de l'utilisateur voulu
+    grantAdminRights: (id, grant = true) => run(`UPDATE Utilisateur SET admin = ${grant ? '1' : '0'} WHERE id = ${id};`),
+
     // délétion d'un utilisateur grace à son id
     deleteByNumEt: numEt => run(`DELETE * FROM Utilisateur WHERE numero_etudiant = "${numEt}";`),
 };
@@ -362,6 +437,11 @@ module.exports.Creneau = {
     // récupération de tous les créneaux associés à un élément
     allByElem: idElem => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem};`),
 
+    // récupération de tous les créneaux associés à un élément et incluant une certaine date
+    allByElemIncluding: (idElem, dateTime) => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem}
+                                                    AND datetime(${dateTime}) >= datetime(date_heure_debut)
+                                                    AND datetime(${dateTime}) <= datetime(date_heure_fin);`),
+
     // récupération de tous les créneaux de la base
     all: () => all('SELECT * FROM Creneau;'),
 
@@ -381,7 +461,9 @@ const checkReservData = reservData => new Promise(function (resolve, reject) {
         reject('Attributs de la réservation mal renseignés (nombre_de_personnes - raison - date_heure_debut - date_heure_fin - id_Utilisateur - id_Creneau)');
     }
     else {
-        resolve(reservData);
+        get(`SELECT * FROM Creneau JOIN Element ON Creneau.id_Element = Element.id WHERE Creneau.id = ${reservData.id_Creneau};`)
+        .then(result => resolve(result.validation_auto === 1))
+        .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
     }
 });
 
@@ -390,10 +472,11 @@ module.exports.Reservation = {
     // insertion d'une ligne dans la table Réservation
     insert: reservData => new Promise(function (resolve, reject) {
         checkReservData(reservData)
-        .then(function (reservData) {
-            run(`INSERT INTO Reservation (nombre_de_personnes, raison, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau)
+        .then(function (valid_auto) {
+            run(`INSERT INTO Reservation (nombre_de_personnes, raison, ${valid_auto ? 'validation, ' : ''}date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau)
                 VALUES (${reservData.nombre_de_personnes},
                         "${reservData.raison}",
+                        ${valid_auto ? 1 + ',' : ''}
                         "${reservData.date_heure_debut}",
                         "${reservData.date_heure_fin}",
                         "${reservData.id_Utilisateur}",
@@ -414,8 +497,11 @@ module.exports.Reservation = {
     // récupération d'une ligne grace à l'id de la réservation
     byId: id => get(`SELECT * FROM Reservation WHERE id = ${id};`),
 
-	// récupération de toutes les réservations liées à un élément
+    // récupération de toutes les réservations liées à un élément
     allByElemId: elemId => all(`SELECT * FROM Reservation LEFT OUTER JOIN (SELECT * FROM Creneau WHERE id_Element = ${elemId});`),
+
+    // récupération de toutes les réservations liées à un créneau
+    allByCrenId: crenId => all(`SELECT * FROM Reservation WHERE id_Creneau = ${crenId};`),
 
     // récupération de toutes les réservations d'un utilisateur
     allByUserId: userId => all(`SELECT * FROM Reservation WHERE id_Utilisateur = "${userId}";`),
@@ -423,10 +509,18 @@ module.exports.Reservation = {
     // récupération de toutes les réservations de la base
     all: () => all('SELECT * FROM Reservation;'),
 
+    // changer la validation d'une réservation
+    accept: id => run(`UPDATE Reservation SET validation = 1 WHERE id = ${id};`),
+    reject: id => run(`UPDATE Reservation SET validation = -1 WHERE id = ${id};`),
+
     // délétion d'une réservation grace à son id
     deleteById: id => run(`DELETE FROM Reservation WHERE id = ${id};`),
 
-    // TODO : delete et get via elemId
+    // délétion de toutes les réservations liées à un élément
+    deleteByElemId: elemId => run(`DELETE FROM Reservation WHERE (SELECT id_Element FROM Creneau WHERE id_Creneau = Creneau.id) = ${elemId};`),
+
+    // délétion de toutes les réservations liées à un créneau
+    deleteByCrenId: crenId => run(`DELETE FROM Reservation WHERE id_Creneau = ${crenId};`),
 };
 
 
@@ -481,10 +575,25 @@ module.exports.MotCle = {
     }),
 
     // récupération de toutes les lignes concernant un certain élément
-    byElemId: elemId => all(`SELECT * FROM MotCle WHERE id_Element = ${elemId};`),
+    allByElemId: elemId => all(`SELECT * FROM MotCle WHERE id_Element = ${elemId};`),
 
     // récupération de toutes les lignes concernant un certain mot
-    byWord: word => all(`SELECT * FROM MotCle WHERE mot = "${word}";`),
+    allByWord: word => all(`SELECT * FROM MotCle WHERE mot LIKE "%${word}%";`),
+
+    // récupération de toutes les lignes concernant les mots d'une "phrase"
+    allBySentence: sentence => new Promise(function (resolve, reject) {
+        if (typeof(sentence) === 'string' || (sentence instanceof String)) {
+            sentence = sentence.split(' ');
+            let promises = sentence.map(mot => all(`SELECT * FROM MotCle WHERE mot LIKE "%${mot}%";`));
+
+            Promise.all(promises)
+            .then(results => resolve(Object.assign(...results)))
+            .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+        }
+        else {
+            reject('l\'objet fourni n\'est pas de type string');
+        }
+    }),
 
     // récupération de toutes les lignes de la base
     all: () => all('SELECT * FROM MotCle;'),

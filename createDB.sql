@@ -51,19 +51,6 @@ CREATE TABLE Salle(
 
 
 --
--- Table Creneau
---
-
-CREATE TABLE Creneau(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date_heure_debut TEXT NOT NULL,
-    date_heure_fin TEXT NOT NULL,
-    id_Element INTEGER NOT NULL,
-	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-
---
 -- Table Utilisateur
 --
 
@@ -73,6 +60,19 @@ CREATE TABLE Utilisateur(
     prenom TEXT NOT NULL,
     mot_de_passe TEXT NOT NULL,
     admin INT DEFAULT 0 NOT NULL CHECK(admin IN (0, 1))
+);
+
+
+--
+-- Table Creneau
+--
+
+CREATE TABLE Creneau(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date_heure_debut TEXT NOT NULL,
+    date_heure_fin TEXT NOT NULL,
+    id_Element INTEGER NOT NULL,
+	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
