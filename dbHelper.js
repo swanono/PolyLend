@@ -110,7 +110,27 @@ module.exports.Element = {
 
     byName: name => get(`SELECT * FROM Element WHERE nom = "${name}";`),
 
-    all: () => all('SELECT * FROM Element;'),
+    all: (countBegin = 0, countEnd = 0) => new Promise(function (resolve, reject) {
+        let request = 'SELECT * FROM Element';
+
+        if (countBegin > 0) {
+            request += ' GROUP BY id HAVING ';
+
+            if (countEnd > 0) {
+                request += `id <= (SELECT MAX(id) FROM Element) - ${countBegin} + 1 AND id >= (SELECT MAX(id) FROM Element) - ${countEnd} + 1`;
+            }
+            else {
+                request += `id >= (SELECT MAX(id) FROM Element) - ${countBegin} + 1`;
+            }
+
+            request += ' ORDER BY id DESC';
+        }
+        request += ';';
+
+        all(request)
+        .then(result => resolve(result))
+        .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+    }),
 
     deleteById: id => run(`DELETE FROM Element WHERE id = ${id};`),
 
@@ -181,7 +201,7 @@ module.exports.Materiel = {
         hasCateg = (params.categorie !== undefined);
         hasDesc = (params.description !== undefined);
 
-        all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE (
+        all(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE (
             ${hasName ? 'nom = "' + params.nom + '" ' : ''}
             ${(hasName && (hasQuant || hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
             ${hasQuant ? 'quantite = ' + params.quantite + ' ' : ''}
@@ -197,7 +217,27 @@ module.exports.Materiel = {
     }),
 
     // récupération de toutes les lignes du matériel
-    all: () => all('SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id;'),
+    all: (countBegin = 0, countEnd = 0) => new Promise(function (resolve, reject) {
+        let request = 'SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id';
+
+        if (countBegin > 0) {
+            request += ' GROUP BY Materiel.id HAVING ';
+
+            if (countEnd > 0) {
+                request += `Materiel.id <= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1 AND Materiel.id >= (SELECT MAX(id) FROM Materiel) - ${countEnd} + 1`;
+            }
+            else {
+                request += `Materiel.id >= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1`;
+            }
+
+            request += ' ORDER BY Materiel.id DESC';
+        }
+        request += ';';
+
+        all(request)
+        .then(result => resolve(result))
+        .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+    }),
 
     // déletion de l'élément puis du matériel grace à l'id du matériel
     deleteById: id => new Promise(function (resolve, reject) {
@@ -320,7 +360,27 @@ module.exports.Salle = {
     }),
 
     // récupération de toutes les salles de la base
-    all: () => all('SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id;'),
+    all: (countBegin = 0, countEnd = 0) => new Promise(function (resolve, reject) {
+        let request = 'SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id';
+
+        if (countBegin > 0) {
+            request += ' GROUP BY Salle.id HAVING ';
+
+            if (countEnd > 0) {
+                request += `Salle.id <= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1 AND Salle.id >= (SELECT MAX(id) FROM Salle) - ${countEnd} + 1`;
+            }
+            else {
+                request += `Salle.id >= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1`;
+            }
+
+            request += ' ORDER BY Salle.id DESC';
+        }
+        request += ';';
+
+        all(request)
+        .then(result => resolve(result))
+        .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+    }),
 
     // déletion de l'élément puis de la salle grace à l'id de la salle
     deleteById: id => new Promise(function (resolve, reject) {
@@ -506,7 +566,27 @@ module.exports.Reservation = {
     allByUserId: userId => all(`SELECT * FROM Reservation WHERE id_Utilisateur = "${userId}";`),
 
     // récupération de toutes les réservations de la base
-    all: () => all('SELECT * FROM Reservation;'),
+    all: (countBegin = 0, countEnd = 0) => new Promise(function (resolve, reject) {
+        let request = 'SELECT * FROM Reservation';
+
+        if (countBegin > 0) {
+            request += ' GROUP BY id HAVING ';
+
+            if (countEnd > 0) {
+                request += `id <= (SELECT MAX(id) FROM Reservation) - ${countBegin} + 1 AND id >= (SELECT MAX(id) FROM Reservation) - ${countEnd} + 1`;
+            }
+            else {
+                request += `id >= (SELECT MAX(id) FROM Reservation) - ${countBegin} + 1`;
+            }
+
+            request += ' ORDER BY id DESC';
+        }
+        request += ';';
+
+        all(request)
+        .then(result => resolve(result))
+        .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+    }),
 
     // changer la validation d'une réservation
     accept: id => run(`UPDATE Reservation SET validation = 1 WHERE id = ${id};`),
