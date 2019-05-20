@@ -542,7 +542,13 @@ module.exports.Reservation = {
                         ${reservData.id_Creneau});`)
             .then(function () {
                 get('SELECT * FROM Reservation WHERE (SELECT MAX(id) FROM Reservation) = id;')
-                .then(res => resolve(res))
+                .then(function (result) {
+                    if (!valid_auto) {
+                        run(`INSERT INTO Notification VALUES (${result.id}, 1);`)
+                        .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+                    }
+                    resolve(result);
+                })
                 .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
             })
             .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
@@ -589,8 +595,14 @@ module.exports.Reservation = {
     }),
 
     // changer la validation d'une réservation
-    accept: id => run(`UPDATE Reservation SET validation = 1 WHERE id = ${id};`),
-    reject: id => run(`UPDATE Reservation SET validation = -1 WHERE id = ${id};`),
+    validate: (id, accept = true) => new Promise(function (resolve, reject) {
+        run(`UPDATE Reservation SET validation = ${accept ? 1 : -1} WHERE id = ${id};`)
+        .then(function () {
+            run(`INSERT INTO Notification VALUES (${id}, 0);`)
+            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+        })
+        .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+    }),
 
     // délétion d'une réservation grace à son id
     deleteById: id => run(`DELETE FROM Reservation WHERE id = ${id};`),
@@ -684,6 +696,30 @@ module.exports.MotCle = {
     deleteByPair: (word, elemId) => run(`DELETE FROM MotCle WHERE id_Element = ${elemId} AND mot = "${word}";`),
 };
 
+
+module.exports.Notification = {
+    all: (countBegin = 0, countEnd = 0) => new Promise(function (resolve, reject) {
+        let request = 'SELECT * FROM Notification';
+
+        if (countBegin > 0) {
+            request += ' GROUP BY id_Reservation HAVING ';
+
+            if (countEnd > 0) {
+                request += `id_Reservation <= (SELECT MAX(id_Reservation) FROM Notification) - ${countBegin} + 1 AND id_Reservation >= (SELECT MAX(id_Reservation) FROM Notification) - ${countEnd} + 1`;
+            }
+            else {
+                request += `id_Reservation >= (SELECT MAX(id_Reservation) FROM Notification) - ${countBegin} + 1`;
+            }
+
+            request += ' ORDER BY id DESC';
+        }
+        request += ';';
+
+        all(request)
+        .then(result => resolve(result))
+        .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+    }),
+}
 
 /*
 aller voir l'url :
