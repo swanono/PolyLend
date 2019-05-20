@@ -44,8 +44,8 @@
                 </div>
             </nav>
 
-            <a href="#"> <img src="./image/Notification.svg" width="40px"></a>
-            Nom
+            <a href="#" data-toggle="modal" data-target="#notifications"> <img src="./image/Notification.svg" width="40px"><span class="badge badge-danger">3</span></a>&nbsp;&nbsp;&nbsp;
+            Nom&nbsp;&nbsp;&nbsp;
             <a href="#"> <img src="./image/logOut.svg" width="40px"></a>
         </div>
 
@@ -227,6 +227,48 @@
     </div>
 </div>
 
+
+<!-- notifications -->
+<div class="modal" tabindex="-1" role="dialog" id="notifications">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Mes notifications</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="liste">
+                    <div class="item row item-disponible">
+                        <div class="gauche col-4">
+                            <img src="https://via.placeholder.com/100" class="float-left">
+                            <h5 style= "text-align:center;"><strong>Accepté</strong></h5>
+                        </div>
+                        <div class="description droite col-8">
+                            <p > Votre demande de réservation pour le cable réseau du: 10/09/19 au 12/09/19 a été accepté <p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="item row item-indisponible">
+                        <div class="gauche col-4" style= "text-align:center;">
+                            <img src="https://via.placeholder.com/100" class="float-left">
+                            <h5 ><strong>Refusé</strong></h5>
+                        </div>
+                        <div class="droite col-8">
+                            <div class="float-left">
+                                <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
+                            </div>
+                            <button type="button" class="btn btn-primary">Message</button>
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="./js/bootstrap.bundle.min.js "></script>
