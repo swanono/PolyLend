@@ -15,21 +15,26 @@ module.exports = (passport) => {
     const app = express();
 
     app.post('/materiel/add', function (req, res, next) {
-        console.log(req.body);
-        /*
-        dbHelper.Association.byName(req.body.assoName)
-        .then(function (asso){
-            dbHelper.Equipement.insert({
-                nom: req.body.name,
-                date_achat: `${req.body.jour_achat< 10 ? '0' + req.body.jour_achat : req.body.jour_achat}/${req.body.mois_achat < 10 ? '0' + req.body.mois_achat : req.body.mois_achat}/${req.body.annee_achat}`,
-                etat: req.body.etat,
+        console.log(req.body.tempsDebut[0]);
+            dbHelper.Materiel.insert({
+                quantite : req.body.quantite,
+                categorie : req.body.categorie,
+                lieu : req.body.lieu,
+                nom: req.body.nom,
                 description: req.body.description,
-                photo: ''/*trouver le lien,
-                id_Salle: asso.id_Salle,
-                id_Association: asso.id,
-            });
-        })
-        .catch(err => console.error(err));*/
+                photo: ''/*trouver le lien*/,
+                validation_auto : req.body.validation_auto
+            })
+            .then(function (resultat) {
+                for (let i = 0 ; i < req.body.dateFin.length ;i++ ) {
+                    dbHelper.Creneau.insert({
+                        date_heure_debut : `${req.body.dateDebut[i]} ${req.body.tempsDebut[i]}:00`,
+                        date_heure_fin : `${req.body.dateFin[i]} ${req.body.tempsFin[i]}:00`,
+                        id_Element : resultat.id
+                    })
+                }
+            })
+            .catch(err => console.error(err));
     });
 
     return app;

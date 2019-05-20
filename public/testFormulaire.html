@@ -30,13 +30,13 @@
                             </div>
                             <label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
                             <div class="col-sm-3">
-                                <input type="number" id="capacite" name="capacite" min="1" max="500" value="1">
+                                <input type="number" id="capacite" name="quantite" min="1" max="500" value="1">
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="form-group col-4">
-                                <input type="text" class="form-control" placeholder="Nom" name="nom">
+                                <input type="text" class="form-control" placeholder="Nom" name="nom" required>
                             </div>
                             <div class="form-group col-3">
                                 <select class="form-control" id="type" name="categorie">
@@ -52,12 +52,12 @@
 
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" placeholder="Description" rows="3"></textarea>
+                            <textarea class="form-control" placeholder="Description" rows="3" name="description"></textarea>
                         </div>
                         <div class="form-group row">
                             <label for="dispo" class="col-sm-4 col-form-label">Lieu de Disponibilité :</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id= "dispo" placeholder="Ex: Bâtiment, étage, salle, demander la clé à Didier">
+                                <input type="text" class="form-control" id= "dispo" placeholder="Ex: Bâtiment, étage, salle, demander la clé à Didier" name="lieu">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -73,27 +73,36 @@
                                     <tr>
                                         <td>
                                             <div class="form-group row">
-                                                <p>Du: <input class="float-right" style="margin-right: 2px;" type="date" name="dateDebut"><input type="time" name="tempsDebut"></p>
-                                                <p>Au: <input class="float-right" type="date" name="dateDebut"><input type="time" name="tempsDebut"></p>
+                                                <p>Du: <input class="float-right" style="margin-right: 2px;" type="date" name="dateDebut[]"><input type="time" name="tempsDebut[]"></p>
+                                                <p>Au: <input class="float-right" type="date" name="dateFin[]"><input type="time" name="tempsFin[]"></p>
+                                            </div>
+                                            <div class="form-group row">
+                                                <p>Du: <input class="float-right" style="margin-right: 2px;" type="date" name="dateDebut[]"><input type="time" name="tempsDebut[]"></p>
+                                                <p>Au: <input class="float-right" type="date" name="dateFin[]"><input type="time" name="tempsFin[]"></p>
+                                            </div>
+                                            <div class="form-group row">
+                                                <p>Du: <input class="float-right" style="margin-right: 2px;" type="date" name="dateDebut[]"><input type="time" name="tempsDebut[]"></p>
+                                                <p>Au: <input class="float-right" type="date" name="dateFin[]"><input type="time" name="tempsFin[]"></p>
                                             </div>
                                             </td><td>
                                             <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <!--<td>
                                             <div class="form-group row">
                                                 <p>Du: <input class="float-right" style="margin-right: 2px;" type="date"><input type="time"></p>
                                                 <p>Au: <input class="float-right" type="date"><input type="time"></p>
-                                            </div>
+                                            </div
                                             </td><td>
                                             <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
-                                        </td>
+                                        </td>-->
                                     </tr>
                                 </table>
-                                <button type="submit" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
+                                <button type="button" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
                             </div>
                         </div>
+                        <button type="submit" class="btn btn-primary">Ajouter materiel</button>
                          <!--fin matériel -->
                          </form>
                     </div>
