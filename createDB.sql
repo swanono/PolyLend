@@ -1,21 +1,37 @@
-DROP TABLE IF EXISTS Equipement;
-DROP TABLE IF EXISTS Salle;
-DROP TABLE IF EXISTS Association;
 DROP TABLE IF EXISTS Element;
+DROP TABLE IF EXISTS Materiel;
+DROP TABLE IF EXISTS Salle;
 DROP TABLE IF EXISTS Creneau;
 DROP TABLE IF EXISTS Utilisateur;
 DROP TABLE IF EXISTS Reservation;
+DROP TABLE IF EXISTS MotCle;
 
+PRAGMA foreign_keys = ON;
 
 --
--- Table Equipement
+-- Table Element
 --
 
-CREATE TABLE Equipement(
+CREATE TABLE Element(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT NOT NULL,
-    date_achat TEXT NOT NULL,
-    etat TEXT NOT NULL
+    description TEXT NOT NULL,
+    photo TEXT NOT NULL,
+    validation_auto INT NOT NULL CHECK(validation_auto IN (0, 1))
+);
+
+
+--
+-- Table Materiel
+--
+
+CREATE TABLE Materiel(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    quantite INT NOT NULL,
+    categorie TEXT NOT NULL,
+    lieu TEXT NOT NULL,
+    id_Element INTEGER NOT NULL,
+	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -25,49 +41,12 @@ CREATE TABLE Equipement(
 
 CREATE TABLE Salle(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    numero_salle INT NOT NULL,
-    video_proj INT NOT NULL CHECK(video_proj IN (0, 1)),
-    nom_batiment INT TEXT NOT NULL,
-    nom_aile TEXT NOT NULL
-);
-
-
---
--- Table Association
---
-
-CREATE TABLE Association(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nom TEXT NOT NULL,
-    nb_adherents TEXT NOT NULL,
-    id_Salle INTEGER NOT NULL REFERENCES Salle(ID) ON DELETE CASCADE
-);
-
-
---
--- Table Element
---
-
-CREATE TABLE Element(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    description TEXT NOT NULL,
-    photo TEXT NOT NULL,
-    id_Equipement INTEGER REFERENCES Equipement(id) ON DELETE SET NULL,
-    id_Salle INTEGER NOT NULL REFERENCES Salle(id) ON DELETE CASCADE,
-    id_Association INTEGER NOT NULL REFERENCES Association(id) ON DELETE CASCADE
-);
-
-
---
--- Table Creneau
---
-
-CREATE TABLE Creneau(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date_heure_debut TEXT NOT NULL,
-    date_heure_fin TEXT NOT NULL,
-    etat INT NOT NULL,
-    id_Element INTEGER NOT NULL REFERENCES Element(id) ON DELETE CASCADE
+    batiment TEXT NOT NULL,
+    etage INT NOT NULL,
+    capacite INT NOT NULL,
+    equipement TEXT NOT NULL,
+    id_Element INTEGER NOT NULL,
+	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -80,7 +59,20 @@ CREATE TABLE Utilisateur(
     nom TEXT NOT NULL,
     prenom TEXT NOT NULL,
     mot_de_passe TEXT NOT NULL,
-    id_Association INTEGER REFERENCES Association(id) ON DELETE SET NULL
+    admin INT DEFAULT 0 NOT NULL CHECK(admin IN (0, 1))
+);
+
+
+--
+-- Table Creneau
+--
+
+CREATE TABLE Creneau(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date_heure_debut TEXT NOT NULL,
+    date_heure_fin TEXT NOT NULL,
+    id_Element INTEGER NOT NULL,
+	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -89,8 +81,25 @@ CREATE TABLE Utilisateur(
 --
 
 CREATE TABLE Reservation(
-    nombre_de_personnes INT NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     raison TEXT NOT NULL,
-    id_Utilisateur TEXT NOT NULL REFERENCES Utilisateur(numero_etudiant) ON DELETE CASCADE,
-    id_Creneau INTEGER PRIMARY KEY REFERENCES Creneau(id) ON DELETE CASCADE
+    validation INT DEFAULT 0 NOT NULL CHECK(validation IN (-1, 0, 1)),
+    date_heure_debut TEXT NOT NULL,
+    date_heure_fin TEXT NOT NULL,
+    id_Utilisateur TEXT NOT NULL,
+    id_Creneau INTEGER NOT NULL,
+	FOREIGN KEY (id_Utilisateur) REFERENCES Utilisateur(numero_etudiant) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (id_Creneau) REFERENCES Creneau(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+--
+-- Table MotCle
+--
+
+CREATE TABLE MotCle(
+    id_Element INTEGER NOT NULL,
+    mot TEXT NOT NULL,
+    PRIMARY KEY (id_Element, mot),
+	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
