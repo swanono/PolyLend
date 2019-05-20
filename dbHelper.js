@@ -478,8 +478,8 @@ module.exports.Creneau = {
         checkCrenData(crenData)
         .then(function (crenData) {
             run(`INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element)
-                VALUES ("${crenData.date_heure_debut}",
-                        "${crenData.date_heure_fin}",
+                VALUES (datetime("${crenData.date_heure_debut}"),
+                        datetime("${crenData.date_heure_fin}"),
                         ${crenData.id_Element});`)
             .then(function () {
                 get('SELECT * FROM Creneau WHERE (SELECT MAX(id) FROM Creneau) = id;')
@@ -536,8 +536,8 @@ module.exports.Reservation = {
             run(`INSERT INTO Reservation (raison, ${valid_auto ? 'validation, ' : ''}date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau)
                 VALUES ("${reservData.raison}",
                         ${valid_auto ? 1 + ',' : ''}
-                        "${reservData.date_heure_debut}",
-                        "${reservData.date_heure_fin}",
+                        datetime("${reservData.date_heure_debut}"),
+                        datetime("${reservData.date_heure_fin}"),
                         "${reservData.id_Utilisateur}",
                         ${reservData.id_Creneau});`)
             .then(function () {
