@@ -33,28 +33,28 @@
         <link href="./css/signin.css" rel="stylesheet">
     </head>
     <body class="text-center">
-        <form class="form-signin">
+        <form class="form-signin" method="post" action="">
             <img class="mb-4" src="./image/logo.jpeg" alt="" width="72" height="72">
             <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
                     
             <label for="inputEmail" class="sr-only">Email address</label>
             <div class="input-group">
                 <img src= "./image/logo_id.svg">
-                <input type="email" id="inputEmail" class="form-control" placeholder="Identifiant " required autofocus>
+                <input type="email" id="inputEmail" name="identifiant" class="form-control" placeholder="Identifiant " required autofocus>
             </div>
             <br />
             <label for="inputPassword" class="sr-only">Password</label>
             <div class="input-group">
                 <img src= "./image/logo_mdp.svg"> 
-                <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
             </div>
 
             <div class="checkbox mb-3">
                 <label>
-                <input type="checkbox" value="remember-me"> Se souvenir de moi
+                <input type="checkbox" name="remember-me" value="remember-me"> Se souvenir de moi
                 </label>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
+            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Se connecter">
            
         </form>
     </body>

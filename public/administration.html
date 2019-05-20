@@ -69,89 +69,93 @@
                         <div class="tab-pane active container" id="materiel">
                             <!-- début matériel-->
                             <div class= "Critere">
-                                <strong>Critère</strong>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><img src="./image/search.svg" width="20px"></div>
+                                <form method="post" action="">
+                                    <strong>Critère</strong>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><img src="./image/search.svg" width="20px"></div>
+                                        </div>
+                                        <input type="text" class="form-control" name="critere" id="inlineFormInputGroup" placeholder="">
                                     </div>
-                                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="">
-                                </div>
-                                <hr>
-                                
-                                <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
-                                <div class="form-group form-check float-right">
-                                    <input type="checkbox" class="form-check-input" id="disponibilite" checked>
-                                </div>
-                                
-                                <p>Du: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
-                                <p>Au: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
-                                <p>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
-                                        <select class="form-control" id="exampleFormControlSelect1">
-                                            <option>Par date de disponibilité</option>
-                                            <option>Par date de disponibilité décroissant</option>
-                                        </select>
+                                    <hr>
+                                    
+                                    <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" class="form-check-input" name="disponibilite" id="disponibilite" checked>
                                     </div>
-                                </p>
-                                <p>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlSelect1"><strong>Type :</strong></label>
-                                        <select class="form-control" id="exampleFormControlSelect1">
-                                            <option>Informatique</option>
-                                            <option>Mobilier</option>
-                                        </select>
-                                    </div>
-                                </p>
+                                    
+                                    <p>Du: <input class="float-right" name="date-debut" type="date" style="margin-right: 5px;"><input name="heure-debut" type="time"></p>
+                                    <p>Au: <input class="float-right" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                                    <p>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
+                                            <select name="tri" class="form-control" id="exampleFormControlSelect1">
+                                                <option>Par date de disponibilité</option>
+                                                <option>Par date de disponibilité décroissant</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1"><strong>Type :</strong></label>
+                                            <select class="form-control" id="exampleFormControlSelect1" name="type">
+                                                <option>Informatique</option>
+                                                <option>Mobilier</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                </form>
                             </div>
                             <!-- fin matériel -->
                         </div>
                         <div class="tab-pane container" id="salles">
                             <!-- début salles -->
                             <div class= "Critere">
-                                <strong>Critère</strong>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><img src="./image/search.svg" width="20px"></div>
+                                <form method="post" action="">
+                                    <strong>Critère</strong>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><img src="./image/search.svg" width="20px"></div>
+                                        </div>
+                                        <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                                     </div>
-                                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="">
-                                </div>
-                                <hr>
-                                
-                                <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
-                                <div class="form-group form-check float-right">
-                                    <input type="checkbox" class="form-check-input" id="disponibilite" checked>
-                                </div>
-                                
-                                <p>Du: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
-                                <p>Au: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
-                                <p>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
-                                        <select class="form-control" id="exampleFormControlSelect1">
-                                            <option>Par date de disponibilité</option>
-                                            <option>Par date de disponibilité décroissant</option>
-                                        </select>
+                                    <hr>
+                                    
+                                    <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" name="disponibilite" class="form-check-input" id="disponibilite" checked>
                                     </div>
-                                </p>
-                                <p>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlSelect1"><strong>Bat. :</strong></label>
-                                        <select class="form-control" id="exampleFormControlSelect1">
-                                            <option>Ireste</option>
-                                            <option>IHT</option>
-                                            <option>Isitem</option>
-                                        </select>
-                                    </div>
-                                </p>
-                                <p>
-                                    <strong>Equipement :</strong>
-                                </p>
-                                <label class="form-check-label" for="videoProj">Vidéo projecteur</label>
-                                <div class="form-group form-check float-right">
-                                    <input type="checkbox" class="form-check-input" id="videoProj" checked>
-                                </div><br /><br />
-                                <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" id="capacite" min="1" max="500" value="30"></p>
+                                    
+                                    <p>Du: <input class="float-right" type="date" name="date-debut" style="margin-right: 5px;"><input type="time" name="heure-debut"></p>
+                                    <p>Au: <input class="float-right" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                                    <p>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
+                                            <select class="form-control" id="exampleFormControlSelect1" name="tri">
+                                                <option>Par date de disponibilité</option>
+                                                <option>Par date de disponibilité décroissant</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1"><strong>Bat. :</strong></label>
+                                            <select class="form-control" id="exampleFormControlSelect1" name="batiment">
+                                                <option>Ireste</option>
+                                                <option>IHT</option>
+                                                <option>Isitem</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <strong>Equipement :</strong>
+                                    </p>
+                                    <label class="form-check-label" for="videoProj">Vidéo projecteur</label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" class="form-check-input" id="videoProj" name="videoproj" checked>
+                                    </div><br /><br />
+                                    <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" name="capacite" id="capacite" min="1" max="500" value="30"></p>
+                                </form>
                             </div>
                             
                             <!-- fin salles -->
@@ -225,202 +229,206 @@
                 <div class="tab-content">
                     <div class="tab-pane container" id="popupsalles">
                         <!-- début salles -->
-                        <div class="form-group row">    
-                            <div class="gauche col-3">
-                                <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
-                                <div class="form-group form-check float-right">
-                                    <input type="checkbox" class="form-check-input" id="validation_auto" checked>
-                                </div> 
-                            </div>
+                        <form method="post" action="">
+                            <div class="form-group row">    
+                                <div class="gauche col-3">
+                                    <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto" checked>
+                                    </div> 
+                                </div>
 
-                            <!--<label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
-                            <div class="col-sm-3">
-                                <input type="number" id="capacite" min="1" max="500" value="1">
-                            </div>-->
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="form-group col-7">
-                                <input type="text" class="form-control" placeholder="Nom">
+                                <!--<label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
+                                <div class="col-sm-3">
+                                    <input type="number" id="capacite" min="1" max="500" value="1">
+                                </div>-->
                             </div>
-                            <div class="form-group col-5">
-                                <label for="files" class="btn btn-dark">Ajouter une image...</label>
-                                <input id="files" style="visibility:hidden;" type="file">
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-7">
+                                    <input type="text" class="form-control" placeholder="Nom" name="nom">
+                                </div>
+                                <div class="form-group col-5">
+                                    <label for="files" class="btn btn-dark">Ajouter une image...</label>
+                                    <input id="files" name="image" style="visibility:hidden;" type="file">
+                                </div>
                             </div>
-                        </div>
-                        
-                        <hr>
-                        <div class="row">
-                            <div class="form-group col-3">
-                                    <select class="form-control" id="type" required>
-                                        <option>Bâtiment</option>
+                            
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-3">
+                                        <select class="form-control" id="batiment" name="batiment" required>
+                                            <option>Bâtiment</option>
+                                            <option value="1">...</option>
+                                            <option value="2">...</option>
+                                        </select>
+                                    </div>
+
+                                <div class="form-group col-3">
+                                    <select class="form-control" id="etage" name="etage" required>
+                                        <option>Etage</option>
                                         <option value="1">...</option>
                                         <option value="2">...</option>
                                     </select>
                                 </div>
-
-                            <div class="form-group col-3">
-                                <select class="form-control" id="type" required>
-                                    <option>Etage</option>
-                                    <option value="1">...</option>
-                                    <option value="2">...</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-6">
-                                <div class="row">
-                                    <label for="capacite2" class="col-sm-6 col-form-label">Capacité (pers.):</label>
-                                    <div class="col-sm-6">
-                                        <input type="number" id="capacite2" min="1" max="500" style="width:100px;" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="form-group row">
-                                <label for="dispo" class="col-sm-4 col-form-label">Equipement :</label>
-                                <div class="col-sm-8">
+                                <div class="form-group col-6">
                                     <div class="row">
-                                        <div class= "col-5">
-                                            <label class="form-check-label col-form-label" for="videoproj">Video Projecteur</label>
-                                            <div class="form-group form-check float-right"> 
-                                                <input type="checkbox" class="form-check-input" id="videoproj" checked>
-                                            </div> 
-                                        </div>
-                                        <div class= "col-4">
-                                            <label class="form-check-label col-form-label" for="tableaublanc">Tableau</label>
-                                            <div class="form-group form-check float-right"> 
-                                                <input type="checkbox" class="form-check-input" id="tableaublanc" checked>
-                                            </div> 
-                                        </div>
-                                        <div class= "col-3">
-                                                <input class= "form-control" type="text" placeholder="Autre">
-                             
+                                        <label for="capacite2" class="col-sm-6 col-form-label">Capacité (pers.):</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" name="capacite" id="capacite2" min="1" max="500" style="width:100px;" value="1">
                                         </div>
                                     </div>
                                 </div>
+                                
                             </div>
-                               
-                        <div class="form-group row">
-                            <label for="dispo" class="col-sm-4 col-form-label">Notes/Description :</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id= "dispo" placeholder="Facultatif">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id= "mot-cle" placeholder="Séparés par des espaces">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
-                            <div class="form-group row col-sm-8 table-responsive">
-                                <table id="tableau-sans-bordure">
-                                    <tr>
-                                        <td>
-                                            <div class="form-group row">
-                                                <p>Du: <input class="float-right" style="margin-right: 2px;" type="date"><input type="time"></p>
-                                                <p>Au: <input class="float-right" type="date"><input type="time"></p>
+                            <div class="form-group row">
+                                    <label for="dispo" class="col-sm-4 col-form-label">Equipement :</label>
+                                    <div class="col-sm-8">
+                                        <div class="row">
+                                            <div class= "col-5">
+                                                <label class="form-check-label col-form-label" for="videoproj">Video Projecteur</label>
+                                                <div class="form-group form-check float-right"> 
+                                                    <input type="checkbox" name="videoproj" class="form-check-input" id="videoproj" checked>
+                                                </div> 
                                             </div>
-                                            </td><td>
-                                            <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-group row">
-                                                <p>Du: <input class="float-right" style="margin-right: 2px;" type="date"><input type="time"></p>
-                                                <p>Au: <input class="float-right" type="date"><input type="time"></p>
+                                            <div class= "col-4">
+                                                <label class="form-check-label col-form-label" for="tableaublanc">Tableau</label>
+                                                <div class="form-group form-check float-right"> 
+                                                    <input type="checkbox" name="tableau" class="form-check-input" id="tableaublanc" checked>
+                                                </div> 
                                             </div>
-                                            </td><td>
-                                            <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <button type="button" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
+                                            <div class= "col-3">
+                                                    <input class= "form-control" name="autre" type="text" placeholder="Autre">
+                                 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                   
+                            <div class="form-group row">
+                                <label for="dispo" class="col-sm-4 col-form-label">Notes/Description :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="description" id= "dispo" placeholder="Facultatif">
+                                </div>
                             </div>
-                            <button type="button" class="btn btn-primary col-2">Ajouter</button>
-                        </div>
+                            <div class="form-group row">
+                                <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="mot-cle" id= "mot-cle" placeholder="Séparés par des espaces">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
+                                <div class="form-group row col-sm-8 table-responsive">
+                                    <table id="tableau-sans-bordure">
+                                        <tr>
+                                            <td>
+                                                <div class="form-group row">
+                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date"><input type="time" name="heure-debut"></p>
+                                                    <p>Au: <input class="float-right" type="date" name="date-fin"><input type="time" name="heure-fin"></p>
+                                                </div>
+                                                </td><td>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-group row">
+                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date"><input type="time" name="heure-debut"></p>
+                                                    <p>Au: <input class="float-right" type="date" name="date-fin"><input type="time" name="heure-fin"></p>
+                                                </div>
+                                                </td><td>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <button type="button" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
+                                </div>
+                                <input type="submit" class="btn btn-primary col-2" value="Ajouter">
+                            </div>
+                        </form>
                         <!-- fin salles -->
                     </div>
                     <div class="tab-pane container active" id="popupmateriel">
                         
 
                         <!-- début matériel -->
-                        <div class="form-group row">    
-                            <div class="gauche col-3">
-                                <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
-                                <div class="form-group form-check float-right">
-                                    <input type="checkbox" class="form-check-input" id="validation_auto" checked>
+                        <form method="post" action="">
+                            <div class="form-group row">    
+                                <div class="gauche col-3">
+                                    <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" class="form-check-input" name="validation_auto" id="validation_auto" checked>
+                                    </div>
+                                </div>
+                                <label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
+                                <div class="col-sm-3">
+                                    <input type="number" id="capacite" name="quantite" min="1" max="500" value="1">
                                 </div>
                             </div>
-                            <label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
-                            <div class="col-sm-3">
-                                <input type="number" id="capacite" min="1" max="500" value="1">
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <input type="text" class="form-control" placeholder="Nom" name="nom">
+                                </div>
+                                <div class="form-group col-3">
+                                    <select class="form-control" id="categorie" name="categorie">
+                                        <option>Catégorie</option>
+                                        <option>...</option>
+                                        <option>...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-5">
+                                        <label for="files" class="btn btn-dark">Ajouter une image...</label>
+                                        <input id="files" name="image" style="visibility:hidden;" type="file">
+                                </div>
+            
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <input type="text" class="form-control" placeholder="Nom">
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Description" name="description" rows="3"></textarea>
                             </div>
-                            <div class="form-group col-3">
-                                <select class="form-control" id="type">
-                                    <option>Catégorie</option>
-                                    <option>...</option>
-                                    <option>...</option>
-                                </select>
+                            <div class="form-group row">
+                                <label for="dispo" class="col-sm-4 col-form-label">Lieu de Disponibilité :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="lieu-de-dispo" id= "dispo" placeholder="Ex: Bâtiment, étage, salle, demander la clé à Didier">
+                                </div>
                             </div>
-                            <div class="form-group col-5">
-                                    <label for="files" class="btn btn-dark">Ajouter une image...</label>
-                                    <input id="files" style="visibility:hidden;" type="file">
+                            <div class="form-group row">
+                                <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="mot-cle" class="form-control" id= "mot-cle" placeholder="Séparés par des espaces">
+                                </div>
                             </div>
-        
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" placeholder="Description" rows="3"></textarea>
-                        </div>
-                        <div class="form-group row">
-                            <label for="dispo" class="col-sm-4 col-form-label">Lieu de Disponibilité :</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id= "dispo" placeholder="Ex: Bâtiment, étage, salle, demander la clé à Didier">
+                            <div class="form-group row">
+                                <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
+                                <div class="form-group row col-sm-8 table-responsive">
+                                    <table id="tableau-sans-bordure">
+                                        <tr>
+                                            <td>
+                                                <div class="form-group row">
+                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date"><input name="heure-debut" type="time"></p>
+                                                    <p>Au: <input class="float-right" name="date-fin" type="date"><input type="time" name="heure-fin"></p>
+                                                </div>
+                                                </td><td>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-group row">
+                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date"><input name="heure-debut" type="time"></p>
+                                                    <p>Au: <input class="float-right" name="date-fin" type="date"><input type="time" name="heure-fin"></p>
+                                                </div>
+                                                </td><td>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <button type="button" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
+                                </div>
+                                <input type="submit" class="btn btn-primary col-2" value="Ajouter">
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id= "mot-cle" placeholder="Séparés par des espaces">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
-                            <div class="form-group row col-sm-8 table-responsive">
-                                <table id="tableau-sans-bordure">
-                                    <tr>
-                                        <td>
-                                            <div class="form-group row">
-                                                <p>Du: <input class="float-right" style="margin-right: 2px;" type="date"><input type="time"></p>
-                                                <p>Au: <input class="float-right" type="date"><input type="time"></p>
-                                            </div>
-                                            </td><td>
-                                            <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-group row">
-                                                <p>Du: <input class="float-right" style="margin-right: 2px;" type="date"><input type="time"></p>
-                                                <p>Au: <input class="float-right" type="date"><input type="time"></p>
-                                            </div>
-                                            </td><td>
-                                            <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <button type="button" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
-                            </div>
-                            <button type="button" class="btn btn-primary col-2">Ajouter</button>
-                        </div>
+                        </form>
                          <!--fin matériel -->
                     </div>
                    
@@ -527,9 +535,17 @@
                     </button>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Valider</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Refuser</button>
-                </div>
+                    <form method="post" action="">
+                        <input type="hidden" value="valider" name="etat">
+                        <input type="hidden" value="" name="id">
+                        <input type="submit" class="btn btn-success" value="Valider">
+                    </form>
+                    <form method="post" action="">
+                        <input type="hidden" value="refuser" name="etat">
+                        <input type="hidden" value="" name="id">
+                        <input type="submit" class="btn btn-danger" value="Refuser">
+                    </form>
+               </div>
             </div>
         </div>
     </div>
@@ -584,8 +600,16 @@
                                     <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
                                 </div>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-success">Valider</button>
-                                    <button type="button" class="btn btn-danger">Refuser</button>
+                                    <form method="post" action="">
+                                        <input type="hidden" value="valider" name="etat">
+                                        <input type="hidden" value="" name="id">
+                                        <input type="submit" class="btn btn-success" value="Valider">
+                                    </form>
+                                    <form method="post" action="">
+                                        <input type="hidden" value="refuser" name="etat">
+                                        <input type="hidden" value="" name="id">
+                                        <input type="submit" class="btn btn-danger" value="Refuser">
+                                    </form>
                                 </div>
                             </div>
                             

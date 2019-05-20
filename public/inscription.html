@@ -33,35 +33,35 @@
         <link href="./css/signin.css" rel="stylesheet">
     </head>
     <body class="text-center">
-        <form class="form-signin">
+        <form class="form-signin" method="post" action="">
             <img class="mb-4" src="./image/logo.jpeg" alt="" width="72" height="72">
             <h1 class="h3 mb-3 font-weight-normal">Inscription</h1>
                     
             <label for="numero-etu" class="sr-only">Numéro étudiant</label>
             <div class="input-group">
                 <img src= "./image/logo_id.svg">
-                <input type="text" id="numero-etu" class="form-control" placeholder="Ex: E267965D" required autofocus>
+                <input type="text" id="numero-etu" name="numero-etu" class="form-control" placeholder="Numéro étudiant" required autofocus>
             </div>
             <br />
             <label for="nom" class="sr-only">Nom</label>
             <div class="input-group">
                 <img src= "./image/logo_id.svg">
-                <input type="text" id="nom" class="form-control" placeholder="Nom " required>
+                <input type="text" name="nom" id="nom" class="form-control" placeholder="Nom " required>
             </div>
             <br />
             <label for="prenom" class="sr-only">Prénom</label>
             <div class="input-group">
                 <img src= "./image/logo_id.svg">
-                <input type="text" id="prenom" class="form-control" placeholder="Prénom" required>
+                <input type="text" name="prenom" id="prenom" class="form-control" placeholder="Prénom" required>
             </div>
             <br />
             <label for="inputPassword" class="sr-only">Password</label>
             <div class="input-group">
                 <img src= "./image/logo_mdp.svg"> 
-                <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Mot de passe" required>
             </div>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">S'inscrire</button>
+            <input class="btn btn-lg btn-primary btn-block" type="submit" value="S'inscrire">
            
         </form>
     </body>
