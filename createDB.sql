@@ -103,3 +103,14 @@ CREATE TABLE MotCle(
     PRIMARY KEY (id_Element, mot),
 	FOREIGN KEY (id_Element) REFERENCES Element(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+--
+-- Table Notification
+--
+
+CREATE TABLE Notification(
+    id_Reservation INTEGER PRIMARY KEY,
+    admin INT NOT NULL CHECK (admin IN (0, 1)),
+    FOREIGN KEY (id_Reservation) REFERENCES Reservation(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
