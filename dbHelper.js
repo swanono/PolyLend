@@ -624,8 +624,8 @@ const checkMotcleData = motcleData => new Promise(function (resolve, reject) {
         resolve({id_Element: motcleData.id_Element, mots: ['']});
     }
     else {
-        if ((typeof motcleData) === 'string' || (motcleData instanceof String)) {
-            resolve({id_Element: motcleData.id_Element, mots: motcleData.split(' ')});
+        if ((typeof motcleData.mots) === 'string' || (motcleData.mots instanceof String)) {
+            resolve({id_Element: motcleData.id_Element, mots: motcleData.mots.split(' ')});
         }
         else if (Array.isArray(motcleData.mots)) {
             let isStringArray = true;
@@ -725,4 +725,3 @@ module.exports.Notification = {
 aller voir l'url :
 http://www.sqlitetutorial.net/sqlite-nodejs/
 */
-

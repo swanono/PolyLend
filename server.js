@@ -12,8 +12,11 @@ const passport = auth(app);
 app.use('/api', api(passport));
 
 // Le contenu statique public sera lu à partir du repertoire 'public'
-app.use('/public', express.static('public'));
+app.use('/', express.static('public'));
 
 
 
-app.listen(8081);
+const server = app.listen(8081, function () {
+    let port = server.adress().port;
+    console.log('Listening on http://127.0.0.1:%s', port);
+});
