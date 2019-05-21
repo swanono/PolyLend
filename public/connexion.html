@@ -33,14 +33,14 @@
         <link href="./css/signin.css" rel="stylesheet">
     </head>
     <body class="text-center">
-        <form class="form-signin" method="post" action="">
+        <form class="form-signin" method="post" action="/api/utilisateur/login">
             <img class="mb-4" src="./image/logo.jpeg" alt="" width="72" height="72">
             <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
                     
             <label for="inputEmail" class="sr-only"> adresse e-mail</label>
             <div class="input-group">
                 <img src= "./image/logo_id.svg">
-                <input type="email" id="inputEmail" name="identifiant" class="form-control" placeholder="Identifiant " required autofocus>
+                <input type="text" id="inputEmail" name="identifiant" class="form-control" placeholder="Identifiant " required autofocus>
             </div>
             <br />
             <label for="inputPassword" class="sr-only">mot de passe</label>

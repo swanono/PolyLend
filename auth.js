@@ -11,11 +11,14 @@ const dbHelper = require('./dbhelper.js');
 
 // LocalStrategy = stockage des identifiants et mots de passe
 // des utilisateurs en local dans notre base de données
-passport.use(new LocalStrategy(
-    function (numEtu, password, cb) {
+passport.use(new LocalStrategy({
+        usernameField: 'identifiant',
+        passwordField: 'password',
+    },
+    function (username, password, cb) {
         // On récupère les information (mot de passe) de l'utilisateur
         // passé en paramètre
-        dbHelper.Utilisateur.byNumEt(numEtu)
+        dbHelper.Utilisateur.byNumEt(username)
         .then(
             user => {
                 // Utilisateur pas dans la base de données
@@ -41,18 +44,15 @@ passport.use(new LocalStrategy(
 // Stocke les données de l'utilisation dans le cookie de session
 passport.serializeUser(function (user, cb) {
     console.debug('serializeUser ', JSON.stringify(user));
-    cb(null, user.numero_etudiant);
+    cb(null, user);
 });
 
 // Récupère les données de l'utilisateur depuis le cookie de session
-passport.deserializeUser(function (numEtu, cb) {
-    console.debug('deserializeUser ' + numEtu);
-    dbHelper.Utilisateur.byNumEt(numEtu)
-        .then(
-            user => cb(null, user),
-            err => cb(err),
-        );
+passport.deserializeUser(function (user, cb) {
+    console.debug('deserializeUser ' + JSON.stringify(user));
+    cb(null, user);
 });
+
 
 // Puisque c'est un module, on export au moins une fonction
 // Ici c'est un "constructeur" qui prend une application express
