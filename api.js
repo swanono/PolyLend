@@ -41,5 +41,10 @@ module.exports = (passport) => {
             .catch(err => console.error(err));
     });
 
+    app.post('/salle/add', function (req, res, next) {
+        console.log(req.body);
+        
+    });
+
     return app;
 }
