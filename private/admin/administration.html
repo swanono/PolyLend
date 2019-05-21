@@ -9,7 +9,7 @@
         <title>PolyLend</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="./css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
 
         <style>
             .bd-placeholder-img {
@@ -27,7 +27,7 @@
             }
         </style>
         <!-- Custom styles for this template -->
-        <link href="./css/princing.css" rel="stylesheet">
+        <link href="../../public/css/princing.css" rel="stylesheet">
     </head>
     <body>
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3  border-bottom shadow-sm" id= "menu">
@@ -38,16 +38,17 @@
                 <a class="p-2 text-dark" href="#">Support</a>
                 <a class="p-2 text-dark" href="#">Pricing</a>-->
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary"><img src="./image/materiel.svg" width="70px"><br/>Matériel</button>
-                    <button type="button" class="btn btn-secondary"><img src="./image/salle.svg" width="70px"><br/>Salle</button>
-                    <button type="button" class="btn btn-secondary selected"><img src="./image/administration.svg" width="70px"><br/>Administration</button>
-                    <button type="button" class="btn btn-secondary"><img src="./image/MesReservations.svg" width="70px"><br/>Réservation</button>
+                   <button type="button" class="btn btn-secondary"><a href="../user/index.html"><img src="../../public/image/materiel.svg" width="70px"><br/>Matériel</a></button>
+                    <button type="button" class="btn btn-secondary"><a href="../user/salle.html"><img src="../../public/image/salle.svg" width="70px"><br/>Salle</a></button>
+                    <button type="button" class="btn btn-secondary selected"><a href="../admin/administration.html"><img src="../../public/image/administration.svg" width="70px"><br/>Administration</a></button>
+                    <button type="button" class="btn btn-secondary"><a href="../user/reservation.html"><img src="../../public/image/MesReservations.svg" width="70px"><br/>Réservation</a></button>
+                    
                 </div>
             </nav>
 
-            <a href="#" data-toggle="modal" data-target="#notifications"> <img src="./image/Notification.svg" width="40px"><span class="badge badge-danger">3</span></a>&nbsp;&nbsp;&nbsp;
+            <a href="#" data-toggle="modal" data-target="#notifications"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">3</span></a>&nbsp;&nbsp;&nbsp;
             Nom&nbsp;&nbsp;&nbsp;
-            <a href="#"> <img src="./image/logOut.svg" width="40px"></a>
+            <a href="#"> <img src="../../public/image/logOut.svg" width="40px"></a>
         </div>
 
 
@@ -73,7 +74,7 @@
                                     <strong>Critère</strong>
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text"><img src="./image/search.svg" width="20px"></div>
+                                            <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
                                         </div>
                                         <input type="text" class="form-control" name="critere" id="inlineFormInputGroup" placeholder="">
                                     </div>
@@ -115,7 +116,7 @@
                                     <strong>Critère</strong>
                                     <div class="input-group mb-2">
                                         <div class="input-group-prepend">
-                                            <div class="input-group-text"><img src="./image/search.svg" width="20px"></div>
+                                            <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
                                         </div>
                                         <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                                     </div>
@@ -162,7 +163,7 @@
                         </div>
                     </div>
                     <br />
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ajouterElement"><img src="./image/plus.svg" width="20px">Ajouter un élément</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ajouterElement"><img src="../../public/image/plus.svg" width="20px">Ajouter un élément</button>
                 </div>
                 <div class="col-9">
                     <div class="liste">
@@ -176,7 +177,7 @@
                                 <p class="disponible">Disponible selon vos critères</p>
                                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier2">Planning</button>
                                 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter1">Modifier</button>
-                                <button type="button" class="btn btn-danger"><img src="./image/poubelle.svg" width="22px"></button>
+                                <button type="button" class="btn btn-danger"><img src="../../public/image/poubelle.svg" width="22px"></button>
                             </div>
                         </div>
                         <br/>
@@ -193,7 +194,7 @@
                                 </p>
                                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning</button>
                                 <button type="button" class="btn btn-warning">Modifier</button>
-                                <button type="button" class="btn btn-danger"><img src="./image/poubelle.svg" width="22px"></button>
+                                <button type="button" class="btn btn-danger"><img src="../../public/image/poubelle.svg" width="22px"></button>
                             </div>
                         </div>
                     </div>
@@ -328,7 +329,7 @@
                                                     <p>Au: <input class="float-right" type="date" name="date-fin"><input type="time" name="heure-fin"></p>
                                                 </div>
                                                 </td><td>
-                                                <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
                                             </td>
                                         </tr>
                                         <tr>
@@ -338,7 +339,7 @@
                                                     <p>Au: <input class="float-right" type="date" name="date-fin"><input type="time" name="heure-fin"></p>
                                                 </div>
                                                 </td><td>
-                                                <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -410,7 +411,7 @@
                                                     <p>Au: <input class="float-right" name="date-fin" type="date"><input type="time" name="heure-fin"></p>
                                                 </div>
                                                 </td><td>
-                                                <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
                                             </td>
                                         </tr>
                                         <tr>
@@ -420,7 +421,7 @@
                                                     <p>Au: <input class="float-right" name="date-fin" type="date"><input type="time" name="heure-fin"></p>
                                                 </div>
                                                 </td><td>
-                                                <button type="button" class="btn btn-danger btn-sm"><img src="./image/poubelle.svg" width="22px"></button>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -590,28 +591,28 @@
                     </div>
                     <br/>
                     <div class="item row item-en-attente">
-                            <div class="gauche col-4">
-                                <img src="https://via.placeholder.com/100" class="float-left">
-                                <h5><strong>En attente de validation</strong></h5>
-                                
+                        <div class="gauche col-4">
+                            <img src="https://via.placeholder.com/100" class="float-left">
+                            <h5><strong>En attente de validation</strong></h5>
+                            
+                        </div>
+                        <div class="droite col-8">
+                            <div class="float-left">
+                                <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
                             </div>
-                            <div class="droite col-8">
-                                <div class="float-left">
-                                    <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
-                                </div>
-                                <div class="btn-group">
-                                    <form method="post" action="">
-                                        <input type="hidden" value="valider" name="etat">
-                                        <input type="hidden" value="" name="id">
-                                        <input type="submit" class="btn btn-success" value="Valider">
-                                    </form>
-                                    <form method="post" action="">
-                                        <input type="hidden" value="refuser" name="etat">
-                                        <input type="hidden" value="" name="id">
-                                        <input type="submit" class="btn btn-danger" value="Refuser">
-                                    </form>
-                                </div>
+                            <div class="btn-group">
+                                <form method="post" action="">
+                                    <input type="hidden" value="valider" name="etat">
+                                    <input type="hidden" value="" name="id">
+                                    <input type="submit" class="btn btn-success" value="Valider">
+                                </form>
+                                <form method="post" action="">
+                                    <input type="hidden" value="refuser" name="etat">
+                                    <input type="hidden" value="" name="id">
+                                    <input type="submit" class="btn btn-danger" value="Refuser">
+                                </form>
                             </div>
+                        </div>
                             
                     </div>
                 </div>
@@ -621,7 +622,7 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
-    <script src="./js/bootstrap.bundle.min.js "></script>
+    <script src="../../public/js/bootstrap.bundle.min.js "></script>
     <!--<script src="./js/bootstrap.min.js"></script>-->
     <script type="text/javascript">
         $(document).ready(function (){

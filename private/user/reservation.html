@@ -9,7 +9,7 @@
         <title>PolyLend</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="./css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
 
         <style>
             .bd-placeholder-img {
@@ -27,7 +27,7 @@
             }
         </style>
         <!-- Custom styles for this template -->
-        <link href="./css/princing.css" rel="stylesheet">
+        <link href="../../public/css/princing.css" rel="stylesheet">
     </head>
     <body>
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3  border-bottom shadow-sm" id= "menu">
@@ -38,15 +38,15 @@
                 <a class="p-2 text-dark" href="#">Support</a>
                 <a class="p-2 text-dark" href="#">Pricing</a>-->
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary"><img src="./image/materiel.svg" width="70px"><br/>Matériel</button>
-                    <button type="button" class="btn btn-secondary"><img src="./image/salle.svg" width="70px"><br/>Salle</button>
-                    <button type="button" class="btn btn-secondary selected"><img src="./image/MesReservations.svg" width="70px"><br/>Réservation</button>
+                    <button type="button" class="btn btn-secondary"><a href="../user/index.html"><img src="../../public/image/materiel.svg" width="70px"><br/>Matériel</a></button>
+                    <button type="button" class="btn btn-secondary"><a href="../user/salle.html"><img src="../../public/image/salle.svg" width="70px"><br/>Salle</a></button>
+                    <button type="button" class="btn btn-secondary selected"><a href="../user/reservation.html"><img src="../../public/image/MesReservations.svg" width="70px"><br/>Réservation</a></button>
                 </div>
             </nav>
 
-            <a href="#" data-toggle="modal" data-target="#notifications"> <img src="./image/Notification.svg" width="40px"><span class="badge badge-danger">3</span></a>&nbsp;&nbsp;&nbsp;
+            <a href="#" data-toggle="modal" data-target="#notifications"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">3</span></a>&nbsp;&nbsp;&nbsp;
             Nom&nbsp;&nbsp;&nbsp;
-            <a href="#"> <img src="./image/logOut.svg" width="40px"></a>
+            <a href="#"> <img src="../../public/image/logOut.svg" width="40px"></a>
         </div>
 
 
@@ -85,50 +85,50 @@
 
 
 
-<!-- notifications -->
-<div class="modal" tabindex="-1" role="dialog" id="notifications">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Mes notifications</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            
-            <div class="modal-body">
-                <div class="liste">
-                    <div class="item row item-disponible">
-                        <div class="gauche col-4">
-                            <img src="https://via.placeholder.com/100" class="float-left">
-                            <h5 style= "text-align:center;"><strong>Accepté</strong></h5>
-                        </div>
-                        <div class="description droite col-8">
-                            <p > Votre demande de réservation pour le cable réseau du: 10/09/19 au 12/09/19 a été accepté <p>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="item row item-indisponible">
-                        <div class="gauche col-4" style= "text-align:center;">
-                            <img src="https://via.placeholder.com/100" class="float-left">
-                            <h5 ><strong>Refusé</strong></h5>
-                        </div>
-                        <div class="droite col-8">
-                            <div class="float-left">
-                                <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
+    <!-- notifications -->
+    <div class="modal" tabindex="-1" role="dialog" id="notifications">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Mes notifications</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="liste">
+                        <div class="item row item-disponible">
+                            <div class="gauche col-4">
+                                <img src="https://via.placeholder.com/100" class="float-left">
+                                <h5 style= "text-align:center;"><strong>Accepté</strong></h5>
                             </div>
-                            <button type="button" class="btn btn-primary">Message</button>
-                            
-                           
+                            <div class="description droite col-8">
+                                <p > Votre demande de réservation pour le cable réseau du: 10/09/19 au 12/09/19 a été accepté <p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="item row item-indisponible">
+                            <div class="gauche col-4" style= "text-align:center;">
+                                <img src="https://via.placeholder.com/100" class="float-left">
+                                <h5 ><strong>Refusé</strong></h5>
+                            </div>
+                            <div class="droite col-8">
+                                <div class="float-left">
+                                    <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
+                                </div>
+                                <button type="button" class="btn btn-primary">Message</button>
+                                
+                               
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="./js/bootstrap.bundle.min.js "></script>
+    <script src="../../public/js/bootstrap.bundle.min.js "></script>
     <!--<script src="./js/bootstrap.min.js"></script>-->
 
 <script>

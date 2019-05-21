@@ -6,11 +6,11 @@
         <meta name="description" content="">
         <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
         <meta name="generator" content="Jekyll v3.8.5">
-        <title>Signin Template · Bootstrap</title>
+        <title>PolyLend - Inscription</title>
 
 
         <!-- Bootstrap core CSS -->
-        <link href="./css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
 
 
         <style>
@@ -58,11 +58,22 @@
             <label for="inputPassword" class="sr-only">Password</label>
             <div class="input-group">
                 <img src= "./image/logo_mdp.svg"> 
-                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Mot de passe" required>
+                <input type="password" id="inputPassword" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)([-+!*$@%_\w]{8,16})$" name="password" class="form-control" placeholder="Mot de passe" required>
+            </div>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Important !</strong> Le mot de passe doit contenir au moins : 1 majuscule, 1 minuscule et 1 chiffre.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
+
             <input class="btn btn-lg btn-primary btn-block" type="submit" value="S'inscrire">
+            <br/><p> <a href="connexion.html"> Déjà inscrit ? </a></p>
            
         </form>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+        <script src="./js/bootstrap.bundle.min.js "></script>
     </body>
 </html>
