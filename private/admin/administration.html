@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Jekyll v3.8.5">
+        <title>PolyLend</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
+
+        <style>
+            .bd-placeholder-img {
+                font-size: 1.125rem;
+                text-anchor: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            @media (min-width: 768px) {
+                .bd-placeholder-img-lg {
+                    font-size: 3.5rem;
+                }
+            }
+        </style>
+        <!-- Custom styles for this template -->
+        <link href="../../public/css/princing.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3  border-bottom shadow-sm" id= "menu">
+            <h5 class="my-0 mr-md-auto font-weight-normal p-2 bd-highlight">PolyLend</h5>
+            <nav class="my-2 my-md-0 mr-md-3 p-2 flex-grow-1 bd-highlight" style="text-align: center;">
+                <!--<a class="p-2 text-dark" href="#">Features</a>
+                <a class="p-2 text-dark" href="#">Enterprise</a>
+                <a class="p-2 text-dark" href="#">Support</a>
+                <a class="p-2 text-dark" href="#">Pricing</a>-->
+                <div class="btn-group" role="group" aria-label="Basic example">
+                   <button type="button" class="btn btn-secondary"><a href="../user/index.html"><img src="../../public/image/materiel.svg" width="70px"><br/>Matériel</a></button>
+                    <button type="button" class="btn btn-secondary"><a href="../user/salle.html"><img src="../../public/image/salle.svg" width="70px"><br/>Salle</a></button>
+                    <button type="button" class="btn btn-secondary selected"><a href="../admin/administration.html"><img src="../../public/image/administration.svg" width="70px"><br/>Administration</a></button>
+                    <button type="button" class="btn btn-secondary"><a href="../user/reservation.html"><img src="../../public/image/MesReservations.svg" width="70px"><br/>Réservation</a></button>
+                    
+                </div>
+            </nav>
+
+            <a href="#" data-toggle="modal" data-target="#notifications"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">3</span></a>&nbsp;&nbsp;&nbsp;
+            Nom&nbsp;&nbsp;&nbsp;
+            <a href="#"> <img src="../../public/image/logOut.svg" width="40px"></a>
+        </div>
+
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-3">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#materiel">Matériel</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#salles">Salles</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane active container" id="materiel">
+                            <!-- début matériel-->
+                            <div class= "Critere">
+                                <form method="post" action="">
+                                    <strong>Critère</strong>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
+                                        </div>
+                                        <input type="text" class="form-control" name="critere" id="inlineFormInputGroup" placeholder="">
+                                    </div>
+                                    <hr>
+                                    
+                                    <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" class="form-check-input" name="disponibilite" id="disponibilite" checked>
+                                    </div>
+                                    
+                                    <p>Du: <input class="float-right" name="date-debut" type="date" style="margin-right: 5px;"><input name="heure-debut" type="time"></p>
+                                    <p>Au: <input class="float-right" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                                    <p>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
+                                            <select name="tri" class="form-control" id="exampleFormControlSelect1">
+                                                <option>Par date de disponibilité</option>
+                                                <option>Par date de disponibilité décroissant</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1"><strong>Type :</strong></label>
+                                            <select class="form-control" id="exampleFormControlSelect1" name="type">
+                                                <option>Informatique</option>
+                                                <option>Mobilier</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                </form>
+                            </div>
+                            <!-- fin matériel -->
+                        </div>
+                        <div class="tab-pane container" id="salles">
+                            <!-- début salles -->
+                            <div class= "Critere">
+                                <form method="post" action="">
+                                    <strong>Critère</strong>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
+                                        </div>
+                                        <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
+                                    </div>
+                                    <hr>
+                                    
+                                    <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" name="disponibilite" class="form-check-input" id="disponibilite" checked>
+                                    </div>
+                                    
+                                    <p>Du: <input class="float-right" type="date" name="date-debut" style="margin-right: 5px;"><input type="time" name="heure-debut"></p>
+                                    <p>Au: <input class="float-right" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                                    <p>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
+                                            <select class="form-control" id="exampleFormControlSelect1" name="tri">
+                                                <option>Par date de disponibilité</option>
+                                                <option>Par date de disponibilité décroissant</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1"><strong>Bat. :</strong></label>
+                                            <select class="form-control" id="exampleFormControlSelect1" name="batiment">
+                                                <option>Ireste</option>
+                                                <option>IHT</option>
+                                                <option>Isitem</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                    <p>
+                                        <strong>Equipement :</strong>
+                                    </p>
+                                    <label class="form-check-label" for="videoProj">Vidéo projecteur</label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" class="form-check-input" id="videoProj" name="videoproj" checked>
+                                    </div><br /><br />
+                                    <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" name="capacite" id="capacite" min="1" max="500" value="30"></p>
+                                </form>
+                            </div>
+                            
+                            <!-- fin salles -->
+                        </div>
+                    </div>
+                    <br />
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ajouterElement"><img src="../../public/image/plus.svg" width="20px">Ajouter un élément</button>
+                </div>
+                <div class="col-9">
+                    <div class="liste">
+                        <div class="item row">
+                            <div class="gauche col-6">
+                                <img src="https://via.placeholder.com/100" class="float-left">
+                                <h2><strong>Cable Reseau</strong></h2>
+                                <p class="description">Vous permet de vous connecter pour faire des LAN par exemple.</p>
+                            </div>
+                            <div class="droite col-6">
+                                <p class="disponible">Disponible selon vos critères</p>
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier2">Planning</button>
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter1">Modifier</button>
+                                <button type="button" class="btn btn-danger"><img src="../../public/image/poubelle.svg" width="22px"></button>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="item row item-indisponible">
+                            <div class="gauche col-6">
+                                <img src="https://via.placeholder.com/100" class="float-left">
+                                <h2><strong>Projecteur</strong></h2>
+                                <p class="description">Attention pas de connecteur HDMI, Résolution 1024x600.</p>
+                            </div>
+                            <div class="droite col-6">
+                                <p>
+                                    <span class="en-attente">En attente :</span> Jean Valjean, BDE<br />
+                                    Du: 10/04/19 10:00 au: 12/04/19 14:00
+                                </p>
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning</button>
+                                <button type="button" class="btn btn-warning">Modifier</button>
+                                <button type="button" class="btn btn-danger"><img src="../../public/image/poubelle.svg" width="22px"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<!-- Modals -->
+<div class="modal fade" id="ajouterElement" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" class="btn btn-danger col-2">Annuler</button>
+                <h5 class="modal-title col-10 text-center" id="exampleModalLongTitle">Ajouter un élément</h5>
+                <!--<button type="button" class="btn btn-primary col-2">Ajouter</button>-->
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label for="type" class="col-sm-1 col-form-label">Type:</label>
+                    <div class="col-sm-3">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#popupmateriel">Matériel</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#popupsalles">Salle</a>
+                            </li>
+                        </ul>
+                        
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane container" id="popupsalles">
+                        <!-- début salles -->
+                        <form method="post" action="">
+                            <div class="form-group row">    
+                                <div class="gauche col-3">
+                                    <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto" checked>
+                                    </div> 
+                                </div>
+
+                                <!--<label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
+                                <div class="col-sm-3">
+                                    <input type="number" id="capacite" min="1" max="500" value="1">
+                                </div>-->
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-7">
+                                    <input type="text" class="form-control" placeholder="Nom" name="nom">
+                                </div>
+                                <div class="form-group col-5">
+                                    <label for="files" class="btn btn-dark">Ajouter une image...</label>
+                                    <input id="files" name="image" style="visibility:hidden;" type="file">
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-3">
+                                        <select class="form-control" id="batiment" name="batiment" required>
+                                            <option>Bâtiment</option>
+                                            <option value="1">...</option>
+                                            <option value="2">...</option>
+                                        </select>
+                                    </div>
+
+                                <div class="form-group col-3">
+                                    <select class="form-control" id="etage" name="etage" required>
+                                        <option>Etage</option>
+                                        <option value="1">...</option>
+                                        <option value="2">...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <div class="row">
+                                        <label for="capacite2" class="col-sm-6 col-form-label">Capacité (pers.):</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" name="capacite" id="capacite2" min="1" max="500" style="width:100px;" value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group row">
+                                    <label for="dispo" class="col-sm-4 col-form-label">Equipement :</label>
+                                    <div class="col-sm-8">
+                                        <div class="row">
+                                            <div class= "col-5">
+                                                <label class="form-check-label col-form-label" for="videoproj">Video Projecteur</label>
+                                                <div class="form-group form-check float-right"> 
+                                                    <input type="checkbox" name="videoproj" class="form-check-input" id="videoproj" checked>
+                                                </div> 
+                                            </div>
+                                            <div class= "col-4">
+                                                <label class="form-check-label col-form-label" for="tableaublanc">Tableau</label>
+                                                <div class="form-group form-check float-right"> 
+                                                    <input type="checkbox" name="tableau" class="form-check-input" id="tableaublanc" checked>
+                                                </div> 
+                                            </div>
+                                            <div class= "col-3">
+                                                    <input class= "form-control" name="autre" type="text" placeholder="Autre">
+                                 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                   
+                            <div class="form-group row">
+                                <label for="dispo" class="col-sm-4 col-form-label">Notes/Description :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="description" id= "dispo" placeholder="Facultatif">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="mot-cle" id= "mot-cle" placeholder="Séparés par des espaces">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
+                                <div class="form-group row col-sm-8 table-responsive">
+                                    <table id="tableau-sans-bordure">
+                                        <tr>
+                                            <td>
+                                                <div class="form-group row">
+                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date"><input type="time" name="heure-debut"></p>
+                                                    <p>Au: <input class="float-right" type="date" name="date-fin"><input type="time" name="heure-fin"></p>
+                                                </div>
+                                                </td><td>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-group row">
+                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date"><input type="time" name="heure-debut"></p>
+                                                    <p>Au: <input class="float-right" type="date" name="date-fin"><input type="time" name="heure-fin"></p>
+                                                </div>
+                                                </td><td>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <button type="button" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
+                                </div>
+                                <input type="submit" class="btn btn-primary col-2" value="Ajouter">
+                            </div>
+                        </form>
+                        <!-- fin salles -->
+                    </div>
+                    <div class="tab-pane container active" id="popupmateriel">
+                        
+
+                        <!-- début matériel -->
+                        <form method="post" action="">
+                            <div class="form-group row">    
+                                <div class="gauche col-3">
+                                    <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
+                                    <div class="form-group form-check float-right">
+                                        <input type="checkbox" class="form-check-input" name="validation_auto" id="validation_auto" checked>
+                                    </div>
+                                </div>
+                                <label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
+                                <div class="col-sm-3">
+                                    <input type="number" id="capacite" name="quantite" min="1" max="500" value="1">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <input type="text" class="form-control" placeholder="Nom" name="nom">
+                                </div>
+                                <div class="form-group col-3">
+                                    <select class="form-control" id="categorie" name="categorie">
+                                        <option>Catégorie</option>
+                                        <option>...</option>
+                                        <option>...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-5">
+                                        <label for="files" class="btn btn-dark">Ajouter une image...</label>
+                                        <input id="files" name="image" style="visibility:hidden;" type="file">
+                                </div>
+            
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="form-group row">
+                                <label for="dispo" class="col-sm-4 col-form-label">Lieu de Disponibilité :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="lieu-de-dispo" id= "dispo" placeholder="Ex: Bâtiment, étage, salle, demander la clé à Didier">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="mot-cle" class="form-control" id= "mot-cle" placeholder="Séparés par des espaces">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
+                                <div class="form-group row col-sm-8 table-responsive">
+                                    <table id="tableau-sans-bordure">
+                                        <tr>
+                                            <td>
+                                                <div class="form-group row">
+                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date"><input name="heure-debut" type="time"></p>
+                                                    <p>Au: <input class="float-right" name="date-fin" type="date"><input type="time" name="heure-fin"></p>
+                                                </div>
+                                                </td><td>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-group row">
+                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date"><input name="heure-debut" type="time"></p>
+                                                    <p>Au: <input class="float-right" name="date-fin" type="date"><input type="time" name="heure-fin"></p>
+                                                </div>
+                                                </td><td>
+                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <button type="button" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
+                                </div>
+                                <input type="submit" class="btn btn-primary col-2" value="Ajouter">
+                            </div>
+                        </form>
+                         <!--fin matériel -->
+                    </div>
+                   
+                </div>
+                <!--<div class="form-group row">
+                        <label for="mot-cle" class="col-sm-4 col-form-label"> et </label>
+                        <div class="form-group row col-sm-8">
+                            <p>Du: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
+                            <p>Au: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
+                        </div>
+                    </div>-->
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals calendrier -->
+<div class="modal fade" id="calendrier2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header modal-header-calendrier">
+                    <h5 class="modal-title col-11 text-center" id="exampleModalLongTitle">Janvier 2019</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-calendrier calendrier">
+                    <table width="100%">
+                    <tr>
+                        <th>Lun<br></th>
+                        <th>Mar</th>
+                        <th>Mer</th>
+                        <th>Jeu</th>
+                        <th>Ven</th>
+                        <th>Sam</th>
+                        <th>Dim</th>
+                    </tr>
+                    <tr>
+                        <td>1<br/><br/></td>
+                        <td>2<br/><br/></td>
+                        <td>3<br/></td><br/></td>
+                        <td>4<br/><br/></td>
+                        <td>5<br/><br/></td>
+                        <td>6<br/><br/></td>
+                        <td>7<br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>8<br/><br/></td>
+                        <td>9<br/><br/></td>
+                        <td class= "en-cours">10<br/>10h00</td>
+                        <td class= "en-cours">11<br/><br/><a href="#" data-toggle="popover" title="Action" data-content="Accepeter / refuser"></a></td>
+                        <td class= "en-cours">12<br/>14h00</td>
+                        <td>13<br/><br/></td>
+                        <td>14<br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>15<br/><br/></td>
+                        <td>16<br/><br/></td>
+                        <td>17<br/><br/></td>
+                        <td>18<br/><br/></td>
+                        <td>19<br/><br/></td>
+                        <td>20<br/><br/></td>
+                        <td>21<br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>22<br/><br/></td>
+                        <td>23<br/><br/></td>
+                        <td>24<br/><br/></td>
+                        <td>25<br/><br/></td>
+                        <td>26<br/><br/></td>
+                        <td>27<br/><br/></td>
+                        <td>28<br/><br/></td>
+                    </tr>
+                    <tr>
+                        <td>29<br/><br/></td>
+                        <td>30<br/><br/></td>
+                        <td>31<br/><br/></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </table>
+                </div>
+        <!--<div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>-->
+            </div>
+        </div>
+    </div>
+
+    <!-- pour valider la gestion du planning depuis le calendrier -->
+    <div class="modal" tabindex="-1" role="dialog" id="validation-reservation">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Validation de réservation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <form method="post" action="">
+                        <input type="hidden" value="valider" name="etat">
+                        <input type="hidden" value="" name="id">
+                        <input type="submit" class="btn btn-success" value="Valider">
+                    </form>
+                    <form method="post" action="">
+                        <input type="hidden" value="refuser" name="etat">
+                        <input type="hidden" value="" name="id">
+                        <input type="submit" class="btn btn-danger" value="Refuser">
+                    </form>
+               </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- notifications -->
+    <div class="modal" tabindex="-1" role="dialog" id="notifications">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Mes notifications</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="liste">
+                        <div class="item row item-disponible">
+                            <div class="gauche col-4">
+                                <img src="https://via.placeholder.com/100" class="float-left">
+                                <h5 style= "text-align:center;"><strong>Accepté</strong></h5>
+                            </div>
+                            <div class="description droite col-8">
+                                <p > Votre demande de réservation pour le cable réseau du: 10/09/19 au 12/09/19 a été accepté <p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="item row item-indisponible">
+                            <div class="gauche col-4" style= "text-align:center;">
+                                <img src="https://via.placeholder.com/100" class="float-left">
+                                <h5 ><strong>Refusé</strong></h5>
+                            </div>
+                            <div class="droite col-8">
+                                <div class="float-left">
+                                    <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
+                                </div>
+                                <button type="button" class="btn btn-primary">Message</button>
+                                
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="item row item-en-attente">
+                        <div class="gauche col-4">
+                            <img src="https://via.placeholder.com/100" class="float-left">
+                            <h5><strong>En attente de validation</strong></h5>
+                            
+                        </div>
+                        <div class="droite col-8">
+                            <div class="float-left">
+                                <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
+                            </div>
+                            <div class="btn-group">
+                                <form method="post" action="">
+                                    <input type="hidden" value="valider" name="etat">
+                                    <input type="hidden" value="" name="id">
+                                    <input type="submit" class="btn btn-success" value="Valider">
+                                </form>
+                                <form method="post" action="">
+                                    <input type="hidden" value="refuser" name="etat">
+                                    <input type="hidden" value="" name="id">
+                                    <input type="submit" class="btn btn-danger" value="Refuser">
+                                </form>
+                            </div>
+                        </div>
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+    <script src="../../public/js/bootstrap.bundle.min.js "></script>
+    <!--<script src="./js/bootstrap.min.js"></script>-->
+    <script type="text/javascript">
+        $(document).ready(function (){
+            $(".en-cours").click(function()
+            {
+                $('#validation-reservation').modal('show');
+            })
+        })
+    </script>
+    </body>
+</html>
+
