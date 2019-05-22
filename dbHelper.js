@@ -94,13 +94,13 @@ module.exports.Element = {
     byId: id => get(`SELECT * FROM Element WHERE id = ${id};`),
 
     byIdFull: id => new Promise(function (resolve, reject) {
-        get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Element.id = ${id};`)
+        get(`SELECT * FROM SalleFull WHERE id_Element = ${id};`)
         .then(function (result) {
             if (result) {
                 resolve(result);
             }
             else {
-                get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Element.id = ${id};`)
+                get(`SELECT * FROM MaterielFull WHERE id_Element = ${id};`)
                 .then(result => resolve(result))
                 .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
             }
@@ -171,7 +171,7 @@ module.exports.Materiel = {
                                 "${matData.lieu}",
                                 ${elem.id});`)
                     .then(function () {
-                        get('SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE (SELECT MAX(id) FROM Materiel) = Materiel.id;')
+                        get('SELECT * FROM MaterielFull WHERE (SELECT MAX(id) FROM Materiel) = id;')
                         .then(res => resolve(res))
                         .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
                     })
@@ -185,13 +185,13 @@ module.exports.Materiel = {
     }),
 
     // récupération d'une ligne grace au nom du matériel
-    byName: name => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Element.nom = "${name}";`),
+    byName: name => get(`SELECT * FROM MaterielFull WHERE nom = "${name}";`),
 
     // récupération d'une ligne grace à l'id du matériel
-    byId: id => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Materiel.id = ${id};`),
+    byId: id => get(`SELECT * FROM MaterielFull WHERE id = ${id};`),
 
     // récupération de tous les matériels d'une certaine catégorie
-    allByCategory: cat => all(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE categorie = ${cat};`),
+    allByCategory: cat => all(`SELECT * FROM MaterielFull WHERE categorie = ${cat};`),
 
     // récupération de tous les matériels répondant à des critères donnés
     allByParams: params => new Promise(function (resolve, reject) {
@@ -201,7 +201,7 @@ module.exports.Materiel = {
         hasCateg = (params.categorie !== undefined);
         hasDesc = (params.description !== undefined);
 
-        all(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE (
+        all(`SELECT * FROM MaterielFull WHERE (
             ${hasName ? 'nom = "' + params.nom + '" ' : ''}
             ${(hasName && (hasQuant || hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
             ${hasQuant ? 'quantite = ' + params.quantite + ' ' : ''}
@@ -218,19 +218,17 @@ module.exports.Materiel = {
 
     // récupération de toutes les lignes du matériel
     all: (countBegin = 0, countEnd = 0) => new Promise(function (resolve, reject) {
-        let request = 'SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id';
+        let request = 'SELECT * FROM MaterielFull';
 
         if (countBegin > 0) {
-            request += ' GROUP BY Materiel.id HAVING ';
+            request += ' GROUP BY id HAVING ';
 
             if (countEnd > 0) {
-                request += `Materiel.id <= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1 AND Materiel.id >= (SELECT MAX(id) FROM Materiel) - ${countEnd} + 1`;
+                request += `id <= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1 AND id >= (SELECT MAX(id) FROM Materiel) - ${countEnd} + 1`;
             }
             else {
-                request += `Materiel.id >= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1`;
+                request += `id >= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1`;
             }
-
-            request += ' ORDER BY Materiel.id DESC';
         }
         request += ';';
 
@@ -258,7 +256,7 @@ module.exports.Materiel = {
 
     // déletion de l'élément puis du matériel grace au nom du matériel
     deleteByName: name => new Promise(function (resolve, reject) {
-        get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE nom = ${name};`)
+        get(`SELECT * FROM MaterielFull WHERE nom = ${name};`)
         .then(function (mat) {
             run(`DELETE FROM Element WHERE id = ${mat.id_Element};`)
             .then(function () {
@@ -311,7 +309,7 @@ module.exports.Salle = {
                                 "${salleData.equipement}",
                                 ${elem.id});`)
                     .then(function () {
-                        get('SELECT * FROM SalleFull;')
+                        get('SELECT * FROM SalleFull WHERE (SELECT MAX(id) FROM Salle) = id;')
                         .then(res => resolve(res))
                         .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
                     })
@@ -325,16 +323,16 @@ module.exports.Salle = {
     }),
 
     // récupération d'une ligne grace au nom de la salle
-    byName: name => get(`SELECT * FROM SalleFull WHERE Element.nom = "${name}";`),
+    byName: name => get(`SELECT * FROM SalleFull WHERE nom = "${name}";`),
 
     // récupération d'une ligne grace à l'id de la salle
-    byId: id => get(`SELECT * FROM SalleFull WHERE Salle.id = ${id};`),
+    byId: id => get(`SELECT * FROM SalleFull WHERE id = ${id};`),
 
     // récupération de toutes les salles d'un batiment
-    allByBat: bat => all(`SELECT * FROM SalleFull WHERE Salle.batiment = "${bat}";`),
+    allByBat: bat => all(`SELECT * FROM SalleFull WHERE batiment = "${bat}";`),
 
     // récupération de toutes les salles ayant une capacité minimum demandée
-    allByMinCap: cap => all(`SELECT * FROM SalleFull WHERE Salle.capacite >= ${cap};`),
+    allByMinCap: cap => all(`SELECT * FROM SalleFull WHERE capacite >= ${cap};`),
 
     // récupération de toutes les salles répondant aux paramètres fournis
     allByParams: params => new Promise(function (resolve, reject) {
@@ -372,8 +370,6 @@ module.exports.Salle = {
             else {
                 request += `id >= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1`;
             }
-
-            request += ' ORDER BY id DESC';
         }
         request += ';';
 
