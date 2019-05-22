@@ -715,6 +715,8 @@ module.exports.Notification = {
         .then(result => resolve(result))
         .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
     }),
+
+    delete: reservId => run(`DELETE FROM Notification WHERE id_Reservation = ${reservId};`),
 }
 
 /*

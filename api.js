@@ -89,7 +89,7 @@ module.exports = (passport) => {
     });
 
     app.get('/salle/getall', function (req, res) {
-        dbHelper.Salle.all(1, 2)
+        dbHelper.Salle.all()
         .then(result => res.json(result))
         .catch(err => console.error(err));
     });
