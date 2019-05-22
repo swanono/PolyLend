@@ -8,6 +8,7 @@ function getAllSalle () {
             .then(function (salles) {
                 let salleListe = document.querySelector('.liste');
                 console.log(salles);
+
             })
             .catch(err => console.error(err));
         }
@@ -17,3 +18,5 @@ function getAllSalle () {
     })
     .catch(err => console.error(err));
 }
+
+getAllSalle();

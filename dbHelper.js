@@ -311,7 +311,7 @@ module.exports.Salle = {
                                 "${salleData.equipement}",
                                 ${elem.id});`)
                     .then(function () {
-                        get('SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE (SELECT MAX(id) FROM Salle) = Salle.id;')
+                        get('SELECT * FROM SalleFull;')
                         .then(res => resolve(res))
                         .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
                     })
@@ -325,16 +325,16 @@ module.exports.Salle = {
     }),
 
     // récupération d'une ligne grace au nom de la salle
-    byName: name => get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Element.nom = "${name}";`),
+    byName: name => get(`SELECT * FROM SalleFull WHERE Element.nom = "${name}";`),
 
     // récupération d'une ligne grace à l'id de la salle
-    byId: id => get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.id = ${id};`),
+    byId: id => get(`SELECT * FROM SalleFull WHERE Salle.id = ${id};`),
 
     // récupération de toutes les salles d'un batiment
-    allByBat: bat => all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.batiment = "${bat}";`),
+    allByBat: bat => all(`SELECT * FROM SalleFull WHERE Salle.batiment = "${bat}";`),
 
     // récupération de toutes les salles ayant une capacité minimum demandée
-    allByMinCap: cap => all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.capacite >= ${cap};`),
+    allByMinCap: cap => all(`SELECT * FROM SalleFull WHERE Salle.capacite >= ${cap};`),
 
     // récupération de toutes les salles répondant aux paramètres fournis
     allByParams: params => new Promise(function (resolve, reject) {
@@ -344,7 +344,7 @@ module.exports.Salle = {
         let hasEtage = (params.etage !== undefined);
         let hasDesc = (params.description !== undefined);
 
-        all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE (
+        all(`SELECT * FROM SalleFull WHERE (
             ${hasName ? 'nom = "' + params.nom + '" ' : ''}
             ${(hasName && (hasBat || hasMinCap || hasEtage || hasDesc)) ? 'AND ' : ''}
             ${hasBat ? 'batiment = "' + params.batiment + '" ' : ''}
@@ -361,19 +361,19 @@ module.exports.Salle = {
 
     // récupération de toutes les salles de la base
     all: (countBegin = 0, countEnd = 0) => new Promise(function (resolve, reject) {
-        let request = 'SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id';
+        let request = 'SELECT * FROM SalleFull';
 
         if (countBegin > 0) {
-            request += ' GROUP BY Salle.id HAVING ';
+            request += ' GROUP BY id HAVING ';
 
             if (countEnd > 0) {
-                request += `Salle.id <= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1 AND Salle.id >= (SELECT MAX(id) FROM Salle) - ${countEnd} + 1`;
+                request += `id <= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1 AND id >= (SELECT MAX(id) FROM Salle) - ${countEnd} + 1`;
             }
             else {
-                request += `Salle.id >= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1`;
+                request += `id >= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1`;
             }
 
-            request += ' ORDER BY Salle.id DESC';
+            request += ' ORDER BY id DESC';
         }
         request += ';';
 
@@ -401,7 +401,7 @@ module.exports.Salle = {
 
     // déletion de l'élément puis de la salle grace au nom de la salle
     deleteByName: name => new Promise(function (resolve, reject) {
-        get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE nom = ${name};`)
+        get(`SELECT * FROM SalleFull WHERE nom = ${name};`)
         .then(function (salle) {
             run(`DELETE FROM Element WHERE id = ${salle.id_Element};`)
             .then(function () {

@@ -5,6 +5,9 @@ DROP TABLE IF EXISTS Creneau;
 DROP TABLE IF EXISTS Utilisateur;
 DROP TABLE IF EXISTS Reservation;
 DROP TABLE IF EXISTS MotCle;
+DROP TABLE IF EXISTS Notification;
+DROP VIEW IF EXISTS SalleFull;
+DROP VIEW IF EXISTS MaterielFull;
 
 PRAGMA foreign_keys = ON;
 
@@ -114,3 +117,32 @@ CREATE TABLE Notification(
     admin INT NOT NULL CHECK (admin IN (0, 1)),
     FOREIGN KEY (id_Reservation) REFERENCES Reservation(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+--
+-- Peuplement original
+--
+
+INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe) VALUES ("E154706J", "Guyon", "Ulysse", "Lol11111");
+INSERT INTO Element (nom, description, photo, validation_auto) VALUES ("D117", "salle info cool", "default.png", 0);
+INSERT INTO Element (nom, description, photo, validation_auto) VALUES ("D118", "salle de classe", "default.png", 0);
+INSERT INTO Salle (batiment, etage, capacite, equipement, id_Element) VALUES ("Ireste", 1, 30, "fauteuils cools", 2);
+INSERT INTO Salle (batiment, etage, capacite, equipement, id_Element) VALUES ("Ireste", 1, 30, "pc cools", 1);
+
+
+--
+-- Vue SalleFull
+--
+
+CREATE VIEW SalleFull AS
+SELECT Salle.id, batiment, etage, capacite, equipement, id_Element, nom, description, photo, validation_auto
+FROM Salle JOIN Element ON Salle.id = Element.id;
+
+
+--
+-- Vue MaterielFull
+--
+
+CREATE VIEW MaterielFull AS
+SELECT Materiel.id, quantite, categorie, lieu, id_Element, nom, description, photo, validation_auto
+FROM Materiel JOIN Element ON Materiel.id = Element.id;
