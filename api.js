@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* eslint-env node */
 'use strict';
 
@@ -144,3 +145,5 @@ module.exports = (passport) => {
 
     return app;
 }
+=======
+>>>>>>> templateHTML
