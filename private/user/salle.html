@@ -9,6 +9,7 @@
         <title>PolyLend</title>
 
         <script src="../js/salle.js" defer></script>
+        <script src="../js/notifs.js" defer></script>
 
         <!-- Bootstrap core CSS -->
         <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
@@ -46,7 +47,7 @@
                 </div>
             </nav>
 
-            <a href="#" data-toggle="modal" data-target="#notifications"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">3</span></a>&nbsp;&nbsp;&nbsp;
+            <a href="#" data-toggle="modal" data-target="#notifications"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">0</span></a>&nbsp;&nbsp;&nbsp;
             Nom&nbsp;&nbsp;&nbsp;
             <a href="#"> <img src="../../public/image/logOut.svg" width="40px"></a>
         </div>
@@ -105,7 +106,7 @@
                     </div>
                 </div>
                 <div class="col-9">
-                    <div class="liste">
+                    <div class="liste" id="liste_salles">
                     </div>
                 </div>
             </div>
@@ -229,7 +230,7 @@
                     </div>
                     
                     <div class="modal-body">
-                        <div class="liste">
+                        <div class="liste" id="liste_notifs">
                             <div class="item row item-disponible">
                                 <div class="gauche col-4">
                                     <img src="https://via.placeholder.com/100" class="float-left">

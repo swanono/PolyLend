@@ -126,7 +126,7 @@ CREATE TABLE Notification(
 INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe, admin) VALUES ("E154706J", "Guyon", "Ulysse", "mdpUlysse123", 1);
 INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe, admin) VALUES ("E189415L", "Wanono", "Sacha", "mdpSacha123", 1);
 INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe, admin) VALUES ("E168087D", "Thuilier", "Elea", "mdpElea123", 1);
-INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe, admin) VALUES ("E123456T", "Choquard", "Thomas", "mdpThomas123", 1);
+INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe, admin) VALUES ("E185928W", "Choquard", "Thomas", "mdpThomas123", 1);
 INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe, admin) VALUES ("E123456A", "Etudiant", "Georges", "mdpGeorges123", 0);
 
 INSERT INTO Element (nom, description, photo, validation_auto) VALUES ("C003", "salle avec ordis", "https://via.placeholder.com/100", 0);
@@ -182,8 +182,8 @@ INSERT INTO MotCle VALUES (11, "2places");
 INSERT INTO MotCle VALUES (6, "informatique");
 
 INSERT INTO Notification VALUES (1, 1);
-INSERT INTO Notification VALUES (2, 0);
-INSERT INTO Notification VALUES (3, 1);
+INSERT INTO Notification VALUES (2, 1);
+INSERT INTO Notification VALUES (3, 0);
 INSERT INTO Notification VALUES (4, 1);
 
 

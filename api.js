@@ -62,6 +62,51 @@ module.exports = (passport) => {
         })(req, res, next);
     });
 
+    app.post('/utilisateur/bynum', function (req, res) {
+        dbHelper.Utilisateur.byNumEt(req.body)
+        .then(etu => res.json(etu))
+        .catch(err => console.error(err));
+    });
+
+    app.get('/notification/getall', function (req, res) {
+        dbHelper.Notification.all()
+        .then(function (notifs) {
+            dbHelper.Reservation.allByUserId(req.user.numero_etudiant)
+            .then(function (reservs) {
+                notifs = notifs.filter(notif => {
+                    return (reservs.find(reserv => reserv.id === notif.id_Reservation) && notif.admin === 0) || (req.user.admin === 1 && notif.admin === 1);
+                });
+                res.json(notifs);
+            })
+            .catch(err => console.error(err));
+        })
+        .catch(err => console.error(err));
+    });
+
+    app.post('/reservation/allbyid', function (req, res) {
+        dbHelper.Reservation.allById(req.body)
+        .then(result => res.json(result))
+        .catch(err => console.error(err));
+    });
+
+    app.post('/reservation/validate', function (req, res) {
+        dbHelper.Reservation.validate(req.body.id_Reservation, req.body.valid)
+        .then(result => res.json(result))
+        .catch(err => console.error(err));
+    })
+
+    app.post('/creneau/byid', function (req, res) {
+        dbHelper.Creneau.byId(req.body)
+        .then(result => res.json(result))
+        .catch(err => console.error(err));
+    });
+
+    app.post('/element/byid', function (req, res) {
+        dbHelper.Element.byIdFull(req.body)
+        .then(result => res.json(result))
+        .catch(err => console.error(err));
+    })
+
     app.post('/materiel/add', function (req, res, next) {
         dbHelper.Materiel.insert({
             quantite: req.body.quantite,
@@ -69,7 +114,7 @@ module.exports = (passport) => {
             lieu: req.body['lieu-de-dispo'],
             nom: req.body.nom,
             description: req.body.description,
-            photo: ''/*trouver le lien*/,
+            photo: 'https://via.placeholder.com/100',
             validation_auto: req.body.validation_auto,
         })
         .then(function (resultat) {
@@ -90,12 +135,11 @@ module.exports = (passport) => {
 
     app.get('/salle/getall', function (req, res) {
         dbHelper.Salle.all()
-        .then(result => res.json(result))
+        .then(salles => res.json(salles))
         .catch(err => console.error(err));
     });
 
     app.post('/salle/add', function (req, res, next) {
-        console.log(req.body);
         let equipmentString = '';
 
         if (req.body.videoproj === 'on') {
@@ -122,7 +166,7 @@ module.exports = (passport) => {
             equipement: equipmentString,
             nom: req.body.nom,
             description: req.body.description,
-            photo: ''/*trouver le lien*/,
+            photo: 'https://via.placeholder.com/100',
             validation_auto: req.body.validation_auto,
         })
         .then(function (resultat) {

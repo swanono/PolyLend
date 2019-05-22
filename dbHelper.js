@@ -558,6 +558,13 @@ module.exports.Reservation = {
     // récupération d'une ligne grace à l'id de la réservation
     byId: id => get(`SELECT * FROM Reservation WHERE id = ${id};`),
 
+    allById: idArray => new Promise(function (resolve, reject) {
+        let promises = idArray.map(id => get(`SELECT * FROM Reservation WHERE id = ${id};`));
+        Promise.all(promises)
+        .then(result => resolve(result))
+        .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+    }),
+
     // récupération de toutes les réservations liées à un élément
     allByElemId: elemId => all(`SELECT * FROM Reservation LEFT OUTER JOIN (SELECT * FROM Creneau WHERE id_Element = ${elemId});`),
 

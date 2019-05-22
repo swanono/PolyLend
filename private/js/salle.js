@@ -1,23 +1,21 @@
 'use strict';
 
-function getAllSalle () {
-    fetch('/api/salle/getall')
-    .then(function (response) {
-        if (response.ok) {
-            response.json()
-            .then(salles => salles.forEach(salle => insertSalle(salle)))
-            .catch(err => console.error(err));
-        }
-        else {
-            console.error('response not ok !');
-        }
-    })
-    .catch(err => console.error(err));
+async function getAllSalle () {
+    let response = await fetch('/api/salle/getall');
+    if (response.ok) {
+        let salles = await response.json();
+        salles.forEach(salle => insertSalle(salle));
+    }
+    else {
+        console.error('response not ok !');
+    }
 }
 
 function insertSalle(salleData) {
     let divItemRow = document.createElement('div');
     divItemRow.setAttribute('class', 'item row');
+    divItemRow.setAttribute('id-salle', salleData.id);
+    divItemRow.setAttribute('id-element', salleData.id_Element);
 
     let divGauche = document.createElement('div');
     divGauche.setAttribute('class', 'gauche col-6');
@@ -47,7 +45,7 @@ function insertSalle(salleData) {
 
     let pDispo = document.createElement('p');
     pDispo.setAttribute('class', 'disponnible');
-    pDispo.textContent = 'Disponible selon vos critères';
+    pDispo.textContent = 'Disponible selon vos critères'; // TODO changer en fonction de si la case dispo est cochées
     divDroite.appendChild(pDispo);
 
     let buttonPlan = document.createElement('button');
@@ -69,8 +67,8 @@ function insertSalle(salleData) {
     divItemRow.appendChild(divDroite);
 
     
-    document.querySelector('.liste').appendChild(divItemRow);
-    document.querySelector('.liste').appendChild(document.createElement('br'));
+    document.querySelector('#liste_salles').appendChild(divItemRow);
+    document.querySelector('#liste_salles').appendChild(document.createElement('br'));
 }
 
 getAllSalle();
