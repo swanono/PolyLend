@@ -9,7 +9,7 @@
         <title>PolyLend</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../public/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
         <style>
             .bd-placeholder-img {
@@ -38,11 +38,10 @@
                 <a class="p-2 text-dark" href="#">Support</a>
                 <a class="p-2 text-dark" href="#">Pricing</a>-->
                 <div class="btn-group" role="group" aria-label="Basic example">
-                   <button type="button" class="btn btn-secondary"><a href="../user/index.html"><img src="../../public/image/materiel.svg" width="70px"><br/>Matériel</a></button>
-                    <button type="button" class="btn btn-secondary"><a href="../user/salle.html"><img src="../../public/image/salle.svg" width="70px"><br/>Salle</a></button>
-                    <button type="button" class="btn btn-secondary selected"><a href="../admin/administration.html"><img src="../../public/image/administration.svg" width="70px"><br/>Administration</a></button>
-                    <button type="button" class="btn btn-secondary"><a href="../user/reservation.html"><img src="../../public/image/MesReservations.svg" width="70px"><br/>Réservation</a></button>
-                    
+                    <button type="button" class="btn btn-secondary"><img src="../../public/image/materiel.svg" width="70px"><br/>Matériel</button>
+                    <button type="button" class="btn btn-secondary"><img src="../../public/image/salle.svg" width="70px"><br/>Salle</button>
+                    <button type="button" class="btn btn-secondary selected"><img src="../../public/image/administration.svg" width="70px"><br/>Administration</button>
+                    <button type="button" class="btn btn-secondary"><img src="../../public/image/MesReservations.svg" width="70px"><br/>Réservation</button>
                 </div>
             </nav>
 
@@ -79,12 +78,12 @@
                                         <input type="text" class="form-control" name="critere" id="inlineFormInputGroup" placeholder="">
                                     </div>
                                     <hr>
-                                    
+
                                     <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                                     <div class="form-group form-check float-right">
                                         <input type="checkbox" class="form-check-input" name="disponibilite" id="disponibilite" checked>
                                     </div>
-                                    
+
                                     <p>Du: <input class="float-right" name="date-debut" type="date" style="margin-right: 5px;"><input name="heure-debut" type="time"></p>
                                     <p>Au: <input class="float-right" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
                                     <p>
@@ -121,12 +120,12 @@
                                         <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                                     </div>
                                     <hr>
-                                    
+
                                     <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                                     <div class="form-group form-check float-right">
                                         <input type="checkbox" name="disponibilite" class="form-check-input" id="disponibilite" checked>
                                     </div>
-                                    
+
                                     <p>Du: <input class="float-right" type="date" name="date-debut" style="margin-right: 5px;"><input type="time" name="heure-debut"></p>
                                     <p>Au: <input class="float-right" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
                                     <p>
@@ -158,7 +157,7 @@
                                     <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" name="capacite" id="capacite" min="1" max="500" value="30"></p>
                                 </form>
                             </div>
-                            
+
                             <!-- fin salles -->
                         </div>
                     </div>
@@ -194,7 +193,7 @@
                                 </p>
                                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning</button>
                                 <button type="button" class="btn btn-warning">Modifier</button>
-                                <button type="button" class="btn btn-danger"><img src="../../public/image/poubelle.svg" width="22px"></button>
+                                <button type="button" class="btn btn-danger"><img src="./image/poubelle.svg" width="22px"></button>
                             </div>
                         </div>
                     </div>
@@ -224,19 +223,19 @@
                                 <a class="nav-link" data-toggle="tab" href="#popupsalles">Salle</a>
                             </li>
                         </ul>
-                        
+
                     </div>
                 </div>
                 <div class="tab-content">
                     <div class="tab-pane container" id="popupsalles">
                         <!-- début salles -->
-                        <form method="post" action="">
-                            <div class="form-group row">    
+                        <form method="post" action="/api/salle/add">
+                            <div class="form-group row">
                                 <div class="gauche col-3">
                                     <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
                                     <div class="form-group form-check float-right">
                                         <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto" checked>
-                                    </div> 
+                                    </div>
                                 </div>
 
                                 <!--<label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
@@ -254,7 +253,7 @@
                                     <input id="files" name="image" style="visibility:hidden;" type="file">
                                 </div>
                             </div>
-                            
+
                             <hr>
                             <div class="row">
                                 <div class="form-group col-3">
@@ -280,7 +279,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div class="form-group row">
                                     <label for="dispo" class="col-sm-4 col-form-label">Equipement :</label>
@@ -288,24 +287,24 @@
                                         <div class="row">
                                             <div class= "col-5">
                                                 <label class="form-check-label col-form-label" for="videoproj">Video Projecteur</label>
-                                                <div class="form-group form-check float-right"> 
+                                                <div class="form-group form-check float-right">
                                                     <input type="checkbox" name="videoproj" class="form-check-input" id="videoproj" checked>
-                                                </div> 
+                                                </div>
                                             </div>
                                             <div class= "col-4">
                                                 <label class="form-check-label col-form-label" for="tableaublanc">Tableau</label>
-                                                <div class="form-group form-check float-right"> 
+                                                <div class="form-group form-check float-right">
                                                     <input type="checkbox" name="tableau" class="form-check-input" id="tableaublanc" checked>
-                                                </div> 
+                                                </div>
                                             </div>
                                             <div class= "col-3">
                                                     <input class= "form-control" name="autre" type="text" placeholder="Autre">
-                                 
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                   
+
                             <div class="form-group row">
                                 <label for="dispo" class="col-sm-4 col-form-label">Notes/Description :</label>
                                 <div class="col-sm-8">
@@ -351,11 +350,11 @@
                         <!-- fin salles -->
                     </div>
                     <div class="tab-pane container active" id="popupmateriel">
-                        
+
 
                         <!-- début matériel -->
-                        <form method="post" action="">
-                            <div class="form-group row">    
+                        <form method="post" action="/api/materiel/add">
+                            <div class="form-group row">
                                 <div class="gauche col-3">
                                     <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
                                     <div class="form-group form-check float-right">
@@ -383,7 +382,7 @@
                                         <label for="files" class="btn btn-dark">Ajouter une image...</label>
                                         <input id="files" name="image" style="visibility:hidden;" type="file">
                                 </div>
-            
+
                             </div>
                             <div class="form-group">
                                 <textarea class="form-control" placeholder="Description" name="description" rows="3"></textarea>
@@ -432,7 +431,7 @@
                         </form>
                          <!--fin matériel -->
                     </div>
-                   
+
                 </div>
                 <!--<div class="form-group row">
                         <label for="mot-cle" class="col-sm-4 col-form-label"> et </label>
@@ -561,7 +560,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                
+
                 <div class="modal-body">
                     <div class="liste">
                         <div class="item row item-disponible">
@@ -584,36 +583,36 @@
                                     <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
                                 </div>
                                 <button type="button" class="btn btn-primary">Message</button>
-                                
-                               
+
+
                             </div>
                         </div>
                     </div>
                     <br/>
                     <div class="item row item-en-attente">
-                        <div class="gauche col-4">
-                            <img src="https://via.placeholder.com/100" class="float-left">
-                            <h5><strong>En attente de validation</strong></h5>
-                            
-                        </div>
-                        <div class="droite col-8">
-                            <div class="float-left">
-                                <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
+                            <div class="gauche col-4">
+                                <img src="https://via.placeholder.com/100" class="float-left">
+                                <h5><strong>En attente de validation</strong></h5>
+
                             </div>
-                            <div class="btn-group">
-                                <form method="post" action="">
-                                    <input type="hidden" value="valider" name="etat">
-                                    <input type="hidden" value="" name="id">
-                                    <input type="submit" class="btn btn-success" value="Valider">
-                                </form>
-                                <form method="post" action="">
-                                    <input type="hidden" value="refuser" name="etat">
-                                    <input type="hidden" value="" name="id">
-                                    <input type="submit" class="btn btn-danger" value="Refuser">
-                                </form>
+                            <div class="droite col-8">
+                                <div class="float-left">
+                                    <p class="description">Larry Golade souhaite emprunter le projecteur du 10/04/19 10h00 au 12/04/19 14h00.</p>
+                                </div>
+                                <div class="btn-group">
+                                    <form method="post" action="">
+                                        <input type="hidden" value="valider" name="etat">
+                                        <input type="hidden" value="" name="id">
+                                        <input type="submit" class="btn btn-success" value="Valider">
+                                    </form>
+                                    <form method="post" action="">
+                                        <input type="hidden" value="refuser" name="etat">
+                                        <input type="hidden" value="" name="id">
+                                        <input type="submit" class="btn btn-danger" value="Refuser">
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                            
+
                     </div>
                 </div>
             </div>
@@ -623,7 +622,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
     <script src="../../public/js/bootstrap.bundle.min.js "></script>
-    <!--<script src="./js/bootstrap.min.js"></script>-->
+    <!--<script src="../../public/js/bootstrap.min.js"></script>-->
     <script type="text/javascript">
         $(document).ready(function (){
             $(".en-cours").click(function()
@@ -634,4 +633,3 @@
     </script>
     </body>
 </html>
-

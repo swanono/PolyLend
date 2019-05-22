@@ -13,10 +13,11 @@ app.use('/api', api(passport));
 
 // Le contenu statique public sera lu à partir du repertoire 'public'
 app.use('/', express.static('public'));
-
+app.use('/public', express.static('public'));
+app.use('/private', express.static('private'));
 
 
 const server = app.listen(8081, function () {
-    let port = server.adress().port;
+    let port = server.address().port;
     console.log('Listening on http://127.0.0.1:%s', port);
 });
