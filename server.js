@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 'use strict';
 
 const express = require('express');
@@ -60,5 +59,3 @@ const server = app.listen(8081, function () {
     let port = server.address().port;
     console.log('Listening on http://127.0.0.1:%s', port);
 });
-=======
->>>>>>> templateHTML
