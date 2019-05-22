@@ -15,10 +15,6 @@ app.use('/api', api(passport));
 // Le contenu statique public sera lu à partir du repertoire 'public'
 app.use('/', express.static('public'));
 app.use('/public', express.static('public'));
-<<<<<<< HEAD
-app.use('/private', express.static('private'));
-
-=======
 
 app.use('/private/admin',
     require('connect-ensure-login').ensureLoggedIn('/public/connexion.html'),
@@ -58,7 +54,6 @@ app.use('/private',
     },
     express.static('private')
 );
->>>>>>> f2292536ec12339a823376bd5287df7941206a09
 
 const server = app.listen(8081, function () {
     let port = server.address().port;

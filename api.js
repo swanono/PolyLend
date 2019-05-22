@@ -57,16 +57,6 @@ module.exports = (passport) => {
                 if (err) {
                     return next(err);
                 }
-<<<<<<< HEAD
-                dbHelper.MotCle.insert({
-                    mots: req.body['mot-cle'],
-                    id_Element: resultat.id,
-                })
-                .then(() => res.redirect('/private/admin/administration.html'))
-                .catch(err => console.error(err));
-            })
-            .catch(err => console.error(err));
-=======
                 return res.redirect('/private/user/index.html');
             });
         })(req, res, next);
@@ -96,7 +86,10 @@ module.exports = (passport) => {
             });
         })
         .catch(err => console.error(err));
->>>>>>> f2292536ec12339a823376bd5287df7941206a09
+    });
+
+    app.get('/salle/getall', function (req, res) {
+        
     });
 
     app.post('/salle/add', function (req, res, next) {
