@@ -10,7 +10,17 @@ const passport = auth(app);
 
 
 // l'api d'accès aux données sera disponible sous la route "/api"
-app.use('/api', api(passport));
+app.use('/api',
+    function (req, res, next) {
+        if (req.url.indexOf('/utilisateur/login') === -1 && req.url.indexOf('/utilisateur/register') === -1 && !req.user) {
+            res.redirect('/public/connexion.html');
+        }
+        else {
+            next();
+        }
+    },
+    api(passport)
+);
 
 // Le contenu statique public sera lu à partir du repertoire 'public'
 app.use('/', express.static('public'));
