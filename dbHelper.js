@@ -491,7 +491,7 @@ module.exports.Creneau = {
     byId: id => get(`SELECT * FROM Creneau WHERE id = ${id};`),
 
     // récupération de tous les créneaux associés à un élément
-    allByElem: idElem => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem};`),
+    allByElemId: idElem => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem};`),
 
     // récupération de tous les créneaux associés à un élément et incluant une certaine date
     allByElemIncluding: (idElem, dateTime) => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem}
@@ -517,7 +517,7 @@ const checkReservData = reservData => new Promise(function (resolve, reject) {
         reject('Attributs de la réservation mal renseignés (raison - date_heure_debut - date_heure_fin - id_Utilisateur - id_Creneau)');
     }
     else {
-        get(`SELECT * FROM Creneau JOIN Element ON Creneau.id_Element = Element.id WHERE Creneau.id = ${reservData.id_Creneau};`)
+        get(`SELECT * FROM CreneauElem WHERE id = ${reservData.id_Creneau};`)
         .then(result => resolve(result.validation_auto === 1))
         .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
     }
@@ -553,6 +553,7 @@ module.exports.Reservation = {
     }),
 
     // récupération d'un élément grace à l'id de sa réservation
+    // TODO : peut-être à changer
     getElemData: id => get(`SELECT * FROM Element LEFT OUTER JOIN (SELECT Reservation.id as id, Creneau.id_Element FROM Reservation JOIN Creneau ON Reservation.id_Creneau = Creneau.id) WHERE Reservation.id = ${id};`),
 
     // récupération d'une ligne grace à l'id de la réservation
@@ -566,7 +567,7 @@ module.exports.Reservation = {
     }),
 
     // récupération de toutes les réservations liées à un élément
-    allByElemId: elemId => all(`SELECT * FROM Reservation LEFT OUTER JOIN (SELECT * FROM Creneau WHERE id_Element = ${elemId});`),
+    allByElemId: elemId => all(`SELECT * FROM ReservationFull WHERE id_Element = ${elemId};`),
 
     // récupération de toutes les réservations liées à un créneau
     allByCrenId: crenId => all(`SELECT * FROM Reservation WHERE id_Creneau = ${crenId};`),

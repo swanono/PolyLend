@@ -4,6 +4,9 @@ async function getNotifs () {
     let response = await fetch('/api/notification/getall');
     if (response.ok) {
         let notifs = await response.json();
+        if (notifs.length === undefined) {
+            notifs = [];
+        }
         document.querySelector('.badge.badge-danger').textContent = '' + notifs.length;
 
         response = await fetch('/api/reservation/allbyid', {
@@ -14,7 +17,7 @@ async function getNotifs () {
         });
         let reservs = await response.json();
 
-        let liste = document.querySelector('#liste_notifs')
+        let liste = document.querySelector('#liste_notifs');
         while (liste.firstChild) {
             liste.removeChild(liste.firstChild);
         }

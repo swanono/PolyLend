@@ -8,6 +8,8 @@ DROP TABLE IF EXISTS MotCle;
 DROP TABLE IF EXISTS Notification;
 DROP VIEW IF EXISTS SalleFull;
 DROP VIEW IF EXISTS MaterielFull;
+DROP VIEW IF EXISTS ReservationFull;
+DROP VIEW IF EXISTS CreneauElem;
 
 PRAGMA foreign_keys = ON;
 
@@ -169,6 +171,7 @@ INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019
 INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019-01-01 00:00:00", "2019-01-25 23:59:00", 10);
 INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019-01-03 19:30:00", "2019-01-05 20:00:00", 13);
 INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019-01-12 14:00:00", "2019-01-12 17:15:00", 8);
+INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019-01-01 14:00:00", "2019-01-01 16:00:00", 2);
 
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("je veux chanter", 0, "2019-01-03 20:00:00", "2019-01-03 22:00:00", "E189415L", 1);
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("je veux chanter", 0, "2019-01-03 20:00:00", "2019-01-03 22:00:00", "E189415L", 5);
@@ -205,3 +208,21 @@ FROM Salle JOIN Element ON Salle.id = Element.id;
 CREATE VIEW MaterielFull AS
 SELECT Materiel.id, quantite, categorie, lieu, id_Element, nom, description, photo, validation_auto
 FROM Materiel JOIN Element ON Materiel.id_Element = Element.id;
+
+
+--
+-- Vue ReservationFull
+--
+
+CREATE VIEW ReservationFull AS
+SELECT Reservation.id, raison, validation, Reservation.date_heure_debut, Reservation.date_heure_fin, id_Utilisateur, id_Creneau, id_Element
+FROM Reservation JOIN Creneau ON Reservation.id_Creneau = Creneau.id;
+
+
+--
+-- Vue CreneauElem
+--
+
+CREATE VIEW CreneauElem AS
+SELECT Creneau.id, date_heure_debut, date_heure_fin, id_Element, nom, description, photo, validation_auto
+FROM Creneau JOIN Element ON Creneau.id_Element = Element.id;

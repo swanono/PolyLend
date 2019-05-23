@@ -37,10 +37,10 @@ module.exports = (passport) => {
                     mot_de_passe: req.body.password,
                 })
                 .then(() => res.redirect('/public/connexion.html'))
-                .catch(err => console.error(err));
+                .catch(err => res.json(err));
             }
         })
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     });
 
     app.post('/utilisateur/login', function (req, res, next) {
@@ -70,7 +70,7 @@ module.exports = (passport) => {
     app.post('/utilisateur/bynum', function (req, res) {
         dbHelper.Utilisateur.byNumEt(req.body.id_Utilisateur)
         .then(etu => res.json(etu))
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     });
 
     app.get('/notification/getall', function (req, res) {
@@ -84,39 +84,82 @@ module.exports = (passport) => {
                 });
                 res.json(notifs);
             })
-            .catch(err => console.error(err));
+            .catch(err => res.json(err));
         })
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     });
 
     app.post('/notification/seen', function (req, res) {
         dbHelper.Notification.delete(req.body.id_Reservation)
         .then(() => true)
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     });
 
     app.post('/reservation/allbyid', function (req, res) {
         dbHelper.Reservation.allById(req.body)
         .then(result => res.json(result))
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     });
 
     app.post('/reservation/validate', function (req, res) {
         dbHelper.Reservation.validate(req.body.id_Reservation, req.body.validate)
         .then(result => res.json(result))
+        .catch(err => res.json(err));
+    });
+
+    app.post('/reservation/submit/salle', function (req, res) {
+        dbHelper.Salle.byId(req.body.id_Salle)
+        .then(function (salleData) {
+            dbHelper.Reservation.allByElemId(salleData.id_Element)
+            .then(function (reservDatas) {
+                reservDatas.forEach(function (reservData) {
+                    if (Date.parse(reservData.date_heure_debut) < Date.parse(req.body.date_heure_fin)
+                        && Date.parse(reservData.date_heure_fin) > Date.parse(req.body.date_heure_debut)) {
+                        res.json({ok: false, alreadyTaken: true,});
+                    }
+                });
+
+                dbHelper.Creneau.allByElemId(salleData.id_Element)
+                .then(function (crenDatas) {
+                    let cren = crenDatas.find(function (crenData) {
+                        return (Date.parse(req.body.date_heure_debut) >= Date.parse(crenData.date_heure_debut)
+                                && Date.parse(req.body.date_heure_fin) <= Date.parse(crenData.date_heure_fin));
+                    });
+        
+                    if (cren === undefined) {
+                        res.json({ok: false, outOfCren: true});
+                    }
+                    else {
+                        dbHelper.Element.byId(salleData.id_Element)
+                        .then(elemData => dbHelper.Reservation.insert({
+                            raison: req.body.raison,
+                            date_heure_debut: req.body.date_heure_debut,
+                            date_heure_fin: req.body.date_heure_fin,
+                            id_Utilisateur: req.user.numero_etudiant,
+                            id_Creneau: cren.id,
+                            validation: elemData.validation_auto,
+                        }))
+                        .then(result => res.json(result))
+                        .catch(err => console.error(err));
+                    }
+                })
+                .catch(err => console.error(err));
+            })
+            .catch(err => console.error(err));
+        })
         .catch(err => console.error(err));
     });
 
     app.post('/creneau/byid', function (req, res) {
         dbHelper.Creneau.byId(req.body.id_Creneau)
         .then(result => res.json(result))
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     });
 
     app.post('/element/byid', function (req, res) {
         dbHelper.Element.byIdFull(req.body.id_Element)
         .then(result => res.json(result))
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     })
 
     app.post('/materiel/add', function (req, res, next) {
@@ -142,13 +185,13 @@ module.exports = (passport) => {
                 id_Element: resultat.id,
             });
         })
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     });
 
     app.get('/salle/getall', function (req, res) {
         dbHelper.Salle.all()
         .then(salles => res.json(salles))
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     });
 
     app.post('/salle/add', function (req, res, next) {
@@ -194,16 +237,16 @@ module.exports = (passport) => {
                 id_Element: resultat.id,
             })
             .then(() => res.redirect('/private/admin/administration.html'))
-            .catch(err => console.error(err));
+            .catch(err => res.json(err));
         })
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
         
     });
 
     app.post('/salle/byid', function (req, res) {
         dbHelper.Salle.byId(req.body.id_Salle)
         .then(result => res.json(result))
-        .catch(err => console.error(err));
+        .catch(err => res.json(err));
     });
 
     return app;

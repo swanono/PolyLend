@@ -117,7 +117,7 @@
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
-                    <form method="post" action="">
+                    <form onsubmit="event.preventDefault();" id="form-reserv" name="form-reserv" id-salle="0">
                         <div class="modal-header">
                             <button type="button" data-dismiss="modal" class="btn btn-danger col-2">Annuler</button>
                             <h5 class="modal-title col-8 text-center" id="exampleModalLongTitle">Réserver</h5>
@@ -132,10 +132,14 @@
                                 </div>
                                 <div class="droite col-6">
                                     <p class="disponible">Disponible selon vos critères</p>
-                                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning complet</button>
+                                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1" id="modal-btn-cal">Planning complet</button>
                                 </div>
                             </div>
                             <p class= "modal-date">Réserver du: <input type="date" name="date-debut" required><input type="time" name="heure-debut" required> Au: <input type="date" name="date-fin" required><input type="time" name="heure-fin" required></p>
+                            <div class="form-group item-row">
+                              <label for="exampleFormControlTextarea1">Pour quelle raison voulez-vous réserver cette salle :</label>
+                              <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="raison" required></textarea>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -143,7 +147,7 @@
         </div>
 
         <!-- Modals calendrier -->
-        <div class="modal fade" id="calendrier1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="calendrier" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header modal-header-calendrier">

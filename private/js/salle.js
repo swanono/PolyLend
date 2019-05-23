@@ -52,8 +52,9 @@ function insertSalle(salleData) {
     buttonPlan.setAttribute('type', 'button');
     buttonPlan.setAttribute('class', 'btn btn-light');
     buttonPlan.setAttribute('data-toggle', 'modal');
-    buttonPlan.setAttribute('data-target', '#calendrier' + salleData.id);
+    buttonPlan.setAttribute('data-target', '#calendrier');
     buttonPlan.textContent = 'Planning complet';
+    buttonPlan.addEventListener('click', actuSalleCal);
     divDroite.appendChild(buttonPlan);
     
     let buttonRes = document.createElement('button');
@@ -81,10 +82,8 @@ function actuSalleReserv (event) {
     })
     .then(result => result.json())
     .then(function (salleData) {
-        let divGauche = document.querySelector('#exampleModalCenter')
-                                .firstElementChild
-                                .firstElementChild
-                                .firstElementChild
+        document.getElementById('form-reserv').setAttribute('id-salle', salleData.id);
+        let divGauche = document.querySelector('#form-reserv')
                                 .lastElementChild
                                 .firstElementChild
                                 .firstElementChild;
@@ -106,4 +105,58 @@ function actuSalleReserv (event) {
     .catch(err => console.error(err));
 }
 
+function actuSalleCal (event) {
+
+}
+
+function askReserv () {
+    let formBalise = document.getElementById('form-reserv');
+    let formData = new FormData(formBalise);
+
+    fetch('/api/reservation/submit/salle', {
+        credentials: 'same-origin',
+        method: 'POST',
+        body: JSON.stringify({
+            id_Salle: formBalise.getAttribute('id-salle'),
+            date_heure_debut: formData.get('date-debut') + ' ' + formData.get('heure-debut'),
+            date_heure_fin: formData.get('date-fin') + ' ' + formData.get('heure-fin'),
+            raison: formData.get('raison'),
+        }),
+        headers: new Headers({'Content-type': 'application/json'}),
+    })
+    .then(response => response.json())
+    .then(function (result) {
+        console.log(result);
+        if (result.alreadyTaken || result.outOfCren) {
+            let divAlert = document.createElement('div');
+            divAlert.setAttribute('class', 'alert alert-danger');
+            divAlert.setAttribute('role', 'alert');
+            divAlert.innerHTML = '<strong>Erreur!</strong> ';
+            if (result.alreadyTaken) {
+                divAlert.innerHTML += 'Le créneau que vous essayez de réserver est déjà pris (consultez le planning)';
+            }
+            else {
+                divAlert.innerHTML += 'La salle n\'est pas disponnible dans le créneau demandé (consultez le planning)';
+            }
+
+            document.querySelector('#form-reserv').insertBefore(divAlert, document.querySelector('#form-reserv').lastElementChild);
+        }
+    })
+    .catch(err => console.error(err));
+}
+
+document.querySelector('button.btn.btn-danger.col-2').addEventListener('click', function () {
+    let divAlert = document.querySelector('div.alert.alert-danger');
+    if (divAlert) {
+        document.querySelector('#form-reserv').removeChild(divAlert);
+    }
+});
+document.querySelector('input.btn.btn-primary.col-2').addEventListener('click', function () {
+    let divAlert = document.querySelector('div.alert.alert-danger');
+    if (divAlert) {
+        document.querySelector('#form-reserv').removeChild(divAlert);
+    }
+});
+document.querySelector('input.btn.btn-primary.col-2').addEventListener('click', askReserv);
+document.getElementById('modal-btn-cal').addEventListener('click', actuSalleCal);
 getAllSalle();
