@@ -106,11 +106,12 @@ function insertNotif(reservData) {
                             }
                             else {
                                 pDesc.textContent = 'Votre demande de réservation pour '
+                                    + (elemData.batiment === undefined ? '' : 'la salle ')
                                     + elemData.nom
                                     + ' du ' + reservData.date_heure_debut
                                     + ' au ' + reservData.date_heure_fin
                                     + ' a été '
-                                    + (reservData.validation === -1 ? 'acceptée.' : 'refusée');
+                                    + (reservData.validation === -1 ? 'refusée.' : 'acceptée.');
                                 divDroite.appendChild(pDesc);
                             }
                         
@@ -143,7 +144,49 @@ function validateReserv(id, valid = true) {
     .catch(err => console.error(err));
 }
 
-getNotifs();
+async function openNotifs() {
+    let liste = document.querySelector('#liste_notifs')
+    while (liste.firstChild) {
+        liste.removeChild(liste.firstChild);
+    }
+    await getNotifs();
+    let response = await fetch('/api/notification/getall');
+    if (response.ok) {
+        let notifs = await response.json();
+        notifs.forEach(notif => {
+            if (notif.admin === 0) {
+                fetch('/api/notification/seen', {
+                    credentials: 'same-origin',
+                    method: 'POST',
+                    body: JSON.stringify({id_Reservation: notif.id_Reservation}),
+                    headers: new Headers({'Content-type': 'application/json'}),
+                })
+                .catch(err => console.error(err));
+            }
+        });
+    }
+    else {
+        console.error('response not ok :');
+        console.error(response);
+    }
+    getNbNotifs();
+}
+
+async function getNbNotifs() {
+    let response = await fetch('/api/notification/getall');
+    if (response.ok) {
+        let notifs = await response.json();
+        document.querySelector('.badge.badge-danger').textContent = '' + notifs.length;
+    }
+    else {
+        console.error('response not ok :');
+        console.error(response);
+    }
+}
+
+getNbNotifs();
+document.getElementById('btn-notifs').addEventListener('click', openNotifs);
+
 
 // à utiliser quand on saura comment ça marche
 /*let idIntervalNotif = setInterval(getNotifs, 1000);

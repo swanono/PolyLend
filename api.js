@@ -18,6 +18,11 @@ module.exports = (passport) => {
         res.send(req.user);
     });
 
+    app.get('/logout', function (req, res) {
+        req.logOut();
+        res.redirect('/public/connexion.html');
+    });
+
     app.post('/utilisateur/register', function (req, res) {
         dbHelper.Utilisateur.byNumEt(req.body['numero-etu'])
         .then(function (etu) {
@@ -71,16 +76,22 @@ module.exports = (passport) => {
     app.get('/notification/getall', function (req, res) {
         dbHelper.Notification.all()
         .then(function (notifs) {
-            dbHelper.Reservation.allByUserId(req.user.numero_etudiant)
+            dbHelper.Reservation.all()
             .then(function (reservs) {
                 // TODO : vérifier qu'on envoie bien les bonnes notifs 
                 notifs = notifs.filter(notif => {
-                    return (reservs.find(reserv => reserv.id === notif.id_Reservation) && notif.admin === 0) || (req.user.admin === 1 && notif.admin === 1);
+                    return (reservs.find(reserv => reserv.id === notif.id_Reservation).id_Utilisateur === req.user.numero_etudiant && notif.admin === 0) || (req.user.admin === 1 && notif.admin === 1);
                 });
                 res.json(notifs);
             })
             .catch(err => console.error(err));
         })
+        .catch(err => console.error(err));
+    });
+
+    app.post('/notification/seen', function (req, res) {
+        dbHelper.Notification.delete(req.body.id_Reservation)
+        .then(() => true)
         .catch(err => console.error(err));
     });
 
@@ -95,7 +106,7 @@ module.exports = (passport) => {
         dbHelper.Reservation.validate(req.body.id_Reservation, req.body.validate)
         .then(result => res.json(result))
         .catch(err => console.error(err));
-    })
+    });
 
     app.post('/creneau/byid', function (req, res) {
         dbHelper.Creneau.byId(req.body.id_Creneau)

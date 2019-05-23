@@ -174,6 +174,7 @@ INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, i
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("je veux chanter", 0, "2019-01-03 20:00:00", "2019-01-03 22:00:00", "E189415L", 5);
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("déplacement de classeurs IdeSYS", 1, "2019-01-10 08:00:00", "2019-01-10 19:00:00", "E154706J", 4);
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("je veux faire une conference", 0, "2019-01-12 15:00:00", "2019-01-12 16:30:00", "E168087D", 6);
+INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("je veux tester des trucs en info", -1, "2019-01-20 08:00:00", "2019-01-20 10:00:00", "E123456A", 3);
 
 INSERT INTO MotCle VALUES (9, "électrique");
 INSERT INTO MotCle VALUES (9, "cool");
@@ -185,6 +186,7 @@ INSERT INTO Notification VALUES (1, 1);
 INSERT INTO Notification VALUES (2, 1);
 INSERT INTO Notification VALUES (3, 0);
 INSERT INTO Notification VALUES (4, 1);
+INSERT INTO Notification VALUES (5, 0);
 
 
 --
@@ -202,4 +204,4 @@ FROM Salle JOIN Element ON Salle.id = Element.id;
 
 CREATE VIEW MaterielFull AS
 SELECT Materiel.id, quantite, categorie, lieu, id_Element, nom, description, photo, validation_auto
-FROM Materiel JOIN Element ON Materiel.id = Element.id;
+FROM Materiel JOIN Element ON Materiel.id_Element = Element.id;

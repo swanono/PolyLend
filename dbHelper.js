@@ -95,13 +95,13 @@ module.exports.Element = {
 
     byIdFull: id => new Promise(function (resolve, reject) {
         get(`SELECT * FROM SalleFull WHERE id_Element = ${id};`)
-        .then(function (result) {
-            if (result) {
-                resolve(result);
+        .then(function (salle) {
+            if (salle) {
+                resolve(salle);
             }
             else {
                 get(`SELECT * FROM MaterielFull WHERE id_Element = ${id};`)
-                .then(result => resolve(result))
+                .then(materiel => resolve(materiel))
                 .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
             }
         })
