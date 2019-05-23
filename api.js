@@ -108,46 +108,51 @@ module.exports = (passport) => {
     });
 
     app.post('/reservation/submit/salle', function (req, res) {
-        dbHelper.Salle.byId(req.body.id_Salle)
-        .then(function (salleData) {
-            dbHelper.Reservation.allByElemId(salleData.id_Element)
-            .then(function (reservDatas) {
-                reservDatas.forEach(function (reservData) {
-                    if (Date.parse(reservData.date_heure_debut) < Date.parse(req.body.date_heure_fin)
-                        && Date.parse(reservData.date_heure_fin) > Date.parse(req.body.date_heure_debut)) {
-                        res.json({ok: false, alreadyTaken: true,});
-                    }
-                });
-
-                dbHelper.Creneau.allByElemId(salleData.id_Element)
-                .then(function (crenDatas) {
-                    let cren = crenDatas.find(function (crenData) {
-                        return (Date.parse(req.body.date_heure_debut) >= Date.parse(crenData.date_heure_debut)
-                                && Date.parse(req.body.date_heure_fin) <= Date.parse(crenData.date_heure_fin));
+        if (Date.parse(req.body.date_heure_debut) >= Date.parse(req.body.date_heure_fin)) {
+            res.json({ok: false, wrongCren: true});
+        }
+        else {
+            dbHelper.Salle.byId(req.body.id_Salle)
+            .then(function (salleData) {
+                dbHelper.Reservation.allByElemId(salleData.id_Element)
+                .then(function (reservDatas) {
+                    reservDatas.forEach(function (reservData) {
+                        if (Date.parse(reservData.date_heure_debut) < Date.parse(req.body.date_heure_fin)
+                            && Date.parse(reservData.date_heure_fin) > Date.parse(req.body.date_heure_debut)) {
+                            res.json({ok: false, alreadyTaken: true,});
+                        }
                     });
-        
-                    if (cren === undefined) {
-                        res.json({ok: false, outOfCren: true});
-                    }
-                    else {
-                        dbHelper.Element.byId(salleData.id_Element)
-                        .then(elemData => dbHelper.Reservation.insert({
-                            raison: req.body.raison,
-                            date_heure_debut: req.body.date_heure_debut,
-                            date_heure_fin: req.body.date_heure_fin,
-                            id_Utilisateur: req.user.numero_etudiant,
-                            id_Creneau: cren.id,
-                            validation: elemData.validation_auto,
-                        }))
-                        .then(result => res.json(result))
-                        .catch(err => console.error(err));
-                    }
+
+                    dbHelper.Creneau.allByElemId(salleData.id_Element)
+                    .then(function (crenDatas) {
+                        let cren = crenDatas.find(function (crenData) {
+                            return (Date.parse(req.body.date_heure_debut) >= Date.parse(crenData.date_heure_debut)
+                                    && Date.parse(req.body.date_heure_fin) <= Date.parse(crenData.date_heure_fin));
+                        });
+            
+                        if (cren === undefined) {
+                            res.json({ok: false, outOfCren: true});
+                        }
+                        else {
+                            dbHelper.Element.byId(salleData.id_Element)
+                            .then(elemData => dbHelper.Reservation.insert({
+                                raison: req.body.raison,
+                                date_heure_debut: req.body.date_heure_debut,
+                                date_heure_fin: req.body.date_heure_fin,
+                                id_Utilisateur: req.user.numero_etudiant,
+                                id_Creneau: cren.id,
+                                validation: elemData.validation_auto,
+                            }))
+                            .then(result => res.json(result))
+                            .catch(err => console.error(err));
+                        }
+                    })
+                    .catch(err => console.error(err));
                 })
                 .catch(err => console.error(err));
             })
             .catch(err => console.error(err));
-        })
-        .catch(err => console.error(err));
+        }
     });
 
     app.post('/creneau/byid', function (req, res) {

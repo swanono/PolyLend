@@ -126,8 +126,7 @@ function askReserv () {
     })
     .then(response => response.json())
     .then(function (result) {
-        console.log(result);
-        if (result.alreadyTaken || result.outOfCren) {
+        if (result.ok === false) {
             let divAlert = document.createElement('div');
             divAlert.setAttribute('class', 'alert alert-danger');
             divAlert.setAttribute('role', 'alert');
@@ -135,8 +134,11 @@ function askReserv () {
             if (result.alreadyTaken) {
                 divAlert.innerHTML += 'Le créneau que vous essayez de réserver est déjà pris (consultez le planning)';
             }
-            else {
+            if (result.outOfCren) {
                 divAlert.innerHTML += 'La salle n\'est pas disponnible dans le créneau demandé (consultez le planning)';
+            }
+            if (result.wrongCren) {
+                divAlert.innerHTML += 'Le créneau demandé n\'est pas valide';
             }
 
             document.querySelector('#form-reserv').insertBefore(divAlert, document.querySelector('#form-reserv').lastElementChild);
