@@ -601,7 +601,11 @@ module.exports.Reservation = {
     validate: (id, accept = true) => new Promise(function (resolve, reject) {
         run(`UPDATE Reservation SET validation = ${accept ? 1 : -1} WHERE id = ${id};`)
         .then(function () {
-            run(`INSERT INTO Notification VALUES (${id}, 0);`)
+            run(`DELETE FROM Notification WHERE id_Reservation = ${id};`)
+            .then(function () {
+                run(`INSERT INTO Notification VALUES (${id}, 0);`)
+                .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            })
             .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
         })
         .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));

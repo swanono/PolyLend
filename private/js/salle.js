@@ -65,7 +65,6 @@ function insertSalle(salleData) {
     divDroite.appendChild(buttonRes);
 
     divItemRow.appendChild(divDroite);
-
     
     document.querySelector('#liste_salles').appendChild(divItemRow);
     document.querySelector('#liste_salles').appendChild(document.createElement('br'));

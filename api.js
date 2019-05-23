@@ -63,7 +63,7 @@ module.exports = (passport) => {
     });
 
     app.post('/utilisateur/bynum', function (req, res) {
-        dbHelper.Utilisateur.byNumEt(req.body)
+        dbHelper.Utilisateur.byNumEt(req.body.id_Utilisateur)
         .then(etu => res.json(etu))
         .catch(err => console.error(err));
     });
@@ -73,6 +73,7 @@ module.exports = (passport) => {
         .then(function (notifs) {
             dbHelper.Reservation.allByUserId(req.user.numero_etudiant)
             .then(function (reservs) {
+                // TODO : vérifier qu'on envoie bien les bonnes notifs 
                 notifs = notifs.filter(notif => {
                     return (reservs.find(reserv => reserv.id === notif.id_Reservation) && notif.admin === 0) || (req.user.admin === 1 && notif.admin === 1);
                 });
@@ -90,19 +91,20 @@ module.exports = (passport) => {
     });
 
     app.post('/reservation/validate', function (req, res) {
-        dbHelper.Reservation.validate(req.body.id_Reservation, req.body.valid)
+        console.log(req.body);
+        dbHelper.Reservation.validate(req.body.id_Reservation, req.body.validate)
         .then(result => res.json(result))
         .catch(err => console.error(err));
     })
 
     app.post('/creneau/byid', function (req, res) {
-        dbHelper.Creneau.byId(req.body)
+        dbHelper.Creneau.byId(req.body.id_Creneau)
         .then(result => res.json(result))
         .catch(err => console.error(err));
     });
 
     app.post('/element/byid', function (req, res) {
-        dbHelper.Element.byIdFull(req.body)
+        dbHelper.Element.byIdFull(req.body.id_Element)
         .then(result => res.json(result))
         .catch(err => console.error(err));
     })
