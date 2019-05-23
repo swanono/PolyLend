@@ -604,6 +604,7 @@ module.exports.Reservation = {
             run(`DELETE FROM Notification WHERE id_Reservation = ${id};`)
             .then(function () {
                 run(`INSERT INTO Notification VALUES (${id}, 0);`)
+                .then(() => resolve(true))
                 .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
             })
             .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));

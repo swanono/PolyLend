@@ -102,7 +102,6 @@ module.exports = (passport) => {
     });
 
     app.post('/reservation/validate', function (req, res) {
-        console.log(req.body);
         dbHelper.Reservation.validate(req.body.id_Reservation, req.body.validate)
         .then(result => res.json(result))
         .catch(err => console.error(err));
@@ -199,6 +198,12 @@ module.exports = (passport) => {
         })
         .catch(err => console.error(err));
         
+    });
+
+    app.post('/salle/byid', function (req, res) {
+        dbHelper.Salle.byId(req.body.id_Salle)
+        .then(result => res.json(result))
+        .catch(err => console.error(err));
     });
 
     return app;

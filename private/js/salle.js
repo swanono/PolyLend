@@ -60,14 +60,50 @@ function insertSalle(salleData) {
     buttonRes.setAttribute('type', 'button');
     buttonRes.setAttribute('class', 'btn btn-primary');
     buttonRes.setAttribute('data-toggle', 'modal');
-    buttonRes.setAttribute('data-target', '#reservation' + salleData.id); // TODO : changer l'id target
+    buttonRes.setAttribute('data-target', '#exampleModalCenter'); // TODO : changer l'id target
     buttonRes.textContent = 'Réserver';
+    buttonRes.addEventListener('click', actuSalleReserv);
     divDroite.appendChild(buttonRes);
 
     divItemRow.appendChild(divDroite);
     
     document.querySelector('#liste_salles').appendChild(divItemRow);
     document.querySelector('#liste_salles').appendChild(document.createElement('br'));
+}
+
+function actuSalleReserv (event) {
+    let idS = parseInt(event.target.parentElement.parentElement.attributes['id-salle'].value);
+    fetch('/api/salle/byid', {
+        credentials: 'same-origin',
+        method: 'POST',
+        body: JSON.stringify({id_Salle: idS}),
+        headers: new Headers({'Content-type': 'application/json'}),
+    })
+    .then(result => result.json())
+    .then(function (salleData) {
+        let divGauche = document.querySelector('#exampleModalCenter')
+                                .firstElementChild
+                                .firstElementChild
+                                .firstElementChild
+                                .lastElementChild
+                                .firstElementChild
+                                .firstElementChild;
+        
+        Array.from(divGauche.children).forEach(function (balise) {
+            switch (balise.tagName) {
+            case 'IMG':
+                balise.setAttribute('src', salleData.photo);
+                break;
+            case 'H2':
+                balise.firstElementChild.textContent = salleData.nom + ', ' + salleData.batiment;
+                break;
+            case 'P':
+                balise.textContent = salleData.description;
+                break;
+            }
+        });
+    })
+    .catch(err => console.error(err));
 }
 
 getAllSalle();
