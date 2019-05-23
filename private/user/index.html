@@ -61,21 +61,21 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
                                 </div>
-                                <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
+                                <input type="text" onChange="document.location=this.form.submit();" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                             </div>
                             <hr>
                             
                             <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                             <div class="form-group form-check float-right">
-                                <input type="checkbox" class="form-check-input" name="disponibilite" id="disponibilite" checked>
+                                <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" name="disponibilite" id="disponibilite" checked>
                             </div>
                             
-                            <p>Du: <input class="float-right" name="date-debut" type="date" style="margin-right: 5px;"><input type="time" name="heure-debut"></p>
-                            <p>Au: <input class="float-right" name="date-fin" type="date" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                            <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" name="date-debut" type="date" style="margin-right: 5px;"><input type="time" onChange="document.location=this.form.submit();" name="heure-debut"></p>
+                            <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" name="date-fin" type="date" style="margin-right: 5px;"><input type="time" onChange="document.location=this.form.submit();" name="heure-fin"></p>
                             <p>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="tri">
+                                    <select class="form-control" onChange="document.location=this.form.submit();" id="exampleFormControlSelect1" name="tri">
                                         <option>Par date de disponibilité</option>
                                         <option>Par date de disponibilité décroissant</option>
                                     </select>
@@ -84,7 +84,7 @@
                             <p>
                                 <div class="form-group">
                                     <label for="type"><strong>Type :</strong></label>
-                                    <select class="form-control" id="type" name="type">
+                                    <select class="form-control" onChange="document.location=this.form.submit();" id="type" name="type">
                                         <option>Informatique</option>
                                         <option>Mobilier</option>
                                     </select>
