@@ -64,21 +64,21 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
                                 </div>
-                                <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
+                                <input type="text" onChange="document.location=this.form.submit();" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                             </div>
                             <hr>
                             
                             <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                             <div class="form-group form-check float-right">
-                                <input type="checkbox" class="form-check-input" name="disponibilite" id="disponibilite" checked>
+                                <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" name="disponibilite" id="disponibilite" checked>
                             </div>
                             
-                            <p>Du: <input class="float-right" type="date" name="date-debut" style="margin-right: 5px;"><input name="heure-debut" type="time"></p>
-                            <p>Au: <input class="float-right" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                            <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-debut" style="margin-right: 5px;"><input name="heure-debut" onChange="document.location=this.form.submit();" type="time"></p>
+                            <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" onChange="document.location=this.form.submit();" name="heure-fin"></p>
                             <p>
                                 <div class="form-group">
                                     <label for="tri"><strong>Tri :</strong></label>
-                                    <select class="form-control" id="tri" name="tri">
+                                    <select class="form-control" onChange="document.location=this.form.submit();" id="tri" name="tri">
                                         <option>Par date de disponibilité</option>
                                         <option>Par date de disponibilité décroissant</option>
                                     </select>
@@ -87,7 +87,7 @@
                             <p>
                                 <div class="form-group">
                                     <label for="batiment"><strong>Bat. :</strong></label>
-                                    <select class="form-control" name="batiment" id="batiment">
+                                    <select class="form-control" onChange="document.location=this.form.submit();" name="batiment" id="batiment">
                                         <option>Ireste</option>
                                         <option>IHT</option>
                                         <option>Isitem</option>
@@ -99,9 +99,9 @@
                             </p>
                             <label class="form-check-label" for="videoProj">Vidéo projecteur</label>
                             <div class="form-group form-check float-right">
-                                <input type="checkbox" name="videoproj"class="form-check-input" id="videoProj" checked>
+                                <input type="checkbox" onChange="document.location=this.form.submit();" name="videoproj"class="form-check-input" id="videoProj" checked>
                             </div><br /><br />
-                            <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" id="capacite" min="1" max="500" name="capacite" value="30"></p>
+                            <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" id="capacite" onChange="document.location=this.form.submit();" min="1" max="500" name="capacite" value="30"></p>
                         </form>
                     </div>
                 </div>
