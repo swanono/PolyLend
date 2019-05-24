@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const api = require('./api.js');
 const auth = require('./auth.js');
-const dbHelper = require('./dbhelper.js');
+const dbHelper = require('./dbHelper.js');
 const passport = auth(app);
 
 

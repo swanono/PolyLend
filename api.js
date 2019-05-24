@@ -8,7 +8,7 @@
 // Expressjs
 const express = require('express');
 // Notre module nodejs d'accès simplifié à la base de données
-const dbHelper = require('./dbhelper.js');
+const dbHelper = require('./dbHelper.js');
 
 function isEmptyOrSpaces (str) {
     return str === null || str === undefined || str.match(/^ *$/) !== null;

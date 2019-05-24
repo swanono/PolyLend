@@ -7,7 +7,7 @@
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const dbHelper = require('./dbhelper.js');
+const dbHelper = require('./dbHelper.js');
 
 // LocalStrategy = stockage des identifiants et mots de passe
 // des utilisateurs en local dans notre base de données
