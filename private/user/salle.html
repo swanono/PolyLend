@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Jekyll v3.8.5">
+        <title>PolyLend</title>
+
+        <script src="../js/salle.js" defer></script>
+        <script src="../js/notifs.js" defer></script>
+        <script src="../js/fill_forms.js" defer></script>
+        <script src="../js/common.js" defer></script>
+
+        <!-- Bootstrap core CSS -->
+        <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
+
+        <style>
+            .bd-placeholder-img {
+                font-size: 1.125rem;
+                text-anchor: middle;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            @media (min-width: 768px) {
+                .bd-placeholder-img-lg {
+                    font-size: 3.5rem;
+                }
+            }
+        </style>
+        <!-- Custom styles for this template -->
+        <link href="../../public/css/princing.css" rel="stylesheet">
+    </head>
+    <body data-spy="scroll" data-target="#side">
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3  border-bottom shadow-sm" id= "menu">
+            <h5 class="my-0 mr-md-auto font-weight-normal p-2 bd-highlight"><img height="100px;" src="../../public/image/logo.png"></h5>
+            <nav class="my-2 my-md-0 mr-md-3 p-2 flex-grow-1 bd-highlight" style="text-align: center;">
+                <!--<a class="p-2 text-dark" href="#">Features</a>
+                <a class="p-2 text-dark" href="#">Enterprise</a>
+                <a class="p-2 text-dark" href="#">Support</a>
+                <a class="p-2 text-dark" href="#">Pricing</a>-->
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a type="button" class="btn btn-secondary" href="../user/index.html"><img src="../../public/image/materiel.svg" width="70px"><br/>Matériel</a>
+                    <a type="button" class="btn btn-secondary selected" href="../user/salle.html"><img src="../../public/image/salle.svg" width="70px"><br/>Salle</a>
+                    <a type="button" class="btn btn-secondary" href="../user/reservation.html"><img src="../../public/image/MesReservations.svg" width="70px"><br/>Réservation</a>
+                </div>
+            </nav>
+
+            <a href="#" data-toggle="modal" data-target="#notifications" id="btn-notifs"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">0</span></a>
+            &nbsp;&nbsp;&nbsp;
+            <div id="username">Nom</div>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/api/logout"> <img src="../../public/image/logOut.svg" width="40px"></a>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-3" id="salles">
+                    <div class="Critere sticky-top" id="side">
+                        <form onsubmit="event.preventDefault();">
+                            <strong>Critère</strong>
+                            <div class="input-group mb-2">
+                                <a class="input-group-prepend" href="#">
+                                    <div class="input-group-text"><img src="../../public/image/search.svg" width="20px" height="20px"></div>
+                                </a>
+                                <input type="text" onChange="searchSalle(this.form);" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
+                            </div>
+                            <hr>
+                            
+                            <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
+                            <div class="form-group form-check float-right">
+                                <input type="checkbox" onChange="searchSalle(this.form);" class="form-check-input" name="disponibilite" id="disponibilite" checked>
+                            </div>
+                            
+                            <p>Du: <input class="float-right" onChange="searchSalle(this.form);" type="date" name="date-debut" style="margin-right: 5px;"><input name="heure-debut" onChange="searchSalle(this.form);" type="time"></p>
+                            <p>Au: <input class="float-right" onChange="searchSalle(this.form);" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" onChange="searchSalle(this.form);" name="heure-fin"></p>
+                            <p>
+                                <div class="form-group">
+                                    <label for="tri"><strong>Tri :</strong></label>
+                                    <select class="form-control" onChange="searchSalle(this.form);" id="tri_salle" name="tri">
+                                        <option>Par date de disponibilité</option>
+                                        <option>Par date de disponibilité décroissant</option>
+                                    </select>
+                                </div>
+                            </p>
+                            <p>
+                                <div class="form-group">
+                                    <label for="batiment"><strong>Bat. :</strong></label>
+                                    <select class="form-control" onChange="searchSalle(this.form);" name="batiment" id="batiment">
+                                        <option>...</option>
+                                        <option>Ireste</option>
+                                        <option>IHT</option>
+                                        <option>Isitem</option>
+                                    </select>
+                                </div>
+                            </p>
+                            <p>
+                                <strong>Equipement :</strong>
+                            </p>
+                            <label class="form-check-label" for="videoProj">Vidéo projecteur</label>
+                            <div class="form-group form-check float-right">
+                                <input type="checkbox" onChange="searchSalle(this.form);" name="videoproj" class="form-check-input" id="videoProj">
+                            </div><br />
+                            <label class="form-check-label" for="tableau">Tableau</label>
+                            <div class="form-group form-check float-right">
+                                <input type="checkbox" onChange="searchSalle(this.form);" name="tableau" class="form-check-input" id="tableau">
+                            </div><br />
+                            <label class="form-check-label" for="ordinateurs">Ordinateurs</label>
+                            <div class="form-group form-check float-right">
+                                <input type="checkbox" onChange="searchSalle(this.form);" name="ordinateurs" class="form-check-input" id="ordinateurs">
+                            </div><br /><br />
+                            <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" id="capacite" onChange="searchSalle(this.form);" min="1" max="500" name="capacite" value="10"></p>
+                        </form>
+                    </div>
+                </div>
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                <div class="col-9">
+                    <div class="liste" id="liste_salles">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modals -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <form onsubmit="event.preventDefault();" id="form-reserv" name="form-reserv" id-salle="0">
+                        <div class="modal-header">
+                            <button type="button" data-dismiss="modal" class="btn btn-danger col-2">Annuler</button>
+                            <h5 class="modal-title col-8 text-center" id="exampleModalLongTitle">Réserver</h5>
+                            <input type="submit" class="btn btn-primary col-2" value="Réserver">
+                        </div>
+                        <div class="modal-body">
+                            <div class="item row">
+                                <div class="gauche col-6">
+                                    <img src="https://via.placeholder.com/100" class="float-left">
+                                    <h2><strong>Nom et Batiment de la salle</strong></h2>
+                                    <p class="description">Decription de la salle</p>
+                                </div>
+                                <div class="droite col-6">
+                                    <p class="disponible">Disponible selon vos critères</p>
+                                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1" id="modal-btn-cal">Planning complet</button>
+                                </div>
+                            </div>
+                            <p class= "modal-date">Réserver du: <input type="date" name="date-debut" required><input type="time" name="heure-debut" required> Au: <input type="date" name="date-fin" required><input type="time" name="heure-fin" required></p>
+                            <div class="form-group item-row">
+                              <label for="exampleFormControlTextarea1">Pour quelle raison voulez-vous réserver cette salle :</label>
+                              <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name="raison" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals calendrier -->
+        <div class="modal fade" id="calendrier" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-calendrier">
+                        <h5 class="modal-title col-11 text-center" id="exampleModalLongTitle">Janvier 2019</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modal-body-calendrier calendrier">
+                        <table width="100%">
+                          <tr>
+                            <th>Lun<br></th>
+                            <th>Mar</th>
+                            <th>Mer</th>
+                            <th>Jeu</th>
+                            <th>Ven</th>
+                            <th>Sam</th>
+                            <th>Dim</th>
+                          </tr>
+                          <tr>
+                            <td class="dispo">1<br/><br/></td>
+                            <td class="dispo">2<br/><br/></td>
+                            <td class="reserve">3<br/>14h00</td>
+                            <td class="reserve">4<br/><br/></td>
+                            <td class="reserve">5<br/><br/></td>
+                            <td class="reserve">6<br/><br/></td>
+                            <td class="reserve">7<br/><br/></td>
+                          </tr>
+                          <tr>
+                            <td class="reserve">8<br/><br/></td>
+                            <td class="reserve">9<br/>16h00</td>
+                            <td>10<br/><br/></td>
+                            <td>11<br/><br/></td>
+                            <td>12<br/><br/></td>
+                            <td>13<br/><br/></td>
+                            <td>14<br/><br/></td>
+                          </tr>
+                          <tr>
+                            <td>15<br/><br/></td>
+                            <td>16<br/><br/></td>
+                            <td>17<br/><br/></td>
+                            <td>18<br/><br/></td>
+                            <td>19<br/><br/></td>
+                            <td>20<br/><br/></td>
+                            <td>21<br/><br/></td>
+                          </tr>
+                          <tr>
+                            <td>22<br/><br/></td>
+                            <td>23<br/><br/></td>
+                            <td>24<br/><br/></td>
+                            <td>25<br/><br/></td>
+                            <td>26<br/><br/></td>
+                            <td>27<br/><br/></td>
+                            <td>28<br/><br/></td>
+                          </tr>
+                          <tr>
+                            <td>29<br/><br/></td>
+                            <td>30<br/><br/></td>
+                            <td>31<br/><br/></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </table>
+                    </div>
+              <!--<div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>-->
+                </div>
+            </div>
+        </div>
+
+         <!-- notifications -->
+        <div class="modal" tabindex="-1" role="dialog" id="notifications">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Mes notifications</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="liste" id="liste_notifs">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="../../public/js/bootstrap.bundle.min.js "></script>
+    <!--<script src="./js/bootstrap.min.js"></script>-->
+
+    <script>
+    $(function() {
+      $("[data-toggle=popover]").popover({
+        html: true,
+        content: function() {
+          var content = $(this).attr("data-popover-content");
+          return $(content).children(".popover-body").html();
+        },
+        title: function() {
+          var title = $(this).attr("data-popover-content");
+          return $(title).children(".popover-heading").html();
+        }
+      });
+    });
+    </script>
+</html>

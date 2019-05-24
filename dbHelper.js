@@ -94,14 +94,14 @@ module.exports.Element = {
     byId: id => get(`SELECT * FROM Element WHERE id = ${id};`),
 
     byIdFull: id => new Promise(function (resolve, reject) {
-        get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Element.id = ${id};`)
-        .then(function (result) {
-            if (result) {
-                resolve(result);
+        get(`SELECT * FROM SalleFull WHERE id_Element = ${id};`)
+        .then(function (salle) {
+            if (salle) {
+                resolve(salle);
             }
             else {
-                get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Element.id = ${id};`)
-                .then(result => resolve(result))
+                get(`SELECT * FROM MaterielFull WHERE id_Element = ${id};`)
+                .then(materiel => resolve(materiel))
                 .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
             }
         })
@@ -171,7 +171,7 @@ module.exports.Materiel = {
                                 "${matData.lieu}",
                                 ${elem.id});`)
                     .then(function () {
-                        get('SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE (SELECT MAX(id) FROM Materiel) = Materiel.id;')
+                        get('SELECT * FROM MaterielFull WHERE (SELECT MAX(id) FROM Materiel) = id;')
                         .then(res => resolve(res))
                         .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
                     })
@@ -185,13 +185,13 @@ module.exports.Materiel = {
     }),
 
     // récupération d'une ligne grace au nom du matériel
-    byName: name => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Element.nom = "${name}";`),
+    byName: name => get(`SELECT * FROM MaterielFull WHERE nom = "${name}";`),
 
     // récupération d'une ligne grace à l'id du matériel
-    byId: id => get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE Materiel.id = ${id};`),
+    byId: id => get(`SELECT * FROM MaterielFull WHERE id = ${id};`),
 
     // récupération de tous les matériels d'une certaine catégorie
-    allByCategory: cat => all(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE categorie = ${cat};`),
+    allByCategory: cat => all(`SELECT * FROM MaterielFull WHERE categorie = ${cat};`),
 
     // récupération de tous les matériels répondant à des critères donnés
     allByParams: params => new Promise(function (resolve, reject) {
@@ -201,7 +201,7 @@ module.exports.Materiel = {
         hasCateg = (params.categorie !== undefined);
         hasDesc = (params.description !== undefined);
 
-        all(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE (
+        all(`SELECT * FROM MaterielFull WHERE (
             ${hasName ? 'nom = "' + params.nom + '" ' : ''}
             ${(hasName && (hasQuant || hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
             ${hasQuant ? 'quantite = ' + params.quantite + ' ' : ''}
@@ -218,19 +218,17 @@ module.exports.Materiel = {
 
     // récupération de toutes les lignes du matériel
     all: (countBegin = 0, countEnd = 0) => new Promise(function (resolve, reject) {
-        let request = 'SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id';
+        let request = 'SELECT * FROM MaterielFull';
 
         if (countBegin > 0) {
-            request += ' GROUP BY Materiel.id HAVING ';
+            request += ' GROUP BY id HAVING ';
 
             if (countEnd > 0) {
-                request += `Materiel.id <= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1 AND Materiel.id >= (SELECT MAX(id) FROM Materiel) - ${countEnd} + 1`;
+                request += `id <= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1 AND id >= (SELECT MAX(id) FROM Materiel) - ${countEnd} + 1`;
             }
             else {
-                request += `Materiel.id >= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1`;
+                request += `id >= (SELECT MAX(id) FROM Materiel) - ${countBegin} + 1`;
             }
-
-            request += ' ORDER BY Materiel.id DESC';
         }
         request += ';';
 
@@ -258,7 +256,7 @@ module.exports.Materiel = {
 
     // déletion de l'élément puis du matériel grace au nom du matériel
     deleteByName: name => new Promise(function (resolve, reject) {
-        get(`SELECT * FROM Materiel JOIN Element ON Materiel.id_Element = Element.id WHERE nom = ${name};`)
+        get(`SELECT * FROM MaterielFull WHERE nom = ${name};`)
         .then(function (mat) {
             run(`DELETE FROM Element WHERE id = ${mat.id_Element};`)
             .then(function () {
@@ -311,7 +309,7 @@ module.exports.Salle = {
                                 "${salleData.equipement}",
                                 ${elem.id});`)
                     .then(function () {
-                        get('SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE (SELECT MAX(id) FROM Salle) = Salle.id;')
+                        get('SELECT * FROM SalleFull WHERE (SELECT MAX(id) FROM Salle) = id;')
                         .then(res => resolve(res))
                         .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
                     })
@@ -325,16 +323,16 @@ module.exports.Salle = {
     }),
 
     // récupération d'une ligne grace au nom de la salle
-    byName: name => get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Element.nom = "${name}";`),
+    byName: name => get(`SELECT * FROM SalleFull WHERE nom = "${name}";`),
 
     // récupération d'une ligne grace à l'id de la salle
-    byId: id => get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.id = ${id};`),
+    byId: id => get(`SELECT * FROM SalleFull WHERE id = ${id};`),
 
     // récupération de toutes les salles d'un batiment
-    allByBat: bat => all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.batiment = "${bat}";`),
+    allByBat: bat => all(`SELECT * FROM SalleFull WHERE batiment = "${bat}";`),
 
     // récupération de toutes les salles ayant une capacité minimum demandée
-    allByMinCap: cap => all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE Salle.capacite >= ${cap};`),
+    allByMinCap: cap => all(`SELECT * FROM SalleFull WHERE capacite >= ${cap};`),
 
     // récupération de toutes les salles répondant aux paramètres fournis
     allByParams: params => new Promise(function (resolve, reject) {
@@ -343,37 +341,44 @@ module.exports.Salle = {
         let hasMinCap = (params.capacite !== undefined);
         let hasEtage = (params.etage !== undefined);
         let hasDesc = (params.description !== undefined);
+        let hasEquip = (params.equipement !== undefined);
 
-        all(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE (
-            ${hasName ? 'nom = "' + params.nom + '" ' : ''}
-            ${(hasName && (hasBat || hasMinCap || hasEtage || hasDesc)) ? 'AND ' : ''}
-            ${hasBat ? 'batiment = "' + params.batiment + '" ' : ''}
-            ${((hasName || hasBat) && (hasMinCap || hasEtage || hasDesc)) ? 'AND ' : ''}
-            ${hasMinCap ? 'capacite >= ' + params.capacite + ' ' : ''}
-            ${((hasName || hasBat || hasMinCap) && (hasEtage || hasDesc)) ? 'AND ' : ''}
-            ${hasEtage ? 'etage = ' + params.etage + ' ' : ''}
-            ${((hasName || hasBat || hasMinCap || hasEtage) && (hasDesc)) ? 'AND ' : ''}
-            ${hasDesc ? 'description LIKE "%' + params.description + '%" ' : ''}
-        );`)
+        let sql = `SELECT * FROM SalleFull WHERE (
+            ${hasName ? 'nom LIKE "%' + params.nom + '%" AND ' : ''}
+            ${hasBat ? 'batiment = "' + params.batiment + '" AND ' : ''}
+            ${hasMinCap ? 'capacite >= ' + params.capacite + ' AND ' : ''}
+            ${hasEtage ? 'etage = ' + params.etage + ' AND ' : ''}
+            ${hasDesc ? 'description LIKE "%' + params.description + '%" AND ' : ''}
+            0 = 0 `;
+
+        if (hasEquip) {
+            sql += (hasName || hasBat || hasMinCap || hasEtage || hasDesc) ? 'AND (' : '';
+            params.equipement.split(' ').forEach(function (equip) {
+                sql += `equipement LIKE "%${equip}%" OR `;
+            });
+            sql += '0 != 0)'
+        }
+
+        sql += ');';
+
+        all(sql)
         .then(res => resolve(res))
         .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
     }),
 
     // récupération de toutes les salles de la base
     all: (countBegin = 0, countEnd = 0) => new Promise(function (resolve, reject) {
-        let request = 'SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id';
+        let request = 'SELECT * FROM SalleFull';
 
         if (countBegin > 0) {
-            request += ' GROUP BY Salle.id HAVING ';
+            request += ' GROUP BY id HAVING ';
 
             if (countEnd > 0) {
-                request += `Salle.id <= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1 AND Salle.id >= (SELECT MAX(id) FROM Salle) - ${countEnd} + 1`;
+                request += `id <= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1 AND id >= (SELECT MAX(id) FROM Salle) - ${countEnd} + 1`;
             }
             else {
-                request += `Salle.id >= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1`;
+                request += `id >= (SELECT MAX(id) FROM Salle) - ${countBegin} + 1`;
             }
-
-            request += ' ORDER BY Salle.id DESC';
         }
         request += ';';
 
@@ -401,7 +406,7 @@ module.exports.Salle = {
 
     // déletion de l'élément puis de la salle grace au nom de la salle
     deleteByName: name => new Promise(function (resolve, reject) {
-        get(`SELECT * FROM Salle JOIN Element ON Salle.id_Element = Element.id WHERE nom = ${name};`)
+        get(`SELECT * FROM SalleFull WHERE nom = ${name};`)
         .then(function (salle) {
             run(`DELETE FROM Element WHERE id = ${salle.id_Element};`)
             .then(function () {
@@ -495,12 +500,16 @@ module.exports.Creneau = {
     byId: id => get(`SELECT * FROM Creneau WHERE id = ${id};`),
 
     // récupération de tous les créneaux associés à un élément
-    allByElem: idElem => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem};`),
+    allByElemId: idElem => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem};`),
+
+    allIncluding: cren => all(`SELECT * FROM Creneau WHERE
+                                datetime(${cren.date_heure_debut}) >= datetime(date_heure_debut)
+                                AND datetime(${cren.date_heure_fin}) <= datetime(date_heure_fin);`),
 
     // récupération de tous les créneaux associés à un élément et incluant une certaine date
-    allByElemIncluding: (idElem, dateTime) => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem}
-                                                    AND datetime(${dateTime}) >= datetime(date_heure_debut)
-                                                    AND datetime(${dateTime}) <= datetime(date_heure_fin);`),
+    allByElemIncluding: (idElem, cren) => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem}
+                                                    AND datetime("${cren.date_heure_debut}") >= datetime(date_heure_debut)
+                                                    AND datetime("${cren.date_heure_fin}") <= datetime(date_heure_fin);`),
 
     // récupération de tous les créneaux de la base
     all: () => all('SELECT * FROM Creneau;'),
@@ -521,7 +530,7 @@ const checkReservData = reservData => new Promise(function (resolve, reject) {
         reject('Attributs de la réservation mal renseignés (raison - date_heure_debut - date_heure_fin - id_Utilisateur - id_Creneau)');
     }
     else {
-        get(`SELECT * FROM Creneau JOIN Element ON Creneau.id_Element = Element.id WHERE Creneau.id = ${reservData.id_Creneau};`)
+        get(`SELECT * FROM CreneauElem WHERE id = ${reservData.id_Creneau};`)
         .then(result => resolve(result.validation_auto === 1))
         .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
     }
@@ -557,13 +566,21 @@ module.exports.Reservation = {
     }),
 
     // récupération d'un élément grace à l'id de sa réservation
+    // TODO : peut-être à changer
     getElemData: id => get(`SELECT * FROM Element LEFT OUTER JOIN (SELECT Reservation.id as id, Creneau.id_Element FROM Reservation JOIN Creneau ON Reservation.id_Creneau = Creneau.id) WHERE Reservation.id = ${id};`),
 
     // récupération d'une ligne grace à l'id de la réservation
     byId: id => get(`SELECT * FROM Reservation WHERE id = ${id};`),
 
+    allById: idArray => new Promise(function (resolve, reject) {
+        let promises = idArray.map(id => get(`SELECT * FROM Reservation WHERE id = ${id};`));
+        Promise.all(promises)
+        .then(result => resolve(result))
+        .catch(err => reject('erreur dans le lancement de  la commande get :\n' + err));
+    }),
+
     // récupération de toutes les réservations liées à un élément
-    allByElemId: elemId => all(`SELECT * FROM Reservation LEFT OUTER JOIN (SELECT * FROM Creneau WHERE id_Element = ${elemId});`),
+    allByElemId: elemId => all(`SELECT * FROM ReservationFull WHERE id_Element = ${elemId};`),
 
     // récupération de toutes les réservations liées à un créneau
     allByCrenId: crenId => all(`SELECT * FROM Reservation WHERE id_Creneau = ${crenId};`),
@@ -598,7 +615,12 @@ module.exports.Reservation = {
     validate: (id, accept = true) => new Promise(function (resolve, reject) {
         run(`UPDATE Reservation SET validation = ${accept ? 1 : -1} WHERE id = ${id};`)
         .then(function () {
-            run(`INSERT INTO Notification VALUES (${id}, 0);`)
+            run(`DELETE FROM Notification WHERE id_Reservation = ${id};`)
+            .then(function () {
+                run(`INSERT INTO Notification VALUES (${id}, 0);`)
+                .then(() => resolve(true))
+                .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            })
             .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
         })
         .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
@@ -624,8 +646,8 @@ const checkMotcleData = motcleData => new Promise(function (resolve, reject) {
         resolve({id_Element: motcleData.id_Element, mots: ['']});
     }
     else {
-        if ((typeof motcleData) === 'string' || (motcleData instanceof String)) {
-            resolve({id_Element: motcleData.id_Element, mots: motcleData.split(' ')});
+        if ((typeof motcleData.mots) === 'string' || (motcleData.mots instanceof String)) {
+            resolve({id_Element: motcleData.id_Element, mots: motcleData.mots.split(' ')});
         }
         else if (Array.isArray(motcleData.mots)) {
             let isStringArray = true;
@@ -719,10 +741,11 @@ module.exports.Notification = {
         .then(result => resolve(result))
         .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
     }),
+
+    delete: reservId => run(`DELETE FROM Notification WHERE id_Reservation = ${reservId};`),
 }
 
 /*
 aller voir l'url :
 http://www.sqlitetutorial.net/sqlite-nodejs/
 */
-

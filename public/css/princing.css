@@ -1,0 +1,167 @@
+html {
+    font-size: 14px;
+  }
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+  .container {
+    max-width: 1280px;
+  }
+  
+  .pricing-header {
+    max-width: 700px;
+
+  }
+  
+  .card-deck .card {
+    min-width: 220px;
+  }
+  
+
+  #menu{
+      background-color: rgb(0, 168, 232);
+      color: white;
+  }
+
+  .btn-secondary{
+      background-color: rgb(0, 168, 232);
+      border-color: white;
+      color: white;
+
+  }
+  .selected{
+    background-color: white;
+    color: black;
+    
+}
+.btn-secondary a{
+  text-decoration: none;
+  color: white;
+}
+.selected a{
+  text-decoration: none;
+  color: black;
+}
+
+
+.Critere {
+    border: groove;
+    border-radius: 10px;
+    border-color: grey;
+    border-width: 2px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.item {
+    border: groove;
+    border-radius: 10px;
+    border-color: grey;
+    border-width: 2px;
+    padding-top: 10px;
+}
+
+#Recherche{
+  padding: 10px 30px;
+
+}
+
+#labelrecherche{
+  position:relative;
+
+}
+#labelrecherche:before{
+  position:absolute;
+  content: "";
+  left:10px;
+  top:0;
+  bottom:0;
+  width: 20px;
+  background:url(./image/search.svg) center / contain no-repeat;
+  
+}
+
+.disponible{
+    color: green;
+    font-weight: bold;
+}
+
+.indisponible{
+    color: red;
+    font-weight: bold;
+}
+
+.item-indisponible{
+    background-color: rgb(254,230,230);
+}
+
+.item-en-attente{
+    background-color:#fde7c9;
+}
+.item-disponible{
+  background-color: #e3f897;
+}
+
+.description{
+    color:grey;
+}
+
+.float-left{
+    padding: 5px;
+}
+
+.modal-header{
+    background-color: rgb(238,238,238);
+    font-weight: bold;
+}
+.modal-body{
+    margin:0px 12px 0px 12px;
+}
+
+.modal-date{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.calendrier th{
+    background-color: rgb(238,238,238);
+}
+.modal-header-calendrier{
+    background-color: rgb(204,204,204);
+    font-weight: bold;
+}
+.modal-body-calendrier{
+    margin:0 0 0 0;
+}
+
+.dispo{
+    background-color: green;
+}
+.en-cours{
+    background-color: orange;
+}
+.reserve{
+    background-color: red;
+}
+
+
+/*ADMINISTRATION*/
+.en-attente{
+    color:orange;
+    font-weight: bold;
+}
+.table td{
+    padding: 0;
+}
+#tableau-sans-bordure td{
+    vertical-align: 0;
+    text-align: center;
+}
+#tableau-sans-bordure .row{
+    margin-left: 0;
+    margin-right:0;
+}
+
