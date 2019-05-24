@@ -1,7 +1,11 @@
 'use strict';
 
+const prod = true;
+
+const prefixDir = prod ? '/4C' : '';
+
 async function getNotifs () {
-    let response = await fetch('/api/notification/getall');
+    let response = await fetch(prefixDir + '/api/notification/getall');
     if (response.ok) {
         let notifs = await response.json();
         if (notifs.length === undefined) {
@@ -9,7 +13,7 @@ async function getNotifs () {
         }
         document.querySelector('.badge.badge-danger').textContent = '' + notifs.length;
 
-        response = await fetch('/api/reservation/allbyid', {
+        response = await fetch(prefixDir + '/api/reservation/allbyid', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify(notifs.map(notif => notif.id_Reservation)),
@@ -30,7 +34,7 @@ async function getNotifs () {
 }
 
 function insertNotif(reservData) {
-    fetch('/api/creneau/byid', {
+    fetch(prefixDir + '/api/creneau/byid', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({id_Creneau: reservData.id_Creneau}),
@@ -38,7 +42,7 @@ function insertNotif(reservData) {
     })
     .then(crenDataj => crenDataj.json())
     .then(function (crenData) {
-        fetch('/api/element/byid', {
+        fetch(prefixDir + '/api/element/byid', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({id_Element: crenData.id_Element}),
@@ -46,7 +50,7 @@ function insertNotif(reservData) {
         })
         .then(elemDataj => elemDataj.json())
         .then(function (elemData) {
-            fetch('/api/utilisateur/bynum', {
+            fetch(prefixDir + '/api/utilisateur/bynum', {
                 credentials: 'same-origin',
                 method: 'POST',
                 body: JSON.stringify({id_Utilisateur: reservData.id_Utilisateur}),
@@ -132,7 +136,7 @@ function insertNotif(reservData) {
 }
 
 function validateReserv(event, id, valid) {
-    fetch('/api/reservation/validate', {
+    fetch(prefixDir + '/api/reservation/validate', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({id_Reservation: id, validate: (!valid ? false : true)}),
@@ -144,12 +148,12 @@ function validateReserv(event, id, valid) {
 
 async function openNotifs() {
     await getNotifs();
-    let response = await fetch('/api/notification/getall');
+    let response = await fetch(prefixDir + '/api/notification/getall');
     if (response.ok) {
         let notifs = await response.json();
         notifs.forEach(notif => {
             if (notif.admin === 0) {
-                fetch('/api/notification/seen', {
+                fetch(prefixDir + '/api/notification/seen', {
                     credentials: 'same-origin',
                     method: 'POST',
                     body: JSON.stringify({id_Reservation: notif.id_Reservation}),
@@ -167,7 +171,7 @@ async function openNotifs() {
 }
 
 async function getNbNotifs() {
-    let response = await fetch('/api/notification/getall');
+    let response = await fetch(prefixDir + '/api/notification/getall');
     if (response.ok) {
         let notifs = await response.json();
         document.querySelector('.badge.badge-danger').textContent = '' + notifs.length;
