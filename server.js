@@ -7,10 +7,12 @@ const auth = require('./auth.js');
 const dbHelper = require('./dbHelper.js');
 const passport = auth(app);
 
+const prod = false;
 
+const prefixDir = prod ? '/4C' : '';
 
 // l'api d'accès aux données sera disponible sous la route "/api"
-app.use('/api',
+app.use(prefixDir + '/api',
     function (req, res, next) {
         if ((req.url.indexOf('/utilisateur/login') === -1 && req.url.indexOf('/utilisateur/register') === -1 && !req.user)
             || (req.url.indexOf('/add') >= 0 && req.user.admin === 0)) {
@@ -24,10 +26,10 @@ app.use('/api',
 );
 
 // Le contenu statique public sera lu à partir du repertoire 'public'
-app.use('/', express.static('public'));
-app.use('/public', express.static('public'));
+app.use(prefixDir + '/', express.static('public'));
+app.use(prefixDir + '/public', express.static('public'));
 
-app.use('/private/admin',
+app.use(prefixDir + '/private/admin',
     require('connect-ensure-login').ensureLoggedIn('/public/connexion.html'),
     function (req, res, next) {
         console.log('requesting admin access : ' + JSON.stringify(req.user));
@@ -57,7 +59,7 @@ app.use('/private/admin',
     }
 );
 
-app.use('/private',
+app.use(prefixDir + '/private',
     require('connect-ensure-login').ensureLoggedIn('/public/connexion.html'),
     function (req, res, next) {
         console.log('requesting private access : ' + JSON.stringify(req.user));
