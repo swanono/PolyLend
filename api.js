@@ -10,6 +10,19 @@ const express = require('express');
 // Notre module nodejs d'accès simplifié à la base de données
 const dbHelper = require('./dbhelper.js');
 
+function isEmptyOrSpaces (str) {
+    return str === null || str === undefined || str.match(/^ *$/) !== null;
+}
+
+function normalizeDH (str) {
+    if (str.indexOf('-') === -1) {
+        return undefined;
+    }
+    if (str.indexOf(':') === -1) {
+        return str + '00:00:00';
+    }
+    return str;
+}
 
 module.exports = (passport) => {
     const app = express();
@@ -37,10 +50,10 @@ module.exports = (passport) => {
                     mot_de_passe: req.body.password,
                 })
                 .then(() => res.redirect('/public/connexion.html'))
-                .catch(err => res.json(err));
+                .catch(err => {console.error(err); res.json(err);});
             }
         })
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.post('/utilisateur/login', function (req, res, next) {
@@ -51,7 +64,6 @@ module.exports = (passport) => {
             return res.send({success: false, message: 'empty password'});
         }
         passport.authenticate('local', function (err, user, info) {
-            console.log(user);
             if (err) {
                 return next(err); // will generate a 500 error
             }
@@ -62,6 +74,8 @@ module.exports = (passport) => {
                 if (err) {
                     return next(err);
                 }
+                console.log('>>> Authentification : ');
+                console.log(user);
                 return res.redirect('/private/user/index.html');
             });
         })(req, res, next);
@@ -70,7 +84,7 @@ module.exports = (passport) => {
     app.post('/utilisateur/bynum', function (req, res) {
         dbHelper.Utilisateur.byNumEt(req.body.id_Utilisateur)
         .then(etu => res.json(etu))
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.get('/notification/getall', function (req, res) {
@@ -84,27 +98,27 @@ module.exports = (passport) => {
                 });
                 res.json(notifs);
             })
-            .catch(err => res.json(err));
+            .catch(err => {console.error(err); res.json(err);});
         })
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.post('/notification/seen', function (req, res) {
         dbHelper.Notification.delete(req.body.id_Reservation)
         .then(() => true)
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.post('/reservation/allbyid', function (req, res) {
         dbHelper.Reservation.allById(req.body)
         .then(result => res.json(result))
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.post('/reservation/validate', function (req, res) {
         dbHelper.Reservation.validate(req.body.id_Reservation, req.body.validate)
         .then(result => res.json(result))
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.post('/reservation/submit/salle', function (req, res) {
@@ -144,27 +158,27 @@ module.exports = (passport) => {
                                 validation: elemData.validation_auto,
                             }))
                             .then(result => res.json(result))
-                            .catch(err => console.error(err));
+                            .catch(err => {console.error(err); res.json(err);});
                         }
                     })
-                    .catch(err => console.error(err));
+                    .catch(err => {console.error(err); res.json(err);});
                 })
-                .catch(err => console.error(err));
+                .catch(err => {console.error(err); res.json(err);});
             })
-            .catch(err => console.error(err));
+            .catch(err => {console.error(err); res.json(err);});
         }
     });
 
     app.post('/creneau/byid', function (req, res) {
         dbHelper.Creneau.byId(req.body.id_Creneau)
         .then(result => res.json(result))
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.post('/element/byid', function (req, res) {
         dbHelper.Element.byIdFull(req.body.id_Element)
         .then(result => res.json(result))
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     })
 
     app.post('/materiel/add', function (req, res, next) {
@@ -190,33 +204,32 @@ module.exports = (passport) => {
                 id_Element: resultat.id,
             });
         })
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.get('/salle/getall', function (req, res) {
         dbHelper.Salle.all()
         .then(salles => res.json(salles))
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.post('/salle/add', function (req, res, next) {
         let equipmentString = '';
 
         if (req.body.videoproj === 'on') {
-            equipmentString += 'vidéo projecteur';
+            equipmentString += 'vidéo-projecteur';
         }
         if (req.body.tableau === 'on') {
             if (req.body.videoproj === 'on'){
-                equipmentString += ', tableau';
+                equipmentString += ' ';
             }
-            else {
-                equipmentString += 'tableau';
-            }
+            equipmentString += 'tableau';
         }
-        if (req.body.autre !== '') {
+        if (req.body.ordinateurs === 'on') {
             if (equipmentString.length !== 0){
-                equipmentString += `, ${req.body.autre}`;
+                equipmentString += ' ';
             }
+            equipmentString += 'ordinateurs';
         }
 
         dbHelper.Salle.insert({
@@ -230,7 +243,7 @@ module.exports = (passport) => {
             validation_auto: req.body.validation_auto,
         })
         .then(function (resultat) {
-            for (let i = 0 ; i < req.body['date-fin'].length ;i+=1 ) {
+            for (let i = 0; i < req.body['date-fin'].length; i+=1 ) {
                 dbHelper.Creneau.insert({
                     date_heure_debut : `${req.body['date-debut'][i]} ${req.body['heure-debut'][i]}`,
                     date_heure_fin : `${req.body['date-fin'][i]} ${req.body['heure-fin'][i]}`,
@@ -242,16 +255,110 @@ module.exports = (passport) => {
                 id_Element: resultat.id,
             })
             .then(() => res.redirect('/private/admin/administration.html'))
-            .catch(err => res.json(err));
+            .catch(err => {console.error(err); res.json(err);});
         })
-        .catch(err => res.json(err));
-        
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+    app.post('/salle/search', function (req, res) {
+        let hasCrit = !isEmptyOrSpaces(req.body.critere);
+        let dhd = normalizeDH(req.body.date_heure_debut);
+        let hasDHD = !isEmptyOrSpaces(req.body.date_heure_debut) && dhd !== undefined;
+        let dhf = normalizeDH(req.body.date_heure_fin);
+        let hasDHF = !isEmptyOrSpaces(req.body.date_heure_fin) && dhf !== undefined;
+        let hasVproj = !isEmptyOrSpaces(req.body.videoproj);
+        let hasTab = !isEmptyOrSpaces(req.body.tableau);
+        let hasOrdi = !isEmptyOrSpaces(req.body.ordinateurs);
+        let hasCap = !isEmptyOrSpaces(req.body.capacite);
+
+        let crits = hasCrit ? req.body.critere.split(' ') : [];
+        let paramSalle = {
+            batiment: req.body.batiment,
+            capacite: hasCap ? parseInt(req.body.capacite) : undefined,
+            equipement: (hasVproj || hasTab || hasOrdi ?
+                            (hasVproj ? 'vidéo-projecteur' : '')
+                            + ((hasVproj) && (hasTab || hasOrdi) ? ' ' : '')
+                            + (hasTab ? 'tableau' : '')
+                            + ((hasVproj || hasTab) && (hasOrdi) ? ' ' : '')
+                            + (hasOrdi ? 'ordinateurs' : '')
+                            : undefined),
+        };
+
+        let cren = {
+            date_heure_debut: hasDHD ? dhd : (hasDHF ? dhf : undefined),
+            date_heure_fin: hasDHF ? dhf : (hasDHD ? dhd : undefined),
+        };
+
+        let promises = hasCrit ? [
+            ...crits.map(crit => {
+                paramSalle.etage = undefined;
+                paramSalle.description = undefined;
+                paramSalle.nom = crit;
+                return dbHelper.Salle.allByParams(paramSalle);
+            }),
+            ...crits.map(crit => {
+                paramSalle.nom = undefined;
+                paramSalle.description = undefined;
+                paramSalle.etage = (isNaN(parseInt(crit)) ? undefined : parseInt(crit));
+                return dbHelper.Salle.allByParams(paramSalle);
+            }),
+            ...crits.map(crit => {
+                paramSalle.nom = undefined;
+                paramSalle.etage = undefined;
+                paramSalle.description = crit;
+                return dbHelper.Salle.allByParams(paramSalle);
+            }),
+        ] : [
+            dbHelper.Salle.allByParams(paramSalle)
+        ];
+
+
+        dbHelper.MotCle.allBySentence(hasCrit ? req.body.critere : '1478562548632145863694520')
+        .then(function (rows) {
+            if (rows) {
+                rows.forEach(row => promises.push(dbHelper.Element.byIdFull(row.id_Element)));
+            }
+
+            Promise.all(promises)
+            .then(function (allSalles) {
+                let salles = [...new Set(allSalles.map(salleStack => {
+                    if (salleStack === null || salleStack === undefined || typeof(salleStack[Symbol.iterator]) !== 'function') {
+                        return salleStack;
+                    }
+                    else {
+                        return [...salleStack];
+                    }
+                }))][0];
+                
+                if(cren.date_heure_debut) {
+                    let crenPromises = salles.map(s => dbHelper.Creneau.allByElemIncluding(s.id_Element, cren));
+    
+                    Promise.all(crenPromises)
+                    .then(function (crenValids) {
+                        let sallesValids = [].concat.apply([], crenValids.filter((v, i, a) => 
+                            a.indexOf(a.find(crf => v.id_Element === crf.id_Element)) === i && v.length > 0
+                        ))
+                        .map(cr => dbHelper.Element.byIdFull(cr.id_Element));
+
+                        Promise.all(sallesValids)
+                        .then(final => res.json(final))
+                        .catch(err => {console.error(err); res.json(err);});
+                    })
+                    .catch(err => {console.error(err); res.json(err);});
+                }
+                else {
+                    res.json(salles);
+                }
+            })
+            .catch(err => {console.error(err); res.json(err);});
+        })
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     app.post('/salle/byid', function (req, res) {
         dbHelper.Salle.byId(req.body.id_Salle)
         .then(result => res.json(result))
-        .catch(err => res.json(err));
+        .catch(err => {console.error(err); res.json(err);});
     });
 
     return app;

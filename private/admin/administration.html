@@ -9,6 +9,8 @@
         <title>PolyLend</title>
         
         <script src="../js/notifs.js" defer></script>
+        <script src="../js/fill_forms.js" defer></script>
+        <script src="../js/common.js" defer></script>
 
         <!-- Bootstrap core CSS -->
         <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +33,7 @@
         <!-- Custom styles for this template -->
         <link href="../../public/css/princing.css" rel="stylesheet">
     </head>
-    <body>
+    <body data-spy="scroll" data-target="#side">
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3  border-bottom shadow-sm" id= "menu">
             <h5 class="my-0 mr-md-auto font-weight-normal p-2 bd-highlight"><img height="100px;" src="../../public/image/logo.png"></h5>
             <nav class="my-2 my-md-0 mr-md-3 p-2 flex-grow-1 bd-highlight" style="text-align: center;">
@@ -49,8 +51,10 @@
                 </div>
             </nav>
 
-            <a href="#" data-toggle="modal" data-target="#notifications" id="btn-notifs"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">0</span></a>&nbsp;&nbsp;&nbsp;
-            Nom&nbsp;&nbsp;&nbsp;
+            <a href="#" data-toggle="modal" data-target="#notifications" id="btn-notifs"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">0</span></a>
+            &nbsp;&nbsp;&nbsp;
+            <div id="username">Nom</div>
+            &nbsp;&nbsp;&nbsp;
             <a href="/api/logout"> <img src="../../public/image/logOut.svg" width="40px"></a>
         </div>
 
@@ -61,119 +65,122 @@
                 <div class="col-3">
                     <br/>
                     <a href="droits.html" type="button" class="btn btn-primary">Editer les droits d'administrateur</a>
+                    <br/><br/>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ajouterElement"><img src="../../public/image/plus.svg" width="20px">Ajouter un élément</button>
                     <br/> <br/>
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#materiel">Matériel</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#salles">Salles</a>
-                        </li>
-                    </ul>
+
+                    <div class="sticky-top" id="side">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#materiel">Matériel</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#salles">Salles</a>
+                            </li>
+                        </ul>
 
 
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div class="tab-pane active container" id="materiel">
-                            <!-- début matériel-->
-                            <div class= "Critere">
-                                <form method="post" action="">
-                                    <strong>Critère</strong>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active container" id="materiel">
+                                <!-- début matériel-->
+                                <div class= "Critere">
+                                    <form onsubmit="event.preventDefault();">
+                                        <strong>Critère</strong>
+                                        <div class="input-group mb-2">
+                                            <a class="input-group-prepend" href="#" onclick="document.location=this.form.submit();">
+                                                <div class="input-group-text"><img src="../../public/image/search.svg" width="20px" height="20px"></div>
+                                            </a>
+                                            <input type="text" class="form-control" name="critere" id="inlineFormInputGroup" placeholder="">
                                         </div>
-                                        <input type="text" onChange="document.location=this.form.submit();" class="form-control" name="critere" id="inlineFormInputGroup" placeholder="">
-                                    </div>
-                                    <hr>
-                                    
-                                    <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
-                                    <div class="form-group form-check float-right">
-                                        <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" name="disponibilite" id="disponibilite" checked>
-                                    </div>
-                                    
-                                    <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" name="date-debut" type="date" style="margin-right: 5px;"><input name="heure-debut" type="time"></p>
-                                    <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
-                                    <p>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
-                                            <select name="tri" onChange="document.location=this.form.submit();" class="form-control" id="exampleFormControlSelect1">
-                                                <option>Par date de disponibilité</option>
-                                                <option>Par date de disponibilité décroissant</option>
-                                            </select>
+                                        <hr>
+                                        
+                                        <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
+                                        <div class="form-group form-check float-right">
+                                            <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" name="disponibilite" id="disponibilite" checked>
                                         </div>
-                                    </p>
-                                    <p>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1"><strong>Type :</strong></label>
-                                            <select class="form-control" onChange="document.location=this.form.submit();" id="exampleFormControlSelect1" name="type">
-                                                <option>Informatique</option>
-                                                <option>Mobilier</option>
-                                            </select>
-                                        </div>
-                                    </p>
-                                </form>
+                                        
+                                        <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" name="date-debut" type="date" style="margin-right: 5px;"><input name="heure-debut" type="time"></p>
+                                        <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                                        <p>
+                                            <div class="form-group">
+                                                <label for="tri_materiel"><strong>Tri :</strong></label>
+                                                <select onChange="document.location=this.form.submit();" class="form-control" id="tri_materiel" name="tri_materiel">
+                                                    <option>Par date de disponibilité</option>
+                                                    <option>Par date de disponibilité décroissant</option>
+                                                </select>
+                                            </div>
+                                        </p>
+                                        <p>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1"><strong>Type :</strong></label>
+                                                <select class="form-control" onChange="document.location=this.form.submit();" id="exampleFormControlSelect1" name="type">
+                                                    <option>Informatique</option>
+                                                    <option>Mobilier</option>
+                                                </select>
+                                            </div>
+                                        </p>
+                                    </form>
+                                </div>
+                                <!-- fin matériel -->
                             </div>
-                            <!-- fin matériel -->
-                        </div>
-                        <div class="tab-pane container" id="salles">
-                            <!-- début salles -->
-                            <div class= "Critere">
-                                <form method="post" action="">
-                                    <strong>Critère</strong>
-                                    <div class="input-group mb-2">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
+                            <div class="tab-pane container" id="salles">
+                                <!-- début salles -->
+                                <div class= "Critere">
+                                    <form onsubmit="event.preventDefault();">
+                                        <strong>Critère</strong>
+                                        <div class="input-group mb-2">
+                                            <a class="input-group-prepend" href="#" onclick="document.location=this.form.submit();">
+                                                <div class="input-group-text"><img src="../../public/image/search.svg" width="20px" height="20px"></div>
+                                            </a>
+                                            <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                                         </div>
-                                        <input type="text" onChange="document.location=this.form.submit();" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
-                                    </div>
-                                    <hr>
-                                    
-                                    <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
-                                    <div class="form-group form-check float-right">
-                                        <input type="checkbox" onChange="document.location=this.form.submit();" name="disponibilite" class="form-check-input" id="disponibilite" checked>
-                                    </div>
-                                    
-                                    <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-debut" style="margin-right: 5px;"><input type="time" name="heure-debut"></p>
-                                    <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
-                                    <p>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
-                                            <select class="form-control" onChange="document.location=this.form.submit();" id="exampleFormControlSelect1" name="tri">
-                                                <option>Par date de disponibilité</option>
-                                                <option>Par date de disponibilité décroissant</option>
-                                            </select>
+                                        <hr>
+                                        
+                                        <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
+                                        <div class="form-group form-check float-right">
+                                            <input type="checkbox" onChange="document.location=this.form.submit();" name="disponibilite" class="form-check-input" id="disponibilite" checked>
                                         </div>
-                                    </p>
-                                    <p>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1"><strong>Bat. :</strong></label>
-                                            <select class="form-control" onChange="document.location=this.form.submit();" id="exampleFormControlSelect1" name="batiment">
-                                                <option>Ireste</option>
-                                                <option>IHT</option>
-                                                <option>Isitem</option>
-                                            </select>
-                                        </div>
-                                    </p>
-                                    <p>
-                                        <strong>Equipement :</strong>
-                                    </p>
-                                    <label class="form-check-label" for="videoProj">Vidéo projecteur</label>
-                                    <div class="form-group form-check float-right">
-                                        <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" id="videoProj" name="videoproj" checked>
-                                    </div><br /><br />
-                                    <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" onChange="document.location=this.form.submit();" name="capacite" id="capacite" min="1" max="500" value="30"></p>
-                                </form>
+                                        
+                                        <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-debut" style="margin-right: 5px;"><input type="time" name="heure-debut"></p>
+                                        <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                                        <p>
+                                            <div class="form-group">
+                                                <label for="tri_salle"><strong>Tri :</strong></label>
+                                                <select class="form-control" onChange="document.location=this.form.submit();" id="tri_salle" name="tri_salle">
+                                                    <option>Par date de disponibilité</option>
+                                                    <option>Par date de disponibilité décroissant</option>
+                                                </select>
+                                            </div>
+                                        </p>
+                                        <p>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1"><strong>Bat. :</strong></label>
+                                                <select class="form-control" onChange="document.location=this.form.submit();" id="exampleFormControlSelect1" name="batiment">
+                                                    <option>Ireste</option>
+                                                    <option>IHT</option>
+                                                    <option>Isitem</option>
+                                                </select>
+                                            </div>
+                                        </p>
+                                        <p>
+                                            <strong>Equipement :</strong>
+                                        </p>
+                                        <label class="form-check-label" for="videoProj">Vidéo projecteur</label>
+                                        <div class="form-group form-check float-right">
+                                            <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" id="videoProj" name="videoproj" checked>
+                                        </div><br /><br />
+                                        <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" onChange="document.location=this.form.submit();" name="capacite" id="capacite" min="1" max="500" value="30"></p>
+                                    </form>
+                                </div>
+                                
+                                <!-- fin salles -->
                             </div>
-                            
-                            <!-- fin salles -->
                         </div>
                     </div>
-                    <br />
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ajouterElement"><img src="../../public/image/plus.svg" width="20px">Ajouter un élément</button>
                 </div>
                 <div class="col-9">
-                    <div class="liste">
+                    <div class="liste" id="liste_salle_materiel">
                         <div class="item row">
                             <div class="gauche col-6">
                                 <img src="https://via.placeholder.com/100" class="float-left">
@@ -305,9 +312,11 @@
                                                     <input type="checkbox" name="tableau" class="form-check-input" id="tableaublanc" checked>
                                                 </div> 
                                             </div>
-                                            <div class= "col-3">
-                                                    <input class= "form-control" name="autre" type="text" placeholder="Autre">
-                                 
+                                            <div class= "col-4">
+                                                <label class="form-check-label col-form-label" for="ordis">Ordinateurs</label>
+                                                <div class="form-group form-check float-right"> 
+                                                    <input type="checkbox" name="ordinateurs" class="form-check-input" id="ordis" checked>
+                                                </div> 
                                             </div>
                                         </div>
                                     </div>

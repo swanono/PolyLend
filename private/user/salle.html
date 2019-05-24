@@ -10,6 +10,8 @@
 
         <script src="../js/salle.js" defer></script>
         <script src="../js/notifs.js" defer></script>
+        <script src="../js/fill_forms.js" defer></script>
+        <script src="../js/common.js" defer></script>
 
         <!-- Bootstrap core CSS -->
         <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
@@ -32,7 +34,7 @@
         <!-- Custom styles for this template -->
         <link href="../../public/css/princing.css" rel="stylesheet">
     </head>
-    <body>
+    <body data-spy="scroll" data-target="#side">
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3  border-bottom shadow-sm" id= "menu">
             <h5 class="my-0 mr-md-auto font-weight-normal p-2 bd-highlight"><img height="100px;" src="../../public/image/logo.png"></h5>
             <nav class="my-2 my-md-0 mr-md-3 p-2 flex-grow-1 bd-highlight" style="text-align: center;">
@@ -47,38 +49,38 @@
                 </div>
             </nav>
 
-            <a href="#" data-toggle="modal" data-target="#notifications" id="btn-notifs"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">0</span></a>&nbsp;&nbsp;&nbsp;
-            Nom&nbsp;&nbsp;&nbsp;
+            <a href="#" data-toggle="modal" data-target="#notifications" id="btn-notifs"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">0</span></a>
+            &nbsp;&nbsp;&nbsp;
+            <div id="username">Nom</div>
+            &nbsp;&nbsp;&nbsp;
             <a href="/api/logout"> <img src="../../public/image/logOut.svg" width="40px"></a>
         </div>
 
-
-
         <div class="container">
             <div class="row">
-                <div class="col-3">
-                    <div class= "Critere">
-                        <form method="post" action="">
+                <div class="col-3" id="salles">
+                    <div class="Critere sticky-top" id="side">
+                        <form onsubmit="event.preventDefault();">
                             <strong>Critère</strong>
                             <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
-                                </div>
-                                <input type="text" onChange="document.location=this.form.submit();" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
+                                <a class="input-group-prepend" href="#">
+                                    <div class="input-group-text"><img src="../../public/image/search.svg" width="20px" height="20px"></div>
+                                </a>
+                                <input type="text" onChange="searchSalle(this.form);" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                             </div>
                             <hr>
                             
                             <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                             <div class="form-group form-check float-right">
-                                <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" name="disponibilite" id="disponibilite" checked>
+                                <input type="checkbox" onChange="searchSalle(this.form);" class="form-check-input" name="disponibilite" id="disponibilite" checked>
                             </div>
                             
-                            <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-debut" style="margin-right: 5px;"><input name="heure-debut" onChange="document.location=this.form.submit();" type="time"></p>
-                            <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" onChange="document.location=this.form.submit();" name="heure-fin"></p>
+                            <p>Du: <input class="float-right" onChange="searchSalle(this.form);" type="date" name="date-debut" style="margin-right: 5px;"><input name="heure-debut" onChange="searchSalle(this.form);" type="time"></p>
+                            <p>Au: <input class="float-right" onChange="searchSalle(this.form);" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" onChange="searchSalle(this.form);" name="heure-fin"></p>
                             <p>
                                 <div class="form-group">
                                     <label for="tri"><strong>Tri :</strong></label>
-                                    <select class="form-control" onChange="document.location=this.form.submit();" id="tri" name="tri">
+                                    <select class="form-control" onChange="searchSalle(this.form);" id="tri_salle" name="tri">
                                         <option>Par date de disponibilité</option>
                                         <option>Par date de disponibilité décroissant</option>
                                     </select>
@@ -87,7 +89,8 @@
                             <p>
                                 <div class="form-group">
                                     <label for="batiment"><strong>Bat. :</strong></label>
-                                    <select class="form-control" onChange="document.location=this.form.submit();" name="batiment" id="batiment">
+                                    <select class="form-control" onChange="searchSalle(this.form);" name="batiment" id="batiment">
+                                        <option>...</option>
                                         <option>Ireste</option>
                                         <option>IHT</option>
                                         <option>Isitem</option>
@@ -99,12 +102,21 @@
                             </p>
                             <label class="form-check-label" for="videoProj">Vidéo projecteur</label>
                             <div class="form-group form-check float-right">
-                                <input type="checkbox" onChange="document.location=this.form.submit();" name="videoproj"class="form-check-input" id="videoProj" checked>
+                                <input type="checkbox" onChange="searchSalle(this.form);" name="videoproj" class="form-check-input" id="videoProj">
+                            </div><br />
+                            <label class="form-check-label" for="tableau">Tableau</label>
+                            <div class="form-group form-check float-right">
+                                <input type="checkbox" onChange="searchSalle(this.form);" name="tableau" class="form-check-input" id="tableau">
+                            </div><br />
+                            <label class="form-check-label" for="ordinateurs">Ordinateurs</label>
+                            <div class="form-group form-check float-right">
+                                <input type="checkbox" onChange="searchSalle(this.form);" name="ordinateurs" class="form-check-input" id="ordinateurs">
                             </div><br /><br />
-                            <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" id="capacite" onChange="document.location=this.form.submit();" min="1" max="500" name="capacite" value="30"></p>
+                            <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" id="capacite" onChange="searchSalle(this.form);" min="1" max="500" name="capacite" value="10"></p>
                         </form>
                     </div>
                 </div>
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 <div class="col-9">
                     <div class="liste" id="liste_salles">
                     </div>

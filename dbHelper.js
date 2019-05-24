@@ -341,18 +341,27 @@ module.exports.Salle = {
         let hasMinCap = (params.capacite !== undefined);
         let hasEtage = (params.etage !== undefined);
         let hasDesc = (params.description !== undefined);
+        let hasEquip = (params.equipement !== undefined);
 
-        all(`SELECT * FROM SalleFull WHERE (
-            ${hasName ? 'nom = "' + params.nom + '" ' : ''}
-            ${(hasName && (hasBat || hasMinCap || hasEtage || hasDesc)) ? 'AND ' : ''}
-            ${hasBat ? 'batiment = "' + params.batiment + '" ' : ''}
-            ${((hasName || hasBat) && (hasMinCap || hasEtage || hasDesc)) ? 'AND ' : ''}
-            ${hasMinCap ? 'capacite >= ' + params.capacite + ' ' : ''}
-            ${((hasName || hasBat || hasMinCap) && (hasEtage || hasDesc)) ? 'AND ' : ''}
-            ${hasEtage ? 'etage = ' + params.etage + ' ' : ''}
-            ${((hasName || hasBat || hasMinCap || hasEtage) && (hasDesc)) ? 'AND ' : ''}
-            ${hasDesc ? 'description LIKE "%' + params.description + '%" ' : ''}
-        );`)
+        let sql = `SELECT * FROM SalleFull WHERE (
+            ${hasName ? 'nom LIKE "%' + params.nom + '%" AND ' : ''}
+            ${hasBat ? 'batiment = "' + params.batiment + '" AND ' : ''}
+            ${hasMinCap ? 'capacite >= ' + params.capacite + ' AND ' : ''}
+            ${hasEtage ? 'etage = ' + params.etage + ' AND ' : ''}
+            ${hasDesc ? 'description LIKE "%' + params.description + '%" AND ' : ''}
+            0 = 0 `;
+
+        if (hasEquip) {
+            sql += (hasName || hasBat || hasMinCap || hasEtage || hasDesc) ? 'AND (' : '';
+            params.equipement.split(' ').forEach(function (equip) {
+                sql += `equipement LIKE "%${equip}%" OR `;
+            });
+            sql += '0 != 0)'
+        }
+
+        sql += ');';
+
+        all(sql)
         .then(res => resolve(res))
         .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
     }),
@@ -493,10 +502,14 @@ module.exports.Creneau = {
     // récupération de tous les créneaux associés à un élément
     allByElemId: idElem => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem};`),
 
+    allIncluding: cren => all(`SELECT * FROM Creneau WHERE
+                                datetime(${cren.date_heure_debut}) >= datetime(date_heure_debut)
+                                AND datetime(${cren.date_heure_fin}) <= datetime(date_heure_fin);`),
+
     // récupération de tous les créneaux associés à un élément et incluant une certaine date
-    allByElemIncluding: (idElem, dateTime) => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem}
-                                                    AND datetime(${dateTime}) >= datetime(date_heure_debut)
-                                                    AND datetime(${dateTime}) <= datetime(date_heure_fin);`),
+    allByElemIncluding: (idElem, cren) => all(`SELECT * FROM Creneau WHERE id_Element = ${idElem}
+                                                    AND datetime("${cren.date_heure_debut}") >= datetime(date_heure_debut)
+                                                    AND datetime("${cren.date_heure_fin}") <= datetime(date_heure_fin);`),
 
     // récupération de tous les créneaux de la base
     all: () => all('SELECT * FROM Creneau;'),

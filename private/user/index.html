@@ -9,6 +9,8 @@
         <title>PolyLend</title>
         
         <script src="../js/notifs.js" defer></script>
+        <script src="../js/fill_forms.js" defer></script>
+        <script src="../js/common.js" defer></script>
 
         <!-- Bootstrap core CSS -->
         <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +33,7 @@
         <!-- Custom styles for this template -->
         <link href="../../public/css/princing.css" rel="stylesheet">
     </head>
-    <body>
+    <body data-spy="scroll" data-target="#side">
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3  border-bottom shadow-sm" id= "menu">
             <h5 class="my-0 mr-md-auto font-weight-normal p-2 bd-highlight"><img height="100px;" src="../../public/image/logo.png"></h5>
             <nav class="my-2 my-md-0 mr-md-3 p-2 flex-grow-1 bd-highlight" style="text-align: center;">
@@ -46,24 +48,24 @@
                 </div>
             </nav>
 
-            <a href="#" data-toggle="modal" data-target="#notifications" id="btn-notifs"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">0</span></a>&nbsp;&nbsp;&nbsp;
-            Nom&nbsp;&nbsp;&nbsp;
+            <a href="#" data-toggle="modal" data-target="#notifications" id="btn-notifs"> <img src="../../public/image/Notification.svg" width="40px"><span class="badge badge-danger">0</span></a>
+            &nbsp;&nbsp;&nbsp;
+            <div id="username">Nom</div>
+            &nbsp;&nbsp;&nbsp;
             <a href="/api/logout"> <img src="../../public/image/logOut.svg" width="40px"></a>
         </div>
 
-
-
         <div class="container">
             <div class="row">
-                <div class="col-3">
-                    <div class= "Critere">
-                        <form method="post" action="">
+                <div class="col-3" id="materiel">
+                    <div class="Critere sticky-top" id="side">
+                        <form onsubmit="event.preventDefault();">
                             <strong>Critère</strong>
                             <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text"><img src="../../public/image/search.svg" width="20px"></div>
-                                </div>
-                                <input type="text" onChange="document.location=this.form.submit();" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
+                                <a class="input-group-prepend" href="#" onclick="document.location=this.form.submit();">
+                                    <div class="input-group-text"><img src="../../public/image/search.svg" width="20px" height="20px"></div>
+                                </a>
+                                <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                             </div>
                             <hr>
                             
@@ -77,7 +79,7 @@
                             <p>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
-                                    <select class="form-control" onChange="document.location=this.form.submit();" id="exampleFormControlSelect1" name="tri">
+                                    <select class="form-control" onChange="document.location=this.form.submit();" id="tri_materiel" name="tri">
                                         <option>Par date de disponibilité</option>
                                         <option>Par date de disponibilité décroissant</option>
                                     </select>
@@ -96,7 +98,7 @@
                     </div>
                 </div>
                 <div class="col-9">
-                    <div class="liste">
+                    <div class="liste" id="liste_materiel">
                         <div class="item row">
                             <div class="gauche col-6">
                                 <img src="https://via.placeholder.com/100" class="float-left">

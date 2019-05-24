@@ -1,10 +1,48 @@
 'use strict';
 
+async function searchSalle (formBalise) {
+    let formData = new FormData(formBalise);
+
+    try {
+        let response = await fetch('/api/salle/search', {
+            credentials: 'same-origin',
+            method: 'POST',
+            body: JSON.stringify({
+                critere: formData.get('critere'),
+                date_heure_debut: formData.get('date-debut') + ' ' + formData.get('heure-debut'),
+                date_heure_fin: formData.get('date-fin') + ' ' + formData.get('heure-fin'),
+                batiment: formData.get('batiment') !== '...' ? formData.get('batiment') : undefined,
+                videoproj: formData.get('videoproj'),
+                tableau: formData.get('tableau'),
+                ordinateurs: formData.get('ordinateurs'),
+                capacite: formData.get('capacite'),
+            }),
+            headers: new Headers({'Content-type': 'application/json'}),
+        })
+        let salleDatas = await response.json()
+
+        let salleListe = document.getElementById('liste_salles');
+        while (salleListe.firstChild) {
+            salleListe.removeChild(salleListe.firstChild);
+        }
+
+        // TODO : tri en fonction de l'option choisie
+        salleDatas.reverse().forEach(salle => insertSalle(salle));
+    }
+    catch (err) {
+        console.error(err);
+    }
+}
+
 async function getAllSalle () {
     let response = await fetch('/api/salle/getall');
     if (response.ok) {
         let salles = await response.json();
-        salles.forEach(salle => insertSalle(salle));
+        let salleListe = document.querySelector('#liste_salles');
+        while (salleListe.firstChild) {
+            salleListe.removeChild(salleListe.firstChild);
+        }
+        salles.reverse().forEach(salle => insertSalle(salle));
     }
     else {
         console.error('response not ok !');

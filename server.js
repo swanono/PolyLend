@@ -12,7 +12,8 @@ const passport = auth(app);
 // l'api d'accès aux données sera disponible sous la route "/api"
 app.use('/api',
     function (req, res, next) {
-        if (req.url.indexOf('/utilisateur/login') === -1 && req.url.indexOf('/utilisateur/register') === -1 && !req.user) {
+        if ((req.url.indexOf('/utilisateur/login') === -1 && req.url.indexOf('/utilisateur/register') === -1 && !req.user)
+            || (req.url.indexOf('/add') >= 0 && req.user.admin === 0)) {
             res.redirect('/public/connexion.html');
         }
         else {
@@ -65,7 +66,10 @@ app.use('/private',
     express.static('private')
 );
 
-const server = app.listen(8081, function () {
+let envPort = 'PORT' in process.env ? process.env.PORT : 8081;
+
+const server = app.listen(envPort, function () {
     let port = server.address().port;
-    console.log('Listening on http://127.0.0.1:%s', port);
+    let addr = server.address().address === '::' ? 'localhost' : server.address().address;
+    console.log('Listening on http://%s:%s', addr, port);
 });
