@@ -1,9 +1,5 @@
 'use strict';
 
-const prod = false;
-
-const prefixDir = prod ? '/4C' : '';
-
 fetch(prefixDir + '/api/whoami')
 .then(function(response) {
 	response.json()

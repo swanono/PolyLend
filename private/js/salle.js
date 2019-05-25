@@ -1,9 +1,5 @@
 'use strict';
 
-const prod = false;
-
-const prefixDir = prod ? '/4C' : '';
-
 async function searchSalle (formBalise) {
     let formData = new FormData(formBalise);
 
@@ -22,16 +18,93 @@ async function searchSalle (formBalise) {
                 capacite: formData.get('capacite'),
             }),
             headers: new Headers({'Content-type': 'application/json'}),
-        })
-        let salleDatas = await response.json()
+        });
+        let salleDatas = await response.json();
 
         let salleListe = document.getElementById('liste_salles');
         while (salleListe.firstChild) {
             salleListe.removeChild(salleListe.firstChild);
         }
 
-        // TODO : tri en fonction de l'option choisie
-        salleDatas.reverse().forEach(salle => insertSalle(salle));
+        
+        let crens = await fetch(prefixDir + '/api/creneau/getall');
+        let crenData = await crens.json();
+        crenData = crenData.map(c => {
+            return {
+                id: c.id,
+                date_heure_debut: Date.parse(c.date_heure_debut) + 3600000,
+                date_heure_fin: Date.parse(c.date_heure_fin) + 3600000,
+                id_Element: c.id_Element,
+            };
+        })
+        .filter(c => c.date_heure_fin > Date.now());
+
+        salleDatas.sort(function (salle1, salle2) {
+            let res = 0
+            switch (formData.get('tri')) {
+            case 'Par dates de disponibilité':
+                crenData.sort(function (cren1, cren2) {
+                    if ((cren1.id_Element === salle1.id_Element || cren1.id_Element === salle2.id_Element)
+                        && cren2.id_Element !== salle1.id_Element && cren2.id_Element !== salle2.id_Element) {
+                        return -1;
+                    }
+                    if ((cren2.id_Element === salle1.id_Element || cren2.id_Element === salle2.id_Element)
+                        && cren1.id_Element !== salle1.id_Element && cren1.id_Element !== salle2.id_Element) {
+                        return 1;
+                    }
+                    if (cren1.id_Element !== salle1.id_Element && cren1.id_Element !== salle2.id_Element
+                        && cren2.id_Element !== salle1.id_Element && cren2.id_Element !== salle2.id_Element) {
+                        return 0;
+                    }
+                    return cren1.date_heure_debut - cren2.date_heure_debut;
+                });
+                if (crenData[0]) {
+                    if (crenData[0].id_Element === salle1.id_Element) {
+                        res = -1;
+                    }
+                    if (crenData[0].id_Element === salle2.id_Element) {
+                        res = 1;
+                    }
+                }
+                break;
+            case 'Par dates de disponibilité décroissantes':
+                    crenData.sort(function (cren1, cren2) {
+                        if ((cren1.id_Element === salle1.id_Element || cren1.id_Element === salle2.id_Element)
+                            && cren2.id_Element !== salle1.id_Element && cren2.id_Element !== salle2.id_Element) {
+                            return -1;
+                        }
+                        if ((cren2.id_Element === salle1.id_Element || cren2.id_Element === salle2.id_Element)
+                            && cren1.id_Element !== salle1.id_Element && cren1.id_Element !== salle2.id_Element) {
+                            return 1;
+                        }
+                        if (cren1.id_Element !== salle1.id_Element && cren1.id_Element !== salle2.id_Element
+                            && cren2.id_Element !== salle1.id_Element && cren2.id_Element !== salle2.id_Element) {
+                            return 0;
+                        }
+                        return cren2.date_heure_debut - cren1.date_heure_debut;
+                    });
+                    if (crenData[0]) {
+                        if (crenData[0].id_Element === salle1.id_Element) {
+                            res = -1;
+                        }
+                        if (crenData[0].id_Element === salle2.id_Element) {
+                            res = 1;
+                        }
+                    }
+                break;
+            case 'Par capacités':
+                res = salle1.capacite - salle2.capacite;
+                break;
+            case 'Par capacités décroissantes':
+                res = salle2.capacite - salle1.capacite;
+                break;
+            default:
+                break;
+            }
+            return res;
+        });
+
+        salleDatas.forEach(salle => insertSalle(salle));
     }
     catch (err) {
         console.error(err);

@@ -1,9 +1,5 @@
 'use strict';
 
-const prod = false;
-
-const prefixDir = prod ? '/4C' : '';
-
 async function getNotifs () {
     let response = await fetch(prefixDir + '/api/notification/getall');
     if (response.ok) {

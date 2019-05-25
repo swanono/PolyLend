@@ -179,6 +179,12 @@ module.exports = (passport) => {
         .catch(err => {console.error(err); res.json(err);});
     });
 
+    app.get('/creneau/getall', function (req, res) {
+        dbHelper.Creneau.all()
+        .then(result => res.json(result))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
     app.post('/element/byid', function (req, res) {
         dbHelper.Element.byIdFull(req.body.id_Element)
         .then(result => res.json(result))
