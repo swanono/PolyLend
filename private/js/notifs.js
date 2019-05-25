@@ -1,6 +1,6 @@
 'use strict';
 
-const prod = true;
+const prod = false;
 
 const prefixDir = prod ? '/4C' : '';
 
