@@ -203,16 +203,22 @@ module.exports = (passport) => {
         })
         .then(function (resultat) {
             let promises = [];
+            if (typeof(req.body['date-fin']) === 'string' || req.body['date-fin'] instanceof String) {
+                req.body['date-debut'] = [req.body['date-debut']];
+                req.body['heure-debut'] = [req.body['heure-debut']];
+                req.body['date-fin'] = [req.body['date-fin']];
+                req.body['heure-fin'] = [req.body['heure-fin']];
+            }
             for (let i = 0; i < req.body['date-fin'].length; i += 1) {
                 promises.push(dbHelper.Creneau.insert({
                     date_heure_debut : `${req.body['date-debut'][i]} ${req.body['heure-debut'][i]}`,
                     date_heure_fin : `${req.body['date-fin'][i]} ${req.body['heure-fin'][i]}`,
-                    id_Element : resultat.id,
+                    id_Element : resultat.id_Element,
                 }));
             }
             promises.push(dbHelper.MotCle.insert({
                 mots: req.body['mot-cle'],
-                id_Element: resultat.id,
+                id_Element: resultat.id_Element,
             }));
 
             Promise.all(promises)
@@ -259,16 +265,22 @@ module.exports = (passport) => {
         })
         .then(function (resultat) {
             let promises = [];
-            for (let i = 0; i < req.body['date-fin'].length; i+=1 ) {
+            if (typeof(req.body['date-fin']) === 'string' || req.body['date-fin'] instanceof String) {
+                req.body['date-debut'] = [req.body['date-debut']];
+                req.body['heure-debut'] = [req.body['heure-debut']];
+                req.body['date-fin'] = [req.body['date-fin']];
+                req.body['heure-fin'] = [req.body['heure-fin']];
+            }
+            for (let i = 0; i < req.body['date-fin'].length; i += 1) {
                 promises.push(dbHelper.Creneau.insert({
                     date_heure_debut : `${req.body['date-debut'][i]} ${req.body['heure-debut'][i]}`,
                     date_heure_fin : `${req.body['date-fin'][i]} ${req.body['heure-fin'][i]}`,
-                    id_Element : resultat.id,
+                    id_Element : resultat.id_Element,
                 }));
             }
             promises.push(dbHelper.MotCle.insert({
                 mots: req.body['mot-cle'],
-                id_Element: resultat.id,
+                id_Element: resultat.id_Element,
             }));
 
             Promise.all(promises)

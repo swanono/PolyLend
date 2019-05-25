@@ -198,7 +198,7 @@ INSERT INTO Notification VALUES (5, 0);
 
 CREATE VIEW SalleFull AS
 SELECT Salle.id, batiment, etage, capacite, equipement, id_Element, nom, description, photo, validation_auto
-FROM Salle JOIN Element ON Salle.id = Element.id;
+FROM Salle JOIN Element ON Salle.id_Element = Element.id;
 
 
 --

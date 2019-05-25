@@ -11,6 +11,7 @@
         <script src="../js/common.js" defer></script>
         <script src="../js/notifs.js" defer></script>
         <script src="../js/fill_forms.js" defer></script>
+        <script src="../js/administration.js" defer></script>
 
         <!-- Bootstrap core CSS -->
         <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
@@ -108,8 +109,10 @@
                                             <div class="form-group">
                                                 <label for="tri_materiel"><strong>Tri :</strong></label>
                                                 <select onChange="document.location=this.form.submit();" class="form-control" id="tri_materiel" name="tri_materiel">
-                                                    <option>Par date de disponibilité</option>
-                                                    <option>Par date de disponibilité décroissant</option>
+                                                        <option>Par dates de disponibilité</option>
+                                                        <option>Par dates de disponibilité décroissantes</option>
+                                                        <option>Par quantités</option>
+                                                        <option>Par quantités décroissantes</option>
                                                 </select>
                                             </div>
                                         </p>
@@ -119,6 +122,8 @@
                                                 <select class="form-control" onChange="document.location=this.form.submit();" id="type" name="type">
                                                     <option>Informatique</option>
                                                     <option>Mobilier</option>
+                                                    <option>Instrument</option>
+                                                    <option>Autre</option>
                                                 </select>
                                             </div>
                                         </p>
@@ -150,6 +155,10 @@
                                             <div class="form-group">
                                                 <label for="tri_salle"><strong>Tri :</strong></label>
                                                 <select class="form-control" onChange="document.location=this.form.submit();" id="tri_salle" name="tri_salle">
+                                                    <option>Par dates de disponibilité</option>
+                                                    <option>Par dates de disponibilité décroissantes</option>
+                                                    <option>Par capacités</option>
+                                                    <option>Par capacités décroissantes</option>
                                                 </select>
                                             </div>
                                         </p>
@@ -157,6 +166,10 @@
                                             <div class="form-group">
                                                 <label for="batiment"><strong>Bat. :</strong></label>
                                                 <select class="form-control" onChange="document.location=this.form.submit();" id="batiment" name="batiment">
+                                                    <option>IHT</option>
+                                                    <option>Ireste</option>
+                                                    <option>Isitem</option>
+                                                    <option>Autre</option>
                                                 </select>
                                             </div>
                                         </p>
@@ -246,7 +259,7 @@
                                 <div class="gauche col-3">
                                     <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
                                     <div class="form-group form-check float-right">
-                                        <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto" checked>
+                                        <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto">
                                     </div> 
                                 </div>
                             </div>
@@ -264,18 +277,21 @@
                             <hr>
                             <div class="row">
                                 <div class="form-group col-3">
-                                        <select class="form-control" id="batiment" name="batiment" required>
-                                            <option>Bâtiment</option>
-                                            <option value="1">...</option>
-                                            <option value="2">...</option>
-                                        </select>
-                                    </div>
+                                    <select class="form-control" id="batiment_submit" name="batiment" required>
+                                        <option value="Autre">Bâtiment</option>
+                                        <option>IHT</option>
+                                        <option>Ireste</option>
+                                        <option>Isitem</option>
+                                        <option>Autre</option>
+                                    </select>
+                                </div>
 
                                 <div class="form-group col-3">
-                                    <select class="form-control" id="etage" name="etage" required>
-                                        <option>Etage</option>
-                                        <option value="1">...</option>
-                                        <option value="2">...</option>
+                                    <select class="form-control" id="etage_submit" name="etage" required>
+                                        <option value="0">Etage</option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-6">
@@ -361,7 +377,7 @@
                                 <div class="gauche col-3">
                                     <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
                                     <div class="form-group form-check float-right">
-                                        <input type="checkbox" class="form-check-input" name="validation_auto" id="validation_auto" checked>
+                                        <input type="checkbox" class="form-check-input" name="validation_auto" id="validation_auto">
                                     </div>
                                 </div>
                                 <label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
@@ -376,14 +392,16 @@
                                 </div>
                                 <div class="form-group col-3">
                                     <select class="form-control" id="categorie" name="categorie">
-                                        <option>Catégorie</option>
-                                        <option>...</option>
-                                        <option>...</option>
+                                        <option value="Autre">Catégorie</option>
+                                        <option>Informatique</option>
+                                        <option>Mobilier</option>
+                                        <option>Instrument</option>
+                                        <option>Autre</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-5">
                                     <label for="files" class="btn btn-dark">Ajouter une image...</label>
-                                    <input id="files" name="image" style="visibility:hidden;" type="file">
+                                    <input id="files" name="image" style="visibility: hidden;" type="file">
                                 </div>
             
                             </div>
