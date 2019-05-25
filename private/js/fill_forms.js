@@ -1,19 +1,37 @@
 'use strict';
 
+let textOptionTriS = ['Par dates de disponibilité', 'Par dates de disponibilité décroissantes', 'Par capacités', 'Par capacités décroissantes'];
+let textOptionTriM = ['Par dates de disponibilité', 'Par dates de disponibilité décroissantes', 'Par quantités', 'Par quantités décroissantes'];
+let textCategorieM = ['Informatique', 'Mobilier', 'Instrument', 'Autres'];
+
 async function fillMateriel (formBalise) {
-
-}
-
-async function fillSalle (formBalise) {
-    let textOptionTri = ['Par dates de disponibilité', 'Par dates de disponibilité décroissantes', 'Par capacités', 'Par capacités décroissantes'];
-    let listeTri = document.getElementById('tri');
-    if (!listeTri) {
-        listeTri = document.getElementById('tri_salle');
-    }
+    let listeTri = document.getElementById('tri_materiel');
     while (listeTri.firstChild) {
         listeTri.removeChild(listeTri.firstChild);
     }
-    textOptionTri.forEach(function (txt) {
+    textOptionTriM.forEach(function (txt) {
+        let opt = document.createElement('option');
+        opt.textContent = txt;
+        listeTri.appendChild(opt);
+    });
+
+    let listeType = document.getElementById('type');
+    while (listeType.firstChild) {
+        listeType.removeChild(listeType.firstChild);
+    }
+    textCategorieM.forEach(function (txt) {
+        let opt = document.createElement('option');
+        opt.textContent = txt;
+        listeType.appendChild(opt);
+    });
+}
+
+async function fillSalle (formBalise) {
+    let listeTri = document.getElementById('tri_salle');
+    while (listeTri.firstChild) {
+        listeTri.removeChild(listeTri.firstChild);
+    }
+    textOptionTriS.forEach(function (txt) {
         let opt = document.createElement('option');
         opt.textContent = txt;
         listeTri.appendChild(opt);
