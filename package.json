@@ -10,6 +10,7 @@
     "sqlite3": "^4.0.6"
   },
   "scripts": {
+    "startDB": "sqlite3 Database-PolyLend.db < createDB.sql && nodemon server.js",
     "createDB": "sqlite3 Database-PolyLend.db < createDB.sql",
     "start": "nodemon server.js",
     "test": "node ./node_modules/gulp/bin/gulp.js"

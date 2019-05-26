@@ -159,7 +159,7 @@ function insertSalle(salleData) {
     divDroite.setAttribute('class', 'droite col-6');
 
     let pDispo = document.createElement('p');
-    pDispo.setAttribute('class', 'disponnible');
+    pDispo.setAttribute('class', 'disponible');
     pDispo.textContent = 'Disponible selon vos critères'; // TODO changer en fonction de si la case dispo est cochées
     divDroite.appendChild(pDispo);
 
@@ -171,6 +171,7 @@ function insertSalle(salleData) {
     buttonPlan.textContent = 'Planning complet';
     buttonPlan.addEventListener('click', actuSalleCal);
     divDroite.appendChild(buttonPlan);
+    divDroite.innerHTML += '&ensp;';
     
     let buttonRes = document.createElement('button');
     buttonRes.setAttribute('type', 'button');
@@ -183,8 +184,8 @@ function insertSalle(salleData) {
 
     divItemRow.appendChild(divDroite);
     
-    document.querySelector('#liste_salles').appendChild(divItemRow);
-    document.querySelector('#liste_salles').appendChild(document.createElement('br'));
+    document.getElementById('liste_salles').appendChild(divItemRow);
+    document.getElementById('liste_salles').appendChild(document.createElement('br'));
 }
 
 function actuSalleReserv (event) {

@@ -290,6 +290,16 @@ module.exports = (passport) => {
         .catch(err => {console.error(err); res.json(err);});
     });
 
+    app.post('/salle/delete', function (req, res) {
+        dbHelper.MotCle.deleteByElem(req.body.id_Element)
+        .then(() => dbHelper.Reservation.deleteByElemId(req.body.id_Element))
+        .then(idRes => idRes.forEach(i => dbHelper.Notification.delete(i.id).catch(err => {console.error(err); res.json(err);})))
+        .then(() => dbHelper.Creneau.deleteAllByElem(req.body.id_Element))
+        .then(() => dbHelper.Salle.deleteById(req.body.id_Salle))
+        .then(() => res.json({ok: true,}))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
     app.post('/salle/search', function (req, res) {
         let hasCrit = !isEmptyOrSpaces(req.body.critere);
         let dhd = normalizeDH(req.body.date_heure_debut);
