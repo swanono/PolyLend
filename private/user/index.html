@@ -101,31 +101,6 @@
                 </div>
                 <div class="col-9">
                     <div class="liste" id="liste_materiel">
-                        <div class="item row">
-                            <div class="gauche col-6">
-                                <img src="https://via.placeholder.com/100" class="float-left">
-                                <h2><strong>Cable Reseau</strong></h2>
-                                <p class="description">Vous permet de vous connecter pour faire des LAN par exemple.</p>
-                            </div>
-                            <div class="droite col-6">
-                                <p class="disponible">Disponible selon vos critères</p>
-                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning complet</button>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Réserver</button>
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="item row item-indisponible">
-                            <div class="gauche col-6">
-                                <img src="https://via.placeholder.com/100" class="float-left">
-                                <h2><strong>Projecteur</strong></h2>
-                                <p class="description">Attention pas de connecteur HDMI, Résolution 1024x600.</p>
-                            </div>
-                            <div class="droite col-6">
-                                <p><span class="indisponible">Réservé par :</span> Jean Valjean, BDE</p>
-                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#calendrier1">Planning complet</button>
-                                <button type="button" class="btn btn-primary">Message</button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -156,8 +131,8 @@
                     </div>
                     <p class= "modal-date">Réserver du: <input type="date" name="date-debut" required><input type="time" name="heure-debut" required> Au: <input type="date" name="date-fin" required><input type="time" name="heure-fin" required></p>
                     <div class="form-group item-row">
-                        <label for="exampleFormControlTextarea1">Pour quelle raison voulez-vous réserver ce materiel :</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" required></textarea>
+                        <label for="raison">Pour quelle raison voulez-vous réserver ce materiel :</label>
+                        <textarea class="form-control" id="raison" name="raison" rows="2" required></textarea>
                       </div>
                 </div>
             </form>
