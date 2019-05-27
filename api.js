@@ -96,7 +96,7 @@ module.exports = (passport) => {
         .then(function (notifs) {
             dbHelper.Reservation.all()
             .then(function (reservs) {
-                // TODO : vérifier qu'on envoie bien les bonnes notifs 
+                // TODO : vérifier qu'on envoie bien les bonnes notifs
                 notifs = notifs.filter(notif => {
                     return (reservs.find(reserv => reserv.id === notif.id_Reservation).id_Utilisateur === req.user.numero_etudiant && notif.admin === 0) || (req.user.admin === 1 && notif.admin === 1);
                 });
@@ -147,7 +147,7 @@ module.exports = (passport) => {
                             return (Date.parse(req.body.date_heure_debut) >= Date.parse(crenData.date_heure_debut)
                                     && Date.parse(req.body.date_heure_fin) <= Date.parse(crenData.date_heure_fin));
                         });
-            
+
                         if (cren === undefined) {
                             res.json({ok: false, outOfCren: true});
                         }
@@ -347,13 +347,13 @@ module.exports = (passport) => {
                         return [...salleStack];
                     }
                 }))][0];
-                
+
                 if(cren.date_heure_debut) {
                     let crenPromises = salles.map(s => dbHelper.Creneau.allByElemIncluding(s.id_Element, cren));
-    
+
                     Promise.all(crenPromises)
                     .then(function (crenValids) {
-                        let sallesValids = [].concat.apply([], crenValids.filter((v, i, a) => 
+                        let sallesValids = [].concat.apply([], crenValids.filter((v, i, a) =>
                             a.indexOf(a.find(crf => v.id_Element === crf.id_Element)) === i && v.length > 0
                         ))
                         .map(cr => dbHelper.Element.byIdFull(cr.id_Element));
@@ -376,6 +376,23 @@ module.exports = (passport) => {
     app.post('/salle/byid', function (req, res) {
         dbHelper.Salle.byId(req.body.id_Salle)
         .then(result => res.json(result))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+    app.get('/materiel/getall', function (req, res) {
+        dbHelper.Materiel.all()
+        .then(function (materiels) {
+            materiels.forEach( function (materiel) {
+                dbHelper.Creneau.allByElemId(materiel.id_Element)
+                .then( function (cren) {
+                    console.log(cren);
+                });
+                materiel.disponibilite = 'dispo';
+            });
+
+            console.log(materiels);
+            return res.json(materiels);
+        })
         .catch(err => {console.error(err); res.json(err);});
     });
 
