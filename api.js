@@ -173,6 +173,54 @@ module.exports = (passport) => {
         }
     });
 
+    app.post('/reservation/submit/materiel', function (req, res) {
+        if (Date.parse(req.body.date_heure_debut) >= Date.parse(req.body.date_heure_fin)) {
+            res.json({ok: false, wrongCren: true});
+        }
+        else {
+            dbHelper.Materiel.byId(req.body.id_Materiel)
+            .then(function (data) {
+                dbHelper.Reservation.allByElemId(data.id_Element)
+                .then(function (reservDatas) {
+                    reservDatas.forEach(function (reservData) {
+                        if (Date.parse(reservData.date_heure_debut) < Date.parse(req.body.date_heure_fin)
+                            && Date.parse(reservData.date_heure_fin) > Date.parse(req.body.date_heure_debut)) {
+                            res.json({ok: false, alreadyTaken: true,});
+                        }
+                    });
+
+                    dbHelper.Creneau.allByElemId(data.id_Element)
+                    .then(function (crenDatas) {
+                        let cren = crenDatas.find(function (crenData) {
+                            return (Date.parse(req.body.date_heure_debut) >= Date.parse(crenData.date_heure_debut)
+                                    && Date.parse(req.body.date_heure_fin) <= Date.parse(crenData.date_heure_fin));
+                        });
+
+                        if (cren === undefined) {
+                            res.json({ok: false, outOfCren: true});
+                        }
+                        else {
+                            dbHelper.Element.byId(data.id_Element)
+                            .then(elemData => dbHelper.Reservation.insert({
+                                raison: req.body.raison,
+                                date_heure_debut: req.body.date_heure_debut,
+                                date_heure_fin: req.body.date_heure_fin,
+                                id_Utilisateur: req.user.numero_etudiant,
+                                id_Creneau: cren.id,
+                                validation: elemData.validation_auto,
+                            }))
+                            .then(result => res.json(result))
+                            .catch(err => {console.error(err); res.json(err);});
+                        }
+                    })
+                    .catch(err => {console.error(err); res.json(err);});
+                })
+                .catch(err => {console.error(err); res.json(err);});
+            })
+            .catch(err => {console.error(err); res.json(err);});
+        }
+    });
+
     app.post('/creneau/byid', function (req, res) {
         dbHelper.Creneau.byId(req.body.id_Creneau)
         .then(result => res.json(result))
@@ -202,6 +250,12 @@ module.exports = (passport) => {
             validation_auto: !req.body.validation_auto ? '0' : '1',
         })
         .then(function (resultat) {
+            if (typeof(req.body['date-fin']) === 'string' || req.body['date-fin'] instanceof String) {
+                req.body['date-debut'] = [req.body['date-debut']];
+                req.body['date-fin'] = [req.body['date-fin']];
+                req.body['heure-debut'] = [req.body['heure-debut']];
+                req.body['heure-fin'] = [req.body['heure-fin']];
+            }
             let promises = [];
             for (let i = 0; i < req.body['date-fin'].length; i += 1) {
                 promises.push(dbHelper.Creneau.insert({
@@ -259,7 +313,15 @@ module.exports = (passport) => {
         })
         .then(function (resultat) {
             let promises = [];
+            if (typeof(req.body['date-fin']) === 'string' || req.body['date-fin'] instanceof String) {
+                req.body['date-debut'] = [req.body['date-debut']];
+                req.body['date-fin'] = [req.body['date-fin']];
+                req.body['heure-debut'] = [req.body['heure-debut']];
+                req.body['heure-fin'] = [req.body['heure-fin']];
+            }
+
             for (let i = 0; i < req.body['date-fin'].length; i+=1 ) {
+
                 promises.push(dbHelper.Creneau.insert({
                     date_heure_debut : `${req.body['date-debut'][i]} ${req.body['heure-debut'][i]}`,
                     date_heure_fin : `${req.body['date-fin'][i]} ${req.body['heure-fin'][i]}`,
@@ -375,6 +437,12 @@ module.exports = (passport) => {
 
     app.post('/salle/byid', function (req, res) {
         dbHelper.Salle.byId(req.body.id_Salle)
+        .then(result => res.json(result))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+    app.post('/materiel/byid', function (req, res) {
+        dbHelper.Materiel.byId(req.body.id_Materiel)
         .then(result => res.json(result))
         .catch(err => {console.error(err); res.json(err);});
     });

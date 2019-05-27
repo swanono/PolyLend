@@ -68,6 +68,7 @@ function getAllMateriel () {
                         buttonRes.setAttribute('data-toggle','modal');
                         buttonRes.setAttribute('data-target','#exampleModalCenter');
                         buttonRes.textContent = 'Reserver';
+                        buttonRes.addEventListener('click', actuMaterielReserv);
                         elemDivDroite.appendChild(buttonRes);
 
                         //saut de ligne (mise en page)
@@ -154,5 +155,85 @@ function getAllMateriel () {
     .catch(err => console.error(err));
 }
 
-console.log('test');
+
+
+function actuMaterielReserv (event) {
+    let idM = parseInt(event.target.parentElement.parentElement.attributes['id-materiel'].value);
+    fetch(prefixDir + '/api/materiel/byid', {
+        credentials: 'same-origin',
+        method: 'POST',
+        body: JSON.stringify({id_Materiel: idM}),
+        headers: new Headers({'Content-type': 'application/json'}),
+    })
+    .then(result => result.json())
+    .then(function (data) {
+        document.getElementById('form-reserv').setAttribute('id-materiel', data.id);
+        let divGauche = document.querySelector('#form-reserv')
+                                .lastElementChild
+                                .firstElementChild
+                                .firstElementChild;
+
+        Array.from(divGauche.children).forEach(function (balise) {
+            switch (balise.tagName) {
+            case 'IMG':
+                balise.setAttribute('src', data.photo);
+                break;
+            case 'H2':
+                balise.firstElementChild.textContent = data.nom;
+                break;
+            case 'P':
+                balise.textContent = data.description;
+                break;
+            }
+        });
+    })
+    .catch(err => console.error(err));
+}
+
+
+
+function askReserv () {
+    let formBalise = document.getElementById('form-reserv');
+    let formData = new FormData(formBalise);
+
+    fetch(prefixDir + '/api/reservation/submit/materiel', {
+        credentials: 'same-origin',
+        method: 'POST',
+        body: JSON.stringify({
+            id_Materiel: formBalise.getAttribute('id-materiel'),
+            date_heure_debut: formData.get('date-debut') + ' ' + formData.get('heure-debut'),
+            date_heure_fin: formData.get('date-fin') + ' ' + formData.get('heure-fin'),
+            raison: formData.get('raison'),
+        }),
+        headers: new Headers({'Content-type': 'application/json'}),
+    })
+    .then(response => response.json())
+    .then(function (result) {
+        if (result.ok === false) {
+            let divAlert = document.createElement('div');
+            divAlert.setAttribute('class', 'alert alert-danger');
+            divAlert.setAttribute('role', 'alert');
+            divAlert.innerHTML = '<strong>Erreur!</strong> ';
+            if (result.alreadyTaken) {
+                divAlert.innerHTML += 'Le créneau que vous essayez de réserver est déjà pris (consultez le planning)';
+            }
+            if (result.outOfCren) {
+                divAlert.innerHTML += 'Le matériel n\'est pas disponnible dans le créneau demandé (consultez le planning)';
+            }
+            if (result.wrongCren) {
+                divAlert.innerHTML += 'Le créneau demandé n\'est pas valide';
+            }
+
+            document.querySelector('#form-reserv').insertBefore(divAlert, document.querySelector('#form-reserv').lastElementChild);
+        }
+    })
+    .catch(err => console.error(err));
+}
+
+
+
+
+
+
+document.querySelector('input.btn.btn-primary.col-2').addEventListener('click', askReserv);
 getAllMateriel();
