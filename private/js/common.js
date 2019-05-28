@@ -1,8 +1,8 @@
 'use strict';
 
-const prod = false;
+var prod = false;
 
-const prefixDir = prod ? '/4C' : '';
+var prefixDir = prod ? '/4C' : '';
 
 fetch(prefixDir + '/api/whoami')
 .then(response => response.json())
