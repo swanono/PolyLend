@@ -10,6 +10,10 @@ const express = require('express');
 // Notre module nodejs d'accès simplifié à la base de données
 const dbHelper = require('./dbHelper.js');
 
+const prod = true;
+
+const prefixDir = prod ? '/4C' : '';
+
 function isEmptyOrSpaces (str) {
     return str === null || str === undefined || str.match(/^ *$/) !== null;
 }
@@ -33,7 +37,7 @@ module.exports = (passport) => {
 
     app.get('/logout', function (req, res) {
         req.logOut();
-        res.redirect('/public/connexion.html');
+        res.redirect(prefixDir + '/public/connexion.html');
     });
 
     app.post('/utilisateur/register', function (req, res) {
@@ -49,7 +53,7 @@ module.exports = (passport) => {
                     prenom: req.body.prenom,
                     mot_de_passe: req.body.password,
                 })
-                .then(() => res.redirect('/public/connexion.html'))
+                .then(() => res.redirect(prefixDir + '/public/connexion.html'))
                 .catch(err => {console.error(err); res.json(err);});
             }
         })
@@ -68,7 +72,7 @@ module.exports = (passport) => {
                 return next(err); // will generate a 500 error
             }
             if (!user) {
-                return res.redirect('/public/connexion.html');
+                return res.redirect(prefixDir + '/public/connexion.html');
             }
             req.login(user, function (err) {
                 if (err) {
@@ -76,7 +80,7 @@ module.exports = (passport) => {
                 }
                 console.log('>>> Authentification : ');
                 console.log(user);
-                return res.redirect('/private/user/index.html');
+                return res.redirect(prefixDir + '/private/user/index.html');
             });
         })(req, res, next);
     });
@@ -254,7 +258,7 @@ module.exports = (passport) => {
                 mots: req.body['mot-cle'],
                 id_Element: resultat.id,
             })
-            .then(() => res.redirect('/private/admin/administration.html'))
+            .then(() => res.redirect(prefixDir + '/private/admin/administration.html'))
             .catch(err => {console.error(err); res.json(err);});
         })
         .catch(err => {console.error(err); res.json(err);});

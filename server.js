@@ -16,7 +16,7 @@ app.use(prefixDir + '/api',
     function (req, res, next) {
         if ((req.url.indexOf('/utilisateur/login') === -1 && req.url.indexOf('/utilisateur/register') === -1 && !req.user)
             || (req.url.indexOf('/add') >= 0 && req.user.admin === 0)) {
-            res.redirect('/public/connexion.html');
+            res.redirect(prefixDir + '/public/connexion.html');
         }
         else {
             next();
@@ -34,7 +34,7 @@ app.use(prefixDir + '/private/admin',
     function (req, res, next) {
         console.log('requesting admin access : ' + JSON.stringify(req.user));
         if (!req.user) {
-            res.redirect('/public/connexion.html');
+            res.redirect(prefixDir + '/public/connexion.html');
         }
         else {
             dbHelper.Utilisateur.byNumEt(req.user.numero_etudiant)
@@ -44,16 +44,16 @@ app.use(prefixDir + '/private/admin',
                         next();
                     }
                     else {
-                        res.redirect('/public/connexion.html');
+                        res.redirect(prefixDir + '/public/connexion.html');
                     }
                 }
                 else {
-                    res.redirect('/public/connexion.html');
+                    res.redirect(prefixDir + '/public/connexion.html');
                 }
             })
             .catch(err => {
                 console.error(err);
-                res.redirect('/public/connexion.html')
+                res.redirect(prefixDir + '/public/connexion.html')
             });
         }
     }
