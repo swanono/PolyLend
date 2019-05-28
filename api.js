@@ -180,6 +180,8 @@ module.exports = (passport) => {
         else {
             dbHelper.Materiel.byId(req.body.id_Materiel)
             .then(function (data) {
+                console.log('On reserve l\'element :');
+                console.log(data.id_Element);
                 dbHelper.Reservation.allByElemId(data.id_Element)
                 .then(function (reservDatas) {
                     reservDatas.forEach(function (reservData) {
@@ -209,7 +211,9 @@ module.exports = (passport) => {
                                 id_Creneau: cren.id,
                                 validation: elemData.validation_auto,
                             }))
-                            .then(result => res.json(result))
+                            .then( function (result) {
+                                res.json(result);
+                            })
                             .catch(err => {console.error(err); res.json(err);});
                         }
                     })
@@ -261,7 +265,7 @@ module.exports = (passport) => {
                 promises.push(dbHelper.Creneau.insert({
                     date_heure_debut : `${req.body['date-debut'][i]} ${req.body['heure-debut'][i]}`,
                     date_heure_fin : `${req.body['date-fin'][i]} ${req.body['heure-fin'][i]}`,
-                    id_Element : resultat.id,
+                    id_Element : resultat.id_Element,
                 }));
             }
             promises.push(dbHelper.MotCle.insert({
@@ -330,7 +334,7 @@ module.exports = (passport) => {
             }
             promises.push(dbHelper.MotCle.insert({
                 mots: req.body['mot-cle'],
-                id_Element: resultat.id,
+                id_Element: resultat.id_Element,
             }));
 
             Promise.all(promises)
