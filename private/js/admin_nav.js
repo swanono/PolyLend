@@ -1,10 +1,6 @@
 'use strict';
 
-const prod = true;
-
-const prefixDir = prod ? '/4C' : '';
-
-fetch(prefixDir + '/api/whoami')
+fetch('../../api/whoami')
 .then(function(response) {
 	response.json()
 	.then(function (result) {

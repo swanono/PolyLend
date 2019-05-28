@@ -30,7 +30,7 @@ app.use(prefixDir + '/', express.static('public'));
 app.use(prefixDir + '/public', express.static('public'));
 
 app.use(prefixDir + '/private/admin',
-    require('connect-ensure-login').ensureLoggedIn('/public/connexion.html'),
+    require('connect-ensure-login').ensureLoggedIn(prefixDir + '/public/connexion.html'),
     function (req, res, next) {
         console.log('requesting admin access : ' + JSON.stringify(req.user));
         if (!req.user) {
@@ -60,7 +60,7 @@ app.use(prefixDir + '/private/admin',
 );
 
 app.use(prefixDir + '/private',
-    require('connect-ensure-login').ensureLoggedIn('/public/connexion.html'),
+    require('connect-ensure-login').ensureLoggedIn(prefixDir + '/public/connexion.html'),
     function (req, res, next) {
         console.log('requesting private access : ' + JSON.stringify(req.user));
         next();

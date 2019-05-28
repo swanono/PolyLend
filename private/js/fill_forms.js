@@ -1,9 +1,5 @@
 'use strict';
 
-const prod = true;
-
-const prefixDir = prod ? '/4C' : '';
-
 async function fillMateriel (formBalise) {
 
 }
@@ -24,7 +20,7 @@ async function fillSalle (formBalise) {
     });
 
     try {
-        let response = await fetch(prefixDir + '/api/salle/getall');
+        let response = await fetch('../../api/salle/getall');
         let salles = await response.json();
         let batBalises = document.getElementById('batiment');
         while (batBalises.firstChild) {
