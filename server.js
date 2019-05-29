@@ -14,7 +14,7 @@ const prefixDir = prod ? '/4C' : '';
 // l'api d'accès aux données sera disponible sous la route "/api"
 app.use(prefixDir + '/api',
     function (req, res, next) {
-        if ((req.url.indexOf('/utilisateur/login') === -1 && req.url.indexOf('/utilisateur/register') === -1 && req.url.indexOf('/reservation/allbyElem') === -1 && !req.user)
+        if ((req.url.indexOf('/utilisateur/login') === -1 && req.url.indexOf('/utilisateur/register') === -1 && req.url.indexOf('/reservation/allbyElem') === -1 && req.url.indexOf('/creneau/allbyid') === -1 && !req.user)
             || (req.url.indexOf('/add') >= 0 && req.user.admin === 0)) {
             res.redirect('/public/connexion.html');
         }
