@@ -468,5 +468,100 @@ module.exports = (passport) => {
         .catch(err => {console.error(err); res.json(err);});
     });
 
+
+    app.post('/materiel/search', function (req, res) {
+        let hasCrit = !isEmptyOrSpaces(req.body.critere);
+        let dhd = normalizeDH(req.body.date_heure_debut);
+        let hasDHD = !isEmptyOrSpaces(req.body.date_heure_debut) && dhd !== undefined;
+        let dhf = normalizeDH(req.body.date_heure_fin);
+        let hasDHF = !isEmptyOrSpaces(req.body.date_heure_fin) && dhf !== undefined;
+        let hasVproj = !isEmptyOrSpaces(req.body.videoproj);
+        let hasTab = !isEmptyOrSpaces(req.body.tableau);
+        let hasOrdi = !isEmptyOrSpaces(req.body.ordinateurs);
+        let hasCap = !isEmptyOrSpaces(req.body.capacite);
+
+        let crits = hasCrit ? req.body.critere.split(' ') : [];
+        let paramMat = {
+            categorie: (req.body.categorie === 'Non précisé') ? undefined : req.body.categorie,
+        };
+
+        let cren = {
+            date_heure_debut: hasDHD ? dhd : (hasDHF ? dhf : undefined),
+            date_heure_fin: hasDHF ? dhf : (hasDHD ? dhd : undefined),
+        };
+        console.log('crits :');
+        console.log(crits);
+        let promises = hasCrit ? [
+
+            ...crits.map(crit => {
+                console.log('crit :');
+                console.log(crit);
+                paramMat.lieu = undefined;
+                paramMat.description = undefined;
+                paramMat.nom = crit;
+                return dbHelper.Materiel.allByParams(paramMat);
+            }),
+            ...crits.map(crit => {
+                paramMat.nom = undefined;
+                paramMat.description = undefined;
+                paramMat.lieu = crit;
+                return dbHelper.Materiel.allByParams(paramMat);
+            }),
+            ...crits.map(crit => {
+                paramMat.nom = undefined;
+                paramMat.lieu = undefined;
+                paramMat.description = crit;
+                return dbHelper.Materiel.allByParams(paramMat);
+            }),
+        ] : [
+            dbHelper.Materiel.allByParams(paramMat)
+        ];
+
+
+        dbHelper.MotCle.allBySentence(hasCrit ? req.body.critere : '1478562548632145863694520')
+        .then(function (rows) {
+            if (rows) {
+                rows.forEach(row => promises.push(dbHelper.Element.byIdFull(row.id_Element)));
+            }
+
+            Promise.all(promises)
+            .then(function (allMats) {
+                let mats = [...new Set(allMats.map(matStack => {
+                    if (matStack === null || matStack === undefined || typeof(matStack[Symbol.iterator]) !== 'function') {
+                        return matStack;
+                    }
+                    else {
+                        return [...matStack];
+                    }
+                }))][0];
+
+                if(cren.date_heure_debut) {
+                    let crenPromises = mats.map(s => dbHelper.Creneau.allByElemIncluding(s.id_Element, cren));
+
+                    Promise.all(crenPromises)
+                    .then(function (crenValids) {
+                        let matsValids = [].concat.apply([], crenValids.filter((v, i, a) =>
+                            a.indexOf(a.find(crf => v.id_Element === crf.id_Element)) === i && v.length > 0
+                        ))
+                        .map(cr => dbHelper.Element.byIdFull(cr.id_Element));
+
+                        Promise.all(matsValids)
+                        .then(final => res.json(final))
+                        .catch(err => {console.error(err); res.json(err);});
+                    })
+                    .catch(err => {console.error(err); res.json(err);});
+                }
+                else {
+                    res.json(mats);
+                }
+            })
+            .catch(err => {console.error(err); res.json(err);});
+        })
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+
+
+
     return app;
 }

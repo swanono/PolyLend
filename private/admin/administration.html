@@ -7,14 +7,14 @@
         <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
         <meta name="generator" content="Jekyll v3.8.5">
         <title>PolyLend</title>
-        
+
         <script src="../js/common.js" defer></script>
         <script src="../js/notifs.js" defer></script>
         <script src="../js/fill_forms.js" defer></script>
 
         <!-- Bootstrap core CSS -->
         <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
-        
+
         <link href="../../public/image/favicon.ico" rel="shortcut icon">
 
         <style>
@@ -48,8 +48,8 @@
                     <a type="button" class="btn btn-secondary" href="../user/salle.html"><img src="../../public/image/salle.svg" width="70px"><br/>Salle</a>
                     <a type="button" class="btn btn-secondary selected" href="../admin/administration.html"><img src="../../public/image/administration.svg" width="70px"><br/>Administration</a>
                     <a type="button" class="btn btn-secondary" href="../user/reservation.html"><img src="../../public/image/MesReservations.svg" width="70px"><br/>Réservation</a>
-                    
-                    
+
+
                 </div>
             </nav>
 
@@ -96,12 +96,12 @@
                                             <input type="text" class="form-control" name="critere" id="inlineFormInputGroup" placeholder="">
                                         </div>
                                         <hr>
-                                        
+
                                         <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                                         <div class="form-group form-check float-right">
                                             <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" name="disponibilite" id="disponibilite" checked>
                                         </div>
-                                        
+
                                         <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" name="date-debut" type="date" style="margin-right: 5px;"><input name="heure-debut" type="time"></p>
                                         <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
                                         <p>
@@ -138,12 +138,12 @@
                                             <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                                         </div>
                                         <hr>
-                                        
+
                                         <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                                         <div class="form-group form-check float-right">
                                             <input type="checkbox" onChange="document.location=this.form.submit();" name="disponibilite" class="form-check-input" id="disponibilite" checked>
                                         </div>
-                                        
+
                                         <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-debut" style="margin-right: 5px;"><input type="time" name="heure-debut"></p>
                                         <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
                                         <p>
@@ -175,7 +175,7 @@
                                         <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" onChange="document.location=this.form.submit();" name="capacite" id="capacite" min="1" max="500" value="30"></p>
                                     </form>
                                 </div>
-                                
+
                                 <!-- fin salles -->
                             </div>
                         </div>
@@ -240,19 +240,19 @@
                                 <a class="nav-link" data-toggle="tab" href="#popupsalles">Salle</a>
                             </li>
                         </ul>
-                        
+
                     </div>
                 </div>
                 <div class="tab-content">
                     <div class="tab-pane container" id="popupsalles">
                         <!-- début salles -->
                         <form method="post" action="/api/salle/add">
-                            <div class="form-group row">    
+                            <div class="form-group row">
                                 <div class="gauche col-3">
                                     <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
                                     <div class="form-group form-check float-right">
                                         <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto" checked>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -265,7 +265,7 @@
                                     <input id="files" name="image" style="visibility:hidden;" type="file">
                                 </div>
                             </div>
-                            
+
                             <hr>
                             <div class="row">
                                 <div class="form-group col-3">
@@ -291,7 +291,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                             <div class="form-group row">
                                     <label for="dispo" class="col-sm-4 col-form-label">Equipement :</label>
@@ -299,26 +299,26 @@
                                         <div class="row">
                                             <div class= "col-5">
                                                 <label class="form-check-label col-form-label" for="videoproj">Video Projecteur</label>
-                                                <div class="form-group form-check float-right"> 
+                                                <div class="form-group form-check float-right">
                                                     <input type="checkbox" name="videoproj" class="form-check-input" id="videoproj" checked>
-                                                </div> 
+                                                </div>
                                             </div>
                                             <div class= "col-4">
                                                 <label class="form-check-label col-form-label" for="tableaublanc">Tableau</label>
-                                                <div class="form-group form-check float-right"> 
+                                                <div class="form-group form-check float-right">
                                                     <input type="checkbox" name="tableau" class="form-check-input" id="tableaublanc" checked>
-                                                </div> 
+                                                </div>
                                             </div>
                                             <div class= "col-4">
                                                 <label class="form-check-label col-form-label" for="ordis">Ordinateurs</label>
-                                                <div class="form-group form-check float-right"> 
+                                                <div class="form-group form-check float-right">
                                                     <input type="checkbox" name="ordinateurs" class="form-check-input" id="ordis" checked>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                   
+
                             <div class="form-group row">
                                 <label for="dispo" class="col-sm-4 col-form-label">Notes/Description :</label>
                                 <div class="col-sm-8">
@@ -358,11 +358,11 @@
                         <!-- fin salles -->
                     </div>
                     <div class="tab-pane container active" id="popupmateriel">
-                        
+
 
                         <!-- début matériel -->
                         <form method="post" action="/api/materiel/add">
-                            <div class="form-group row">    
+                            <div class="form-group row">
                                 <div class="gauche col-3">
                                     <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
                                     <div class="form-group form-check float-right">
@@ -380,17 +380,20 @@
                                     <input type="text" class="form-control" placeholder="Nom" name="nom" required>
                                 </div>
                                 <div class="form-group col-3">
-                                    <select class="form-control" id="categorie" name="categorie">
-                                        <option>Catégorie</option>
-                                        <option>...</option>
-                                        <option>...</option>
+                                    <select class="form-control" id="categorie" name="categorie" required>
+                                        <option selected disabled hidden style="display:none" value="">Catégorie</option>
+                                        <option>Non précisé</option>
+                                        <option>Informatique</option>
+                                        <option>Mobilier</option>
+                                        <option>Musique</option>
+                                        <option>Autre</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-5">
                                     <label for="files" class="btn btn-dark">Ajouter une image...</label>
                                     <input id="files" name="image" style="visibility:hidden;" type="file">
                                 </div>
-            
+
                             </div>
                             <div class="form-group">
                                 <textarea class="form-control" placeholder="Description" name="description" rows="3"></textarea>
@@ -433,7 +436,7 @@
                         </form>
                          <!--fin matériel -->
                     </div>
-                   
+
                 </div>
                 <!--<div class="form-group row">
                         <label for="mot-cle" class="col-sm-4 col-form-label"> et </label>
@@ -562,7 +565,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                
+
                 <div class="modal-body">
                     <div class="liste" id="liste_notifs">
                     </div>
@@ -585,4 +588,3 @@
     </script>
     </body>
 </html>
-

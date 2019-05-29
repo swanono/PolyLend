@@ -64,24 +64,24 @@
                         <form onsubmit="event.preventDefault();">
                             <strong>Critère</strong>
                             <div class="input-group mb-2">
-                                <a class="input-group-prepend" href="#" onclick="document.location=this.form.submit();">
+                                <a class="input-group-prepend" href="#">
                                     <div class="input-group-text"><img src="../../public/image/search.svg" width="20px" height="20px"></div>
                                 </a>
-                                <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
+                                <input type="text" onChange="searchMat(this.form);" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                             </div>
                             <hr>
 
                             <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                             <div class="form-group form-check float-right">
-                                <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" name="disponibilite" id="disponibilite" checked>
+                                <input type="checkbox" onChange="searchMat(this.form);" class="form-check-input" name="disponibilite" id="disponibilite" checked>
                             </div>
 
-                            <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" name="date-debut" type="date" style="margin-right: 5px;"><input type="time" onChange="document.location=this.form.submit();" name="heure-debut"></p>
-                            <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" name="date-fin" type="date" style="margin-right: 5px;"><input type="time" onChange="document.location=this.form.submit();" name="heure-fin"></p>
+                            <p>Du: <input class="float-right" onChange="searchMat(this.form);" name="date-debut" type="date" style="margin-right: 5px;"><input type="time" onChange="document.location=this.form.submit();" name="heure-debut"></p>
+                            <p>Au: <input class="float-right" onChange="searchMat(this.form);" name="date-fin" type="date" style="margin-right: 5px;"><input type="time" onChange="document.location=this.form.submit();" name="heure-fin"></p>
                             <p>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1"><strong>Tri :</strong></label>
-                                    <select class="form-control" onChange="document.location=this.form.submit();" id="tri_materiel" name="tri">
+                                    <select class="form-control" onChange="searchMat(this.form);" id="tri_materiel" name="tri">
                                         <option>Par date de disponibilité</option>
                                         <option>Par date de disponibilité décroissant</option>
                                     </select>
@@ -90,9 +90,12 @@
                             <p>
                                 <div class="form-group">
                                     <label for="type"><strong>Type :</strong></label>
-                                    <select class="form-control" onChange="document.location=this.form.submit();" id="type" name="type">
+                                    <select class="form-control" onChange="searchMat(this.form);" id="type" name="type">
+                                        <option>Non précisé</option>
                                         <option>Informatique</option>
                                         <option>Mobilier</option>
+                                        <option>Musique</option>
+                                        <option>Autre</option>
                                     </select>
                                 </div>
                             </p>
