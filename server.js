@@ -15,7 +15,7 @@ const prefixDir = prod ? '/4C' : '';
 app.use(prefixDir + '/api',
     function (req, res, next) {
         if ((req.url.indexOf('/utilisateur/login') === -1 && req.url.indexOf('/utilisateur/register') === -1 && !req.user)
-            || (req.url.indexOf('/add') >= 0 && req.user.admin === 0)) {
+            || ((req.url.indexOf('/add') >= 0 || req.url.indexOf('/setadminrights') >= 0) && req.user.admin === 0)) {
             res.redirect('/public/connexion.html');
         }
         else {

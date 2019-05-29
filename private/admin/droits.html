@@ -10,7 +10,8 @@
         
         <script src="../js/common.js" defer></script>
         <script src="../js/notifs.js" defer></script>
-        <!--<script src="../js/admin_nav.js" defer></script>-->
+        <script src="../js/admin_nav.js" defer></script>
+        <script src="../js/droits.js" defer></script>
 
         <!-- Bootstrap core CSS -->
         <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
@@ -47,8 +48,6 @@
                     <a type="button" class="btn btn-secondary" href="../user/salle.html"><img src="../../public/image/salle.svg" width="70px"><br/>Salle</a>
                     <a type="button" class="btn btn-secondary selected" href="../admin/administration.html"><img src="../../public/image/administration.svg" width="70px"><br/>Administration</a>
                     <a type="button" class="btn btn-secondary" href="../user/reservation.html"><img src="../../public/image/MesReservations.svg" width="70px"><br/>Réservation</a>
-                    
-                    
                 </div>
             </nav>
 
@@ -59,43 +58,28 @@
             <a href="/api/logout"> <img src="../../public/image/logOut.svg" width="40px"></a>
         </div>
 
-
-
         <div class="container">
-            <a href="administration.html" type="button" class="btn btn-primary">Retour</a>
+            <div class="row">
+                <div class="col-1">
+                    <a href="administration.html" type="button" class="btn btn-primary" id="bouton-retour">Retour</a>
+                </div>
+                <div class="alert alert-success col-10 text-center" role="alert" id="divalert" style="visibility: hidden; opacity: 0;"><strong>Les droits d'administration ont été appliqués avec succes !</strong></div>
+            </div>
             <div class="col-md-10 offset-md-1 col-12">
-                <table class="table table-bordered">
+                <table class="table table-bordered text-center">
                     <thead>
                         <tr>
-                            <th  scope="col">#</th>
+                            <th scope="col">#</th>
                             <th scope="col">Nom</th>
                             <th scope="col">Numéro étudiant</th>
-                            <th scope="col">Admin ?</th>
+                            <th scope="col">Admin ?</th><!-- Désolé pour les daltoniens mais c'était plus facile comme ça -->
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td scope="row" colspan="4">Aucun utilisateur</td>
-                        </tr>
-                        <!--<tr>
-                            <th scope="row">1</th>
-                            <td>Eléa</td>
-                            <td>UPDATE user SET admin = (admin+1)%2 WHERE id = 'E1528565';</td>
-                            <td>
-                                <a href="?id=1"><button style="width: 100%;" class="btn btn-success">&nbsp;</button></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Eléa 2</td>
-                            <td>E1528465</td>
-                            <td>
-                                <a href="?id=2"><button style="width: 100%;" class="btn btn-danger">&nbsp;</button></a>
-                            </td>
-                        </tr>-->
                     </tbody>
                 </table>
             </div>
+            <button type="button" class="btn btn-primary" id="apply">Appliquer</button>
         </div>
 
 
@@ -130,7 +114,6 @@
                 })
             })
         </script>
-        <script type="text/javascript" src="../js/admin_nav.js"></script>
     </body>
 </html>
 

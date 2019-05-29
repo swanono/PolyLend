@@ -91,6 +91,18 @@ module.exports = (passport) => {
         .catch(err => {console.error(err); res.json(err);});
     });
 
+    app.get('/utilisateur/getall', function (req, res) {
+        dbHelper.Utilisateur.all()
+        .then(etu => res.json(etu))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+    app.post('/utilisateur/setadminrights', function (req, res) {
+        dbHelper.Utilisateur.grantAdminRights(req.body.numero_etudiant, req.body.admin)
+        .then(() => res.json({ok: true,}))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
     app.get('/notification/getall', function (req, res) {
         dbHelper.Notification.all()
         .then(function (notifs) {
