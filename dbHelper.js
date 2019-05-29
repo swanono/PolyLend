@@ -199,16 +199,15 @@ module.exports.Materiel = {
         let hasName = (params.nom !== undefined);
         let hasCateg = (params.categorie !== undefined);
         let hasDesc = (params.description !== undefined);
+        let hasQuant = (params.quantite !== undefined);
 
         all(`SELECT * FROM MaterielFull WHERE (
-            ${hasName ? 'nom = "%' + params.nom + '%" ' : ''}
-            ${((hasName) && (hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
-            ${hasLoc ? 'lieu LIKE "%' + params.lieu + '%" ' : ''}
-            ${((hasName || hasLoc) && (hasCateg || hasDesc)) ? 'AND ' : ''}
-            ${hasCateg ? 'categorie = "' + params.categorie + '" ' : ''}
-            ${((hasName || hasLoc || hasCateg) && (hasDesc)) ? 'AND ' : ''}
-            ${hasDesc ? 'description LIKE "%' + params.description + '%" ' : ''}
-        );`)
+            ${hasName ? 'nom LIKE "%' + params.nom + '%" AND ' : ''}
+            ${hasLoc ? 'lieu LIKE "%' + params.lieu + '%" AND ' : ''}
+            ${hasCateg ? 'categorie = "' + params.categorie + '" AND ' : ''}
+            ${hasDesc ? 'description LIKE "%' + params.description + '%" AND ' : ''}
+            ${hasQuant ? 'quantite = ' + params.quantite + ' AND ' : ''}
+            0 = 0);`)
         .then(res => resolve(res))
         .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
     }),
