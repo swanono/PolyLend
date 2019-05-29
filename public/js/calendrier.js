@@ -72,15 +72,69 @@ function updateCalendar (focusDateLun, idE) {
                 let tdDate = new Date(yearFocus, focusDateLun.getMonth(), focusDateLun.getDate() + j, i - focusDateLun.getTimezoneOffset()/60);
 
                 let td = document.createElement('td');
-                td.innerHTML = '<br/><br/>';
+                td.style.height = '4em';
+                td.style.verticalAlign = 'top';
 
                 let reserv_Over = reservData.find(cren => {
-                    return (Date.parse(cren.date_heure_debut) + 3600000 <= Date.parse(tdDate)
-                        && Date.parse(cren.date_heure_fin) + 3600000 >= Date.parse(tdDate) + 3600000);
+                    return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
+                        && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
                 });
 
-                if (reserv_Over) {
-                    td.style.backgroundColor = 'red';
+                if (reserv_Over && reserv_Over.validation !== -1) {
+                    let divOver = document.createElement('div');
+                    divOver.style.width = '100%';
+                    divOver.style.height = '100%';
+                    divOver.style.backgroundColor = reserv_Over.validation === 1 ? 'red' : 'orange';
+                    td.appendChild(divOver);
+                }
+
+                let reserv_End = reservData.find(cren => {
+                    return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
+                        && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                        && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
+                });
+
+                if (reserv_End && reserv_End.validation !== -1) {
+                    let divEnd = document.createElement('div');
+                    divEnd.setAttribute('date_fin', '' + (Date.parse(reserv_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
+                    divEnd.style.width = '100%';
+                    divEnd.style.height = (Date.parse(reserv_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000 + '%';
+                    divEnd.style.backgroundColor = reserv_End.validation === 1 ? 'red' : 'orange';
+                    td.appendChild(divEnd);
+                }
+                
+                let reserv_In = reservData.filter(cren => {
+                    return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                        && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
+                        && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                        && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
+                });
+
+                reserv_In.forEach(reserv => {
+                    if (reserv_In.validation !== -1) {
+                        let divIn = document.createElement('div');
+                        divIn.setAttribute('date_fin', '' + (Date.parse(reserv_In.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
+                        divIn.style.width = '100%';
+                        divIn.style.height = (Date.parse(reserv.date_heure_fin) - Date.parse(reserv.date_heure_debut))/36000 + '%';
+                        divIn.style.marginTop = ((Date.parse(reserv.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - 1000*(parseInt(td.lastElementChild !== null ? td.lastElementChild.getAttribute('date_fin') : 'a')/1000 | (Date.parse(tdDate)/1000)))/36000) + '%';
+                        divIn.style.backgroundColor = reserv_In.validation === 1 ? 'red' : 'orange';
+                        td.appendChild(divIn);
+                    }
+                });
+
+                let reserv_Begin = reservData.find(cren => {
+                    return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                        && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
+                        && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
+                });
+
+                if (reserv_Begin && reserv_Begin.validation !== -1) {
+                    let divBegin = document.createElement('div');
+                    divBegin.style.width = '100%';
+                    divBegin.style.height = (Date.parse(tdDate) + 3600000 - (Date.parse(reserv_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000))/36000 + '%';
+                    divBegin.style.marginTop = ((Date.parse(reserv_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - 1000*(parseInt(td.lastElementChild !== null ? td.lastElementChild.getAttribute('date_fin') : 'a')/1000 | (Date.parse(tdDate)/1000)))/36000) + '%';
+                    divBegin.style.backgroundColor = reserv_Begin.validation === 1 ? 'red' : 'orange';
+                    td.appendChild(divBegin);
                 }
 
                 tr.appendChild(td);
