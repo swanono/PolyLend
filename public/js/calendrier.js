@@ -1,7 +1,5 @@
 'use strict';
 
-const prefixDir = '';
-
 Date.prototype.getWeekNumber = function () {
     var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
     var dayNum = d.getUTCDay() || 7;
@@ -48,14 +46,15 @@ function updateCalendar (focusDateLun, idE) {
         }
     });
 
-    fetch(prefixDir + '/api/creneau/allbyid', {
+    fetch('/api/reservation/allbyElem', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({id_Element: idE,}),
         headers: new Headers({'Content-type': 'application/json'}),
     })
     .then(response => response.json())
-    .then(function (crenDatas) {
+    .then(r => {if (!r.errno) {return r;} else {throw r;}})
+    .then(function (reservData) {
         let tbody = document.getElementById('calendrier_body').firstElementChild.lastElementChild;
         while (tbody.firstChild) {
             tbody.removeChild(tbody.firstChild);
@@ -70,16 +69,17 @@ function updateCalendar (focusDateLun, idE) {
 
             for (let j = 0; j < 7; j += 1) {
                 // j+1 % 7
+                let tdDate = new Date(yearFocus, focusDateLun.getMonth(), focusDateLun.getDate() + j, i - focusDateLun.getTimezoneOffset()/60);
 
                 let td = document.createElement('td');
                 td.innerHTML = '<br/><br/>';
 
-                let cren_Over = crenDatas.find(cren => {
-                    return (Date.parse(cren.date_heure_debut) + 3600000 <= Date.parse(new Date(yearFocus, focusDateLun.getUTCMonth(), focusDateLun.getUTCDate() + j, i - focusDateLun.getTimezoneOffset()/60))
-                        && Date.parse(cren.date_heure_fin) + 3600000 >= Date.parse(new Date(yearFocus, focusDateLun.getUTCMonth(), focusDateLun.getUTCDate() + j, i + 1 - focusDateLun.getTimezoneOffset()/60)));
+                let reserv_Over = reservData.find(cren => {
+                    return (Date.parse(cren.date_heure_debut) + 3600000 <= Date.parse(tdDate)
+                        && Date.parse(cren.date_heure_fin) + 3600000 >= Date.parse(tdDate) + 3600000);
                 });
 
-                if (cren_Over) {
+                if (reserv_Over) {
                     td.style.backgroundColor = 'red';
                 }
 
