@@ -168,8 +168,8 @@ function insertSalle(salleData) {
     buttonPlan.setAttribute('class', 'btn btn-light');
     buttonPlan.setAttribute('data-toggle', 'modal');
     buttonPlan.setAttribute('data-target', '#calendrier');
+    buttonPlan.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${salleData.id_Element});`);
     buttonPlan.textContent = 'Planning complet';
-    buttonPlan.addEventListener('click', actuSalleCal);
     divDroite.appendChild(buttonPlan);
     divDroite.innerHTML += '&ensp;';
     
@@ -217,6 +217,8 @@ function actuSalleReserv (event) {
                 break;
             }
         });
+
+        document.getElementById('btn_planning_reserv').setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${salleData.id_Element});`);
     })
     .catch(err => console.error(err));
 }
@@ -276,5 +278,4 @@ document.querySelector('input.btn.btn-primary.col-2').addEventListener('click', 
     }
 });
 document.querySelector('input.btn.btn-primary.col-2').addEventListener('click', askReserv);
-document.getElementById('modal-btn-cal').addEventListener('click', actuSalleCal);
 getAllSalle();
