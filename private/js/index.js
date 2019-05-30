@@ -188,6 +188,9 @@ function actuMaterielReserv (event) {
                 break;
             }
         });
+
+        
+        document.getElementById('btn_planning_reserv').setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${data.id_Element});`);
     })
     .catch(err => console.error(err));
 }
