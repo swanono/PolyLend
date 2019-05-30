@@ -9,7 +9,6 @@ fetch(prefixDir + '/api/whoami')
 .then(function (result) {
 	if(result.admin === 1){
 		let div_nav = document.getElementById('nav');
-		console.log(div_nav);
 
 		let aBalise = document.createElement('a');
 		aBalise.setAttribute('class', 'btn btn-secondary');
@@ -24,8 +23,6 @@ fetch(prefixDir + '/api/whoami')
 		aBalise.appendChild(document.createElement('br'));
 		aBalise.append('Administration');
 		
-
-
 		div_nav.insertBefore(aBalise, div_nav.lastElementChild);
 
 	}

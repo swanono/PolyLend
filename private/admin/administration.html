@@ -91,24 +91,24 @@
                                     <form onsubmit="event.preventDefault();">
                                         <strong>Critère</strong>
                                         <div class="input-group mb-2">
-                                            <a class="input-group-prepend" href="#" onclick="document.location=this.form.submit();">
+                                            <a class="input-group-prepend" href="#">
                                                 <div class="input-group-text"><img src="../../public/image/search.svg" width="20px" height="20px"></div>
                                             </a>
-                                            <input type="text" class="form-control" name="critere" id="inlineFormInputGroup" placeholder="">
+                                            <input type="text" class="form-control" onchange="searchMat(this.form);" name="critere" id="inlineFormInputGroup" placeholder="">
                                         </div>
                                         <hr>
 
                                         <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                                         <div class="form-group form-check float-right">
-                                            <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" name="disponibilite" id="disponibilite" checked>
+                                            <input type="checkbox" onChange="searchMat(this.form);" class="form-check-input" name="disponibilite" id="disponibilite" checked>
                                         </div>
 
-                                        <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" name="date-debut" type="date" style="margin-right: 5px;"><input name="heure-debut" type="time"></p>
-                                        <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                                        <p>Du: <input class="float-right" onChange="searchMat(this.form);" name="date-debut" type="date" style="margin-right: 5px;"><input name="heure-debut" type="time"></p>
+                                        <p>Au: <input class="float-right" onChange="searchMat(this.form);" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
                                         <p>
                                             <div class="form-group">
                                                 <label for="tri_materiel"><strong>Tri :</strong></label>
-                                                <select onChange="document.location=this.form.submit();" class="form-control" id="tri_materiel" name="tri_materiel">
+                                                <select onChange="searchMat(this.form);" class="form-control" id="tri_materiel" name="tri_materiel">
                                                         <option>Par dates de disponibilité</option>
                                                         <option>Par dates de disponibilité décroissantes</option>
                                                         <option>Par quantités</option>
@@ -119,7 +119,8 @@
                                         <p>
                                             <div class="form-group">
                                                 <label for="type"><strong>Type :</strong></label>
-                                                <select class="form-control" onChange="document.location=this.form.submit();" id="type" name="type">
+                                                <select class="form-control" onChange="searchMat(this.form);" id="type" name="type">
+                                                    <option>...</option>
                                                     <option>Informatique</option>
                                                     <option>Mobilier</option>
                                                     <option>Instrument</option>
@@ -137,7 +138,7 @@
                                     <form onsubmit="event.preventDefault();">
                                         <strong>Critère</strong>
                                         <div class="input-group mb-2">
-                                            <a class="input-group-prepend" href="#" onclick="document.location=this.form.submit();">
+                                            <a class="input-group-prepend" href="#">
                                                 <div class="input-group-text"><img src="../../public/image/search.svg" width="20px" height="20px"></div>
                                             </a>
                                             <input type="text" onChange="searchSalle(this.form);" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">

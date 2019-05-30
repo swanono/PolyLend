@@ -17,7 +17,7 @@ function getAllMateriel () {
 
 function insertMat (data) {
     var elemListe = document.querySelector('.liste');
-    data.forEach( function (materiel) {
+    data.forEach(function (materiel) {
         if (materiel.disponibilite === 'indispo') {
             //creation d'un item indisponible
             let newItemIndispo = document.createElement('div');

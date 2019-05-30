@@ -73,10 +73,11 @@ async function searchSalle (formBalise) {
         let crens = await fetch(prefixDir + '/api/creneau/getall');
         let crenData = await crens.json();
         crenData = crenData.map(c => {
+            let d = new Date();
             return {
                 id: c.id,
-                date_heure_debut: Date.parse(c.date_heure_debut) + 3600000,
-                date_heure_fin: Date.parse(c.date_heure_fin) + 3600000,
+                date_heure_debut: Date.parse(c.date_heure_debut) - d.getTimezoneOffset()*60000,
+                date_heure_fin: Date.parse(c.date_heure_fin) - d.getTimezoneOffset()*60000,
                 id_Element: c.id_Element,
             };
         })
@@ -84,7 +85,7 @@ async function searchSalle (formBalise) {
 
         salleDatas.sort(function (salle1, salle2) {
             let res = 0
-            switch (formData.get('tri')) {
+            switch (formData.get('tri_salle')) {
             case 'Par dates de disponibilité':
                 crenData.sort(function (cren1, cren2) {
                     if ((cren1.id_Element === salle1.id_Element || cren1.id_Element === salle2.id_Element)
@@ -224,7 +225,7 @@ function insertSalle(salleData) {
     buttonMod.setAttribute('type', 'button');
     buttonMod.setAttribute('class', 'btn btn-warning');
     buttonMod.setAttribute('data-toggle', 'modal');
-    buttonMod.setAttribute('data-target', '#exampleModalCenter'); // TODO : changer l'id target
+    buttonMod.setAttribute('data-target', ''); // TODO : changer l'id target
     buttonMod.textContent = 'Modifier';
     divDroite.appendChild(buttonMod);
     divDroite.innerHTML += '&ensp;';
@@ -273,10 +274,10 @@ document.getElementById('ajout_cren_materiel').addEventListener('click', () => a
 
 function getAllMateriel () {
     fetch(prefixDir + '/api/materiel/getall')
-    .then( function (response) {
+    .then(function (response) {
         if (response.ok) {
             response.json()
-            .then(data => insertMat(data))
+            .then(data => insertMat(data.reverse()))
             .catch(err => console.error(err));
         }
         else {
@@ -287,8 +288,12 @@ function getAllMateriel () {
 }
 
 function insertMat (data) {
-    var elemListe = document.querySelector('.liste');
-    data.forEach( function (materiel) {
+    let matListe = document.getElementById('liste_salle_materiel');
+    while (matListe.firstChild) {
+        matListe.removeChild(matListe.firstChild);
+    }
+    var elemListe = document.getElementById('liste_salle_materiel');
+    data.forEach(function (materiel) {
         if (materiel.disponibilite === 'indispo') {
             //creation d'un item indisponible
             let newItemIndispo = document.createElement('div');
@@ -405,27 +410,55 @@ function insertMat (data) {
             buttonCalendar.setAttribute('type','button');
             buttonCalendar.setAttribute('class','btn btn-light');
             buttonCalendar.setAttribute('data-toggle','modal');
-            buttonCalendar.setAttribute('data-target','#calendrier1');
+            buttonCalendar.setAttribute('data-target','#calendrier1'); // TODO : changer l'id calendrier
             buttonCalendar.textContent = 'Planning complet';
             elemDivDroite.appendChild(buttonCalendar);
             elemDivDroite.innerHTML += '&ensp;';
+            
+    
+            let buttonMod = document.createElement('button');
+            buttonMod.setAttribute('type', 'button');
+            buttonMod.setAttribute('class', 'btn btn-warning');
+            buttonMod.setAttribute('data-toggle', 'modal');
+            buttonMod.setAttribute('data-target', ''); // TODO : changer l'id target
+            buttonMod.textContent = 'Modifier';
+            elemDivDroite.appendChild(buttonMod);
+            elemDivDroite.innerHTML += '&ensp;';
+    
+            let buttonSuppr = document.createElement('button');
+            buttonSuppr.setAttribute('type', 'button');
+            buttonSuppr.setAttribute('class', 'btn btn-danger');
+            buttonSuppr.innerHTML = '<img src="../../public/image/poubelle.svg" width="22px">';
+            buttonSuppr.addEventListener('click', deleteMateriel);
+            elemDivDroite.appendChild(buttonSuppr);
 
-            //boutton Reserver
-            let buttonRes  = document.createElement('button');
-            buttonRes.setAttribute('type','button');
-            buttonRes.setAttribute('class','btn btn-primary');
-            buttonRes.setAttribute('data-toggle','modal');
-            buttonRes.setAttribute('data-target','#exampleModalCenter');
-            buttonRes.textContent = 'Reserver';
-            buttonRes.addEventListener('click', actuMaterielReserv);
-            elemDivDroite.appendChild(buttonRes);
-
-            //saut de ligne (mise en page)
-            let elemBr = document.createElement('br');
-            elemListe.appendChild(elemBr);
-
+            elemListe.appendChild(document.createElement('br'));
         }
     })
+}
+
+async function deleteMateriel (event) {
+    let divItem = event.target;
+    while (divItem.getAttribute('id-materiel') === null) {
+        divItem = divItem.parentElement;
+    }
+    
+    try {
+        await fetch(prefixDir + '/api/salle/delete', {
+            credentials: 'same-origin',
+            method: 'POST',
+            body: JSON.stringify({
+                id_Salle: divItem.getAttribute('id-materiel'),
+                id_Element: divItem.getAttribute('id-element'),
+            }),
+            headers: new Headers({'Content-type': 'application/json'}),
+        });
+
+        divItem.remove();
+    }
+    catch (err) {
+        console.log(err);
+    }
 }
 
 async function searchMat (formBalise) {
@@ -445,21 +478,21 @@ async function searchMat (formBalise) {
         });
         let MatDatas = await response.json();
 
-        let MatListe = document.getElementById('liste_materiel');
+        let MatListe = document.getElementById('liste_salle_materiel');
 
 
         while (MatListe.firstChild) {
             MatListe.removeChild(MatListe.firstChild);
         }
 
-
         let crens = await fetch(prefixDir + '/api/creneau/getall');
         let crenData = await crens.json();
         crenData = crenData.map(c => {
+            let d = new Date();
             return {
                 id: c.id,
-                date_heure_debut: Date.parse(c.date_heure_debut) + 3600000,
-                date_heure_fin: Date.parse(c.date_heure_fin) + 3600000,
+                date_heure_debut: Date.parse(c.date_heure_debut) - d.getTimezoneOffset()*60000,
+                date_heure_fin: Date.parse(c.date_heure_fin) - d.getTimezoneOffset()*60000,
                 id_Element: c.id_Element,
             };
         })
@@ -467,7 +500,7 @@ async function searchMat (formBalise) {
 
         MatDatas.sort(function (Mat1, Mat2) {
             let res = 0
-            switch (formData.get('tri')) {
+            switch (formData.get('tri_materiel')) {
             case 'Par dates de disponibilité':
                 crenData.sort(function (cren1, cren2) {
                     if ((cren1.id_Element === Mat1.id_Element || cren1.id_Element === Mat2.id_Element)
