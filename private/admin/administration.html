@@ -11,6 +11,7 @@
         <script src="../js/common.js" defer></script>
         <script src="../js/notifs.js" defer></script>
         <script src="../js/fill_forms.js" defer></script>
+        <script src="../js/administration.js" defer></script>
 
         <!-- Bootstrap core CSS -->
         <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
@@ -68,16 +69,16 @@
                     <br/>
                     <a href="droits.html" type="button" class="btn btn-primary">Editer les droits d'administrateur</a>
                     <br/><br/>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ajouterElement"><img src="../../public/image/plus.svg" width="20px">Ajouter un élément</button>
+                    <button type="button" class="btn btn-primary" id="ajout_element" data-toggle="modal" data-target="#ajouterElement"><img src="../../public/image/plus.svg" width="20px">Ajouter un élément</button>
                     <br/> <br/>
 
                     <div class="sticky-top" id="side">
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#materiel">Matériel</a>
+                                <a class="nav-link active" data-toggle="tab" href="#materiel" id="nav_materiel">Matériel</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#salles">Salles</a>
+                                <a class="nav-link" data-toggle="tab" href="#salles" id="nav_salle">Salles</a>
                             </li>
                         </ul>
 
@@ -108,17 +109,21 @@
                                             <div class="form-group">
                                                 <label for="tri_materiel"><strong>Tri :</strong></label>
                                                 <select onChange="document.location=this.form.submit();" class="form-control" id="tri_materiel" name="tri_materiel">
-                                                    <option>Par date de disponibilité</option>
-                                                    <option>Par date de disponibilité décroissant</option>
+                                                        <option>Par dates de disponibilité</option>
+                                                        <option>Par dates de disponibilité décroissantes</option>
+                                                        <option>Par quantités</option>
+                                                        <option>Par quantités décroissantes</option>
                                                 </select>
                                             </div>
                                         </p>
                                         <p>
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1"><strong>Type :</strong></label>
-                                                <select class="form-control" onChange="document.location=this.form.submit();" id="exampleFormControlSelect1" name="type">
+                                                <label for="type"><strong>Type :</strong></label>
+                                                <select class="form-control" onChange="document.location=this.form.submit();" id="type" name="type">
                                                     <option>Informatique</option>
                                                     <option>Mobilier</option>
+                                                    <option>Instrument</option>
+                                                    <option>Autre</option>
                                                 </select>
                                             </div>
                                         </p>
@@ -135,33 +140,36 @@
                                             <a class="input-group-prepend" href="#" onclick="document.location=this.form.submit();">
                                                 <div class="input-group-text"><img src="../../public/image/search.svg" width="20px" height="20px"></div>
                                             </a>
-                                            <input type="text" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
+                                            <input type="text" onChange="searchSalle(this.form);" name="critere" class="form-control" id="inlineFormInputGroup" placeholder="">
                                         </div>
                                         <hr>
 
                                         <label class="form-check-label" for="disponibilite"><strong>Disponibilité</strong></label>
                                         <div class="form-group form-check float-right">
-                                            <input type="checkbox" onChange="document.location=this.form.submit();" name="disponibilite" class="form-check-input" id="disponibilite" checked>
+                                            <input type="checkbox" onChange="searchSalle(this.form);" name="disponibilite" class="form-check-input" id="disponibilite" checked>
                                         </div>
-
-                                        <p>Du: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-debut" style="margin-right: 5px;"><input type="time" name="heure-debut"></p>
-                                        <p>Au: <input class="float-right" onChange="document.location=this.form.submit();" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
+                                        
+                                        <p>Du: <input class="float-right" onChange="searchSalle(this.form);" type="date" name="date-debut" style="margin-right: 5px;"><input type="time" name="heure-debut"></p>
+                                        <p>Au: <input class="float-right" onChange="searchSalle(this.form);" type="date" name="date-fin" style="margin-right: 5px;"><input type="time" name="heure-fin"></p>
                                         <p>
                                             <div class="form-group">
                                                 <label for="tri_salle"><strong>Tri :</strong></label>
-                                                <select class="form-control" onChange="document.location=this.form.submit();" id="tri_salle" name="tri_salle">
-                                                    <option>Par date de disponibilité</option>
-                                                    <option>Par date de disponibilité décroissant</option>
+                                                <select class="form-control" onChange="searchSalle(this.form);" id="tri_salle" name="tri_salle">
+                                                    <option>Par dates de disponibilité</option>
+                                                    <option>Par dates de disponibilité décroissantes</option>
+                                                    <option>Par capacités</option>
+                                                    <option>Par capacités décroissantes</option>
                                                 </select>
                                             </div>
                                         </p>
                                         <p>
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1"><strong>Bat. :</strong></label>
-                                                <select class="form-control" onChange="document.location=this.form.submit();" id="exampleFormControlSelect1" name="batiment">
-                                                    <option>Ireste</option>
+                                                <label for="batiment"><strong>Bat. :</strong></label>
+                                                <select class="form-control" onChange="searchSalle(this.form);" id="batiment" name="batiment">
                                                     <option>IHT</option>
+                                                    <option>Ireste</option>
                                                     <option>Isitem</option>
+                                                    <option>Autre</option>
                                                 </select>
                                             </div>
                                         </p>
@@ -170,9 +178,9 @@
                                         </p>
                                         <label class="form-check-label" for="videoProj">Vidéo projecteur</label>
                                         <div class="form-group form-check float-right">
-                                            <input type="checkbox" onChange="document.location=this.form.submit();" class="form-check-input" id="videoProj" name="videoproj" checked>
+                                            <input type="checkbox" onChange="searchSalle(this.form);" class="form-check-input" id="videoProj" name="videoproj">
                                         </div><br /><br />
-                                        <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" onChange="document.location=this.form.submit();" name="capacite" id="capacite" min="1" max="500" value="30"></p>
+                                        <p><label for="capacite"><strong>Capacité (personnes)</strong></label><input type="number" onChange="searchSalle(this.form);" name="capacite" id="capacite" min="1" max="500" value="10"></p>
                                     </form>
                                 </div>
 
@@ -226,7 +234,6 @@
             <div class="modal-header">
                 <button type="button" data-dismiss="modal" class="btn btn-danger col-2">Annuler</button>
                 <h5 class="modal-title col-10 text-center" id="exampleModalLongTitle">Ajouter un élément</h5>
-                <!--<button type="button" class="btn btn-primary col-2">Ajouter</button>-->
             </div>
             <div class="modal-body">
                 <div class="form-group row">
@@ -251,8 +258,8 @@
                                 <div class="gauche col-3">
                                     <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
                                     <div class="form-group form-check float-right">
-                                        <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto" checked>
-                                    </div>
+                                        <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto">
+                                    </div> 
                                 </div>
                             </div>
                             <hr>
@@ -261,26 +268,29 @@
                                     <input type="text" class="form-control" placeholder="Nom" name="nom" required>
                                 </div>
                                 <div class="form-group col-5">
-                                    <label for="files" class="btn btn-dark">Ajouter une image...</label>
-                                    <input id="files" name="image" style="visibility:hidden;" type="file">
+                                    <label for="files_salle" class="btn btn-dark">Ajouter une image...</label>
+                                    <input id="files_salle" name="image" style="visibility:hidden;" type="file">
                                 </div>
                             </div>
 
                             <hr>
                             <div class="row">
                                 <div class="form-group col-3">
-                                        <select class="form-control" id="batiment" name="batiment" required>
-                                            <option>Bâtiment</option>
-                                            <option value="1">...</option>
-                                            <option value="2">...</option>
-                                        </select>
-                                    </div>
+                                    <select class="form-control" id="batiment_submit" name="batiment" required>
+                                        <option value="Autre">Bâtiment</option>
+                                        <option>IHT</option>
+                                        <option>Ireste</option>
+                                        <option>Isitem</option>
+                                        <option>Autre</option>
+                                    </select>
+                                </div>
 
                                 <div class="form-group col-3">
-                                    <select class="form-control" id="etage" name="etage" required>
-                                        <option>Etage</option>
-                                        <option value="1">...</option>
-                                        <option value="2">...</option>
+                                    <select class="form-control" id="etage_submit" name="etage" required>
+                                        <option value="0">Etage</option>
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-6">
@@ -335,22 +345,23 @@
                                 <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
                                 <div class="form-group row col-sm-8 table-responsive">
                                     <table id="tableau-sans-bordure-salle">
-                                        <tr>
-                                            <td>
-                                                <div class="form-group row">
-                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date" required><input type="time" name="heure-debut" required></p>
-                                                    <p>Au: <input class="float-right" type="date" name="date-fin" required><input type="time" name="heure-fin" required></p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                &ensp;&ensp;
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
-                                            </td>
-                                        </tr>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group row">
+                                                        <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date" required><input type="time" name="heure-debut" required></p>
+                                                        <p>Au: <input class="float-right" type="date" name="date-fin" required><input type="time" name="heure-fin" required></p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    &ensp;&ensp;
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        </tbody>
                                     </table>
-                                    <button type="button" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
+                                    <button type="button" class="btn btn-primary" id="ajout_cren_salle">+ Ajouter une plage de disponibilité</button>
                                 </div>
                                 <input type="submit" class="btn btn-primary col-2" value="Ajouter">
                             </div>
@@ -366,7 +377,7 @@
                                 <div class="gauche col-3">
                                     <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
                                     <div class="form-group form-check float-right">
-                                        <input type="checkbox" class="form-check-input" name="validation_auto" id="validation_auto" checked>
+                                        <input type="checkbox" class="form-check-input" name="validation_auto" id="validation_auto">
                                     </div>
                                 </div>
                                 <label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
@@ -381,8 +392,7 @@
                                 </div>
                                 <div class="form-group col-3">
                                     <select class="form-control" id="categorie" name="categorie" required>
-                                        <option selected disabled hidden style="display:none" value="">Catégorie</option>
-                                        <option>Non précisé</option>
+                                        <option value="Autre">Catégorie</option>
                                         <option>Informatique</option>
                                         <option>Mobilier</option>
                                         <option>Instrument</option>
@@ -390,8 +400,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-5">
-                                    <label for="files" class="btn btn-dark">Ajouter une image...</label>
-                                    <input id="files" name="image" style="visibility:hidden;" type="file">
+                                    <label for="files_materiel" class="btn btn-dark">Ajouter une image...</label>
+                                    <input id="files_materiel" name="image" style="visibility: hidden;" type="file">
                                 </div>
 
                             </div>
@@ -425,11 +435,10 @@
                                                 &ensp;&ensp;
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-danger btn-sm"><img src="../../public/image/poubelle.svg" width="22px"></button>
                                             </td>
                                         </tr>
                                     </table>
-                                    <button type="button" class="btn btn-primary">+ Ajouter une plage de disponibilité</button>
+                                    <button type="button" class="btn btn-primary" id="ajout_cren_materiel">+ Ajouter une plage de disponibilité</button>
                                 </div>
                                 <input type="submit" class="btn btn-primary col-2" value="Ajouter">
                             </div>
@@ -438,16 +447,6 @@
                     </div>
 
                 </div>
-                <!--<div class="form-group row">
-                        <label for="mot-cle" class="col-sm-4 col-form-label"> et </label>
-                        <div class="form-group row col-sm-8">
-                            <p>Du: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
-                            <p>Au: <input class="float-right" type="date" style="margin-right: 5px;"><input type="time"></p>
-                        </div>
-                    </div>-->
-
-
-
             </div>
         </div>
     </div>

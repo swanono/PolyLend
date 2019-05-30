@@ -629,7 +629,15 @@ module.exports.Reservation = {
     deleteById: id => run(`DELETE FROM Reservation WHERE id = ${id};`),
 
     // délétion de toutes les réservations liées à un élément
-    deleteByElemId: elemId => run(`DELETE FROM Reservation WHERE (SELECT id_Element FROM Creneau WHERE id_Creneau = Creneau.id) = ${elemId};`),
+    deleteByElemId: elemId => new Promise(function (resolve, reject) {
+        all(`SELECT id FROM Reservation WHERE (SELECT id_Element FROM Creneau WHERE id_Creneau = Creneau.id) = ${elemId};`)
+        .then(function (reservIds) {
+            run(`DELETE FROM Reservation WHERE (SELECT id_Element FROM Creneau WHERE id_Creneau = Creneau.id) = ${elemId};`)
+            .then(() => resolve(reservIds))
+            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+        })
+        .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+    }),
 
     // délétion de toutes les réservations liées à un créneau
     deleteByCrenId: crenId => run(`DELETE FROM Reservation WHERE id_Creneau = ${crenId};`),

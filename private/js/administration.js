@@ -1,5 +1,49 @@
 'use strict';
 
+function deleteCren (row) {
+
+}
+
+function addCren (strTab) {
+    let tabBalise = document.getElementById('tableau-sans-bordure-' + strTab).firstElementChild;
+
+    let tr = document.createElement('tr');
+
+    let tdInputs = document.createElement('td');
+    let divInputs = document.createElement('div');
+    divInputs.setAttribute('class', 'form-group row');
+
+    let p1 = document.createElement('p');
+    p1.innerHTML = 'Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date" required><input type="time" name="heure-debut" required>';
+    divInputs.appendChild(p1);
+
+    let p2 = document.createElement('p');
+    p2.innerHTML = 'Au: <input class="float-right" type="date" name="date-fin" required><input type="time" name="heure-fin" required>';
+    divInputs.appendChild(p2);
+
+    tdInputs.appendChild(divInputs);
+    tr.appendChild(tdInputs);
+
+
+    let tdTabs = document.createElement('td');
+    tdTabs.innerHTML += '&ensp;&ensp;';
+    tr.appendChild(tdTabs);
+
+    let tdButton = document.createElement('td');
+    let imgPoubelle = document.createElement('img');
+    imgPoubelle.setAttribute('src', '../../public/image/poubelle.svg');
+    imgPoubelle.setAttribute('width', '22px');
+    let button = document.createElement('button');
+    button.setAttribute('type', 'button');
+    button.setAttribute('class', 'btn btn-danger btn-sm');
+    button.appendChild(imgPoubelle);
+    button.addEventListener('click', () => tr.remove());
+    tdButton.appendChild(button);
+    tr.appendChild(tdButton);
+
+    tabBalise.appendChild(tr);
+}
+
 async function searchSalle (formBalise) {
     let formData = new FormData(formBalise);
 
@@ -21,11 +65,10 @@ async function searchSalle (formBalise) {
         });
         let salleDatas = await response.json();
 
-        let salleListe = document.getElementById('liste_salles');
+        let salleListe = document.getElementById('liste_salle_materiel');
         while (salleListe.firstChild) {
             salleListe.removeChild(salleListe.firstChild);
         }
-
         
         let crens = await fetch(prefixDir + '/api/creneau/getall');
         let crenData = await crens.json();
@@ -111,11 +154,15 @@ async function searchSalle (formBalise) {
     }
 }
 
+function actuSalleCal (event) {
+
+}
+
 async function getAllSalle () {
     let response = await fetch(prefixDir + '/api/salle/getall');
     if (response.ok) {
         let salles = await response.json();
-        let salleListe = document.querySelector('#liste_salles');
+        let salleListe = document.getElementById('liste_salle_materiel');
         while (salleListe.firstChild) {
             salleListe.removeChild(salleListe.firstChild);
         }
@@ -168,113 +215,58 @@ function insertSalle(salleData) {
     buttonPlan.setAttribute('class', 'btn btn-light');
     buttonPlan.setAttribute('data-toggle', 'modal');
     buttonPlan.setAttribute('data-target', '#calendrier');
-    buttonPlan.textContent = 'Planning complet';
+    buttonPlan.textContent = 'Planning';
     buttonPlan.addEventListener('click', actuSalleCal);
     divDroite.appendChild(buttonPlan);
     divDroite.innerHTML += '&ensp;';
     
-    let buttonRes = document.createElement('button');
-    buttonRes.setAttribute('type', 'button');
-    buttonRes.setAttribute('class', 'btn btn-primary');
-    buttonRes.setAttribute('data-toggle', 'modal');
-    buttonRes.setAttribute('data-target', '#exampleModalCenter'); // TODO : changer l'id target
-    buttonRes.textContent = 'Réserver';
-    buttonRes.addEventListener('click', actuSalleReserv);
-    divDroite.appendChild(buttonRes);
+    let buttonMod = document.createElement('button');
+    buttonMod.setAttribute('type', 'button');
+    buttonMod.setAttribute('class', 'btn btn-warning');
+    buttonMod.setAttribute('data-toggle', 'modal');
+    buttonMod.setAttribute('data-target', '#exampleModalCenter'); // TODO : changer l'id target
+    buttonMod.textContent = 'Modifier';
+    divDroite.appendChild(buttonMod);
+    divDroite.innerHTML += '&ensp;';
+    
+    let buttonSuppr = document.createElement('button');
+    buttonSuppr.setAttribute('type', 'button');
+    buttonSuppr.setAttribute('class', 'btn btn-danger');
+    buttonSuppr.innerHTML = '<img src="../../public/image/poubelle.svg" width="22px">';
+    buttonSuppr.addEventListener('click', deleteSalle);
+    divDroite.appendChild(buttonSuppr);
 
     divItemRow.appendChild(divDroite);
     
-    document.getElementById('liste_salles').appendChild(divItemRow);
-    document.getElementById('liste_salles').appendChild(document.createElement('br'));
+    document.getElementById('liste_salle_materiel').appendChild(divItemRow);
+    document.getElementById('liste_salle_materiel').appendChild(document.createElement('br'));
 }
 
-function actuSalleReserv (event) {
-    let idS = parseInt(event.target.parentElement.parentElement.attributes['id-salle'].value);
-    fetch(prefixDir + '/api/salle/byid', {
-        credentials: 'same-origin',
-        method: 'POST',
-        body: JSON.stringify({id_Salle: idS}),
-        headers: new Headers({'Content-type': 'application/json'}),
-    })
-    .then(result => result.json())
-    .then(function (salleData) {
-        document.getElementById('form-reserv').setAttribute('id-salle', salleData.id);
-        let divGauche = document.querySelector('#form-reserv')
-                                .lastElementChild
-                                .firstElementChild
-                                .firstElementChild;
-        
-        Array.from(divGauche.children).forEach(function (balise) {
-            switch (balise.tagName) {
-            case 'IMG':
-                balise.setAttribute('src', salleData.photo);
-                break;
-            case 'H2':
-                balise.firstElementChild.textContent = salleData.nom + ', ' + salleData.batiment;
-                break;
-            case 'P':
-                balise.textContent = salleData.description;
-                break;
-            }
+async function deleteSalle (event) {
+    let divItem = event.target;
+    while (divItem.getAttribute('id-salle') === null) {
+        divItem = divItem.parentElement;
+    }
+    
+    try {
+        await fetch(prefixDir + '/api/salle/delete', {
+            credentials: 'same-origin',
+            method: 'POST',
+            body: JSON.stringify({
+                id_Salle: divItem.getAttribute('id-salle'),
+                id_Element: divItem.getAttribute('id-element'),
+            }),
+            headers: new Headers({'Content-type': 'application/json'}),
         });
-    })
-    .catch(err => console.error(err));
-}
 
-function actuSalleCal (event) {
-
-}
-
-function askReserv () {
-    let formBalise = document.getElementById('form-reserv');
-    let formData = new FormData(formBalise);
-
-    fetch(prefixDir + '/api/reservation/submit/salle', {
-        credentials: 'same-origin',
-        method: 'POST',
-        body: JSON.stringify({
-            id_Salle: formBalise.getAttribute('id-salle'),
-            date_heure_debut: formData.get('date-debut') + ' ' + formData.get('heure-debut'),
-            date_heure_fin: formData.get('date-fin') + ' ' + formData.get('heure-fin'),
-            raison: formData.get('raison'),
-        }),
-        headers: new Headers({'Content-type': 'application/json'}),
-    })
-    .then(response => response.json())
-    .then(function (result) {
-        if (result.ok === false) {
-            let divAlert = document.createElement('div');
-            divAlert.setAttribute('class', 'alert alert-danger');
-            divAlert.setAttribute('role', 'alert');
-            divAlert.innerHTML = '<strong>Erreur!</strong> ';
-            if (result.alreadyTaken) {
-                divAlert.innerHTML += 'Le créneau que vous essayez de réserver est déjà pris (consultez le planning)';
-            }
-            if (result.outOfCren) {
-                divAlert.innerHTML += 'La salle n\'est pas disponnible dans le créneau demandé (consultez le planning)';
-            }
-            if (result.wrongCren) {
-                divAlert.innerHTML += 'Le créneau demandé n\'est pas valide';
-            }
-
-            document.querySelector('#form-reserv').insertBefore(divAlert, document.querySelector('#form-reserv').lastElementChild);
-        }
-    })
-    .catch(err => console.error(err));
-}
-
-document.querySelector('button.btn.btn-danger.col-2').addEventListener('click', function () {
-    let divAlert = document.querySelector('div.alert.alert-danger');
-    if (divAlert) {
-        document.querySelector('#form-reserv').removeChild(divAlert);
+        divItem.remove();
     }
-});
-document.querySelector('input.btn.btn-primary.col-2').addEventListener('click', function () {
-    let divAlert = document.querySelector('div.alert.alert-danger');
-    if (divAlert) {
-        document.querySelector('#form-reserv').removeChild(divAlert);
+    catch (err) {
+        console.log(err);
     }
-});
-document.querySelector('input.btn.btn-primary.col-2').addEventListener('click', askReserv);
-document.getElementById('modal-btn-cal').addEventListener('click', actuSalleCal);
-getAllSalle();
+}
+
+document.getElementById('nav_salle').addEventListener('click', getAllSalle);
+document.getElementById('ajout_cren_salle').addEventListener('click', () => addCren('salle'));
+document.getElementById('ajout_cren_materiel').addEventListener('click', () => addCren('materiel'));
+

@@ -273,6 +273,12 @@ module.exports = (passport) => {
                 req.body['heure-fin'] = [req.body['heure-fin']];
             }
             let promises = [];
+            if (typeof(req.body['date-fin']) === 'string' || req.body['date-fin'] instanceof String) {
+                req.body['date-debut'] = [req.body['date-debut']];
+                req.body['heure-debut'] = [req.body['heure-debut']];
+                req.body['date-fin'] = [req.body['date-fin']];
+                req.body['heure-fin'] = [req.body['heure-fin']];
+            }
             for (let i = 0; i < req.body['date-fin'].length; i += 1) {
                 promises.push(dbHelper.Creneau.insert({
                     date_heure_debut : `${req.body['date-debut'][i]} ${req.body['heure-debut'][i]}`,
@@ -282,7 +288,7 @@ module.exports = (passport) => {
             }
             promises.push(dbHelper.MotCle.insert({
                 mots: req.body['mot-cle'],
-                id_Element: resultat.id,
+                id_Element: resultat.id_Element,
             }));
 
             Promise.all(promises)
@@ -331,17 +337,15 @@ module.exports = (passport) => {
             let promises = [];
             if (typeof(req.body['date-fin']) === 'string' || req.body['date-fin'] instanceof String) {
                 req.body['date-debut'] = [req.body['date-debut']];
-                req.body['date-fin'] = [req.body['date-fin']];
                 req.body['heure-debut'] = [req.body['heure-debut']];
+                req.body['date-fin'] = [req.body['date-fin']];
                 req.body['heure-fin'] = [req.body['heure-fin']];
             }
-
-            for (let i = 0; i < req.body['date-fin'].length; i+=1 ) {
-
+            for (let i = 0; i < req.body['date-fin'].length; i += 1) {
                 promises.push(dbHelper.Creneau.insert({
                     date_heure_debut : `${req.body['date-debut'][i]} ${req.body['heure-debut'][i]}`,
                     date_heure_fin : `${req.body['date-fin'][i]} ${req.body['heure-fin'][i]}`,
-                    id_Element : resultat.id,
+                    id_Element : resultat.id_Element,
                 }));
             }
             promises.push(dbHelper.MotCle.insert({
@@ -353,6 +357,16 @@ module.exports = (passport) => {
             .then(() => res.redirect(prefixDir + '/private/admin/administration.html'))
             .catch(err => {console.error(err); res.json(err);});
         })
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+    app.post('/salle/delete', function (req, res) {
+        dbHelper.MotCle.deleteByElem(req.body.id_Element)
+        .then(() => dbHelper.Reservation.deleteByElemId(req.body.id_Element))
+        .then(idRes => idRes.forEach(i => dbHelper.Notification.delete(i.id).catch(err => {console.error(err); res.json(err);})))
+        .then(() => dbHelper.Creneau.deleteAllByElem(req.body.id_Element))
+        .then(() => dbHelper.Salle.deleteById(req.body.id_Salle))
+        .then(() => res.json({ok: true,}))
         .catch(err => {console.error(err); res.json(err);});
     });
 

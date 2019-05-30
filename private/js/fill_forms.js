@@ -1,24 +1,6 @@
 'use strict';
 
-async function fillMateriel (formBalise) {
-
-}
-
-async function fillSalle (formBalise) {
-    let textOptionTri = ['Par dates de disponibilité', 'Par dates de disponibilité décroissantes', 'Par capacités', 'Par capacités décroissantes'];
-    let listeTri = document.getElementById('tri');
-    if (!listeTri) {
-        listeTri = document.getElementById('tri_salle');
-    }
-    while (listeTri.firstChild) {
-        listeTri.removeChild(listeTri.firstChild);
-    }
-    textOptionTri.forEach(function (txt) {
-        let opt = document.createElement('option');
-        opt.textContent = txt;
-        listeTri.appendChild(opt);
-    });
-
+async function fillSalle () {
     try {
         let response = await fetch(prefixDir + '/api/salle/getall');
         let salles = await response.json();
@@ -49,10 +31,7 @@ async function fillSalle (formBalise) {
 let crits = document.querySelectorAll('.Critere');
 crits.forEach(function (divCrit) {
     if (divCrit.parentElement.getAttribute('id') === 'salles') {
-        fillSalle(divCrit.firstElementChild);
-    }
-    if (divCrit.parentElement.getAttribute('id') === 'materiel') {
-        fillMateriel(divCrit.firstElementChild);
+        fillSalle();
     }
 });
 
