@@ -1,9 +1,5 @@
 'use strict';
 
-function deleteCren (row) {
-
-}
-
 function addCren (strTab) {
     let tabBalise = document.getElementById('tableau-sans-bordure-' + strTab).firstElementChild;
 
@@ -155,10 +151,6 @@ async function searchSalle (formBalise) {
     }
 }
 
-function actuSalleCal (event) {
-
-}
-
 async function getAllSalle () {
     let response = await fetch(prefixDir + '/api/salle/getall');
     if (response.ok) {
@@ -216,8 +208,9 @@ function insertSalle(salleData) {
     buttonPlan.setAttribute('class', 'btn btn-light');
     buttonPlan.setAttribute('data-toggle', 'modal');
     buttonPlan.setAttribute('data-target', '#calendrier');
+    buttonPlan.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${salleData.id_Element});`);
     buttonPlan.textContent = 'Planning';
-    buttonPlan.addEventListener('click', actuSalleCal);
+    // TODO buttonPlan.addEventListener('click', actuSalleCal);
     divDroite.appendChild(buttonPlan);
     divDroite.innerHTML += '&ensp;';
     
@@ -346,7 +339,8 @@ function insertMat (data) {
             buttonCalendar.setAttribute('type','button');
             buttonCalendar.setAttribute('class','btn btn-light');
             buttonCalendar.setAttribute('data-toggle','modal');
-            buttonCalendar.setAttribute('data-target','#calendrier1');
+            buttonCalendar.setAttribute('data-target','#calendrier');
+            buttonCalendar.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${materiel.id_Element});`);
             buttonCalendar.textContent = 'Planning complet';
             elemDivDroite.appendChild(buttonCalendar);
 
@@ -410,7 +404,8 @@ function insertMat (data) {
             buttonCalendar.setAttribute('type','button');
             buttonCalendar.setAttribute('class','btn btn-light');
             buttonCalendar.setAttribute('data-toggle','modal');
-            buttonCalendar.setAttribute('data-target','#calendrier1'); // TODO : changer l'id calendrier
+            buttonCalendar.setAttribute('data-target','#calendrier');
+            buttonCalendar.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${materiel.id_Element});`);
             buttonCalendar.textContent = 'Planning complet';
             elemDivDroite.appendChild(buttonCalendar);
             elemDivDroite.innerHTML += '&ensp;';

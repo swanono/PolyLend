@@ -9,6 +9,7 @@
         <title>PolyLend</title>
 
         <script src="../js/common.js" defer></script>
+        <script src="../js/calendrier.js" defer></script>
         <script src="../js/notifs.js" defer></script>
         <script src="../js/fill_forms.js" defer></script>
         <script src="../js/administration.js" defer></script>
@@ -229,129 +230,207 @@
 
 
 <!-- Modals -->
-<div class="modal fade" id="ajouterElement" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" data-dismiss="modal" class="btn btn-danger col-2">Annuler</button>
-                <h5 class="modal-title col-10 text-center" id="exampleModalLongTitle">Ajouter un élément</h5>
-            </div>
-            <div class="modal-body">
-                <div class="form-group row">
-                    <label for="type" class="col-sm-1 col-form-label">Type:</label>
-                    <div class="col-sm-3">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#popupmateriel">Matériel</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#popupsalles">Salle</a>
-                            </li>
-                        </ul>
-
-                    </div>
+    <div class="modal fade" id="ajouterElement" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="btn btn-danger col-2">Annuler</button>
+                    <h5 class="modal-title col-10 text-center" id="exampleModalLongTitle">Ajouter un élément</h5>
                 </div>
-                <div class="tab-content">
-                    <div class="tab-pane container" id="popupsalles">
-                        <!-- début salles -->
-                        <form method="post" action="/api/salle/add">
-                            <div class="form-group row">
-                                <div class="gauche col-3">
-                                    <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
-                                    <div class="form-group form-check float-right">
-                                        <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto">
-                                    </div> 
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="form-group col-7">
-                                    <input type="text" class="form-control" placeholder="Nom" name="nom" required>
-                                </div>
-                                <div class="form-group col-5">
-                                    <label for="files_salle" class="btn btn-dark">Ajouter une image...</label>
-                                    <input id="files_salle" name="image" style="visibility:hidden;" type="file">
-                                </div>
-                            </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="type" class="col-sm-1 col-form-label">Type:</label>
+                        <div class="col-sm-3">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#popupmateriel">Matériel</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#popupsalles">Salle</a>
+                                </li>
+                            </ul>
 
-                            <hr>
-                            <div class="row">
-                                <div class="form-group col-3">
-                                    <select class="form-control" id="batiment_submit" name="batiment" required>
-                                        <option value="Autre">Bâtiment</option>
-                                        <option>IHT</option>
-                                        <option>Ireste</option>
-                                        <option>Isitem</option>
-                                        <option>Autre</option>
-                                    </select>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane container" id="popupsalles">
+                            <!-- début salles -->
+                            <form method="post" action="/api/salle/add">
+                                <div class="form-group row">
+                                    <div class="gauche col-3">
+                                        <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
+                                        <div class="form-group form-check float-right">
+                                            <input type="checkbox" name="validation_auto" class="form-check-input" id="validation_auto">
+                                        </div> 
+                                    </div>
                                 </div>
-
-                                <div class="form-group col-3">
-                                    <select class="form-control" id="etage_submit" name="etage" required>
-                                        <option value="0">Etage</option>
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-6">
-                                    <div class="row">
-                                        <label for="capacite2" class="col-sm-6 col-form-label">Capacité (pers.):</label>
-                                        <div class="col-sm-6">
-                                            <input type="number" name="capacite" id="capacite2" min="1" max="500" style="width:100px;" value="1">
-                                        </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="form-group col-7">
+                                        <input type="text" class="form-control" placeholder="Nom" name="nom" required>
+                                    </div>
+                                    <div class="form-group col-5">
+                                        <label for="files_salle" class="btn btn-dark">Ajouter une image...</label>
+                                        <input id="files_salle" name="image" style="visibility:hidden;" type="file">
                                     </div>
                                 </div>
 
-                            </div>
-                            <div class="form-group row">
-                                    <label for="dispo" class="col-sm-4 col-form-label">Equipement :</label>
-                                    <div class="col-sm-8">
+                                <hr>
+                                <div class="row">
+                                    <div class="form-group col-3">
+                                        <select class="form-control" id="batiment_submit" name="batiment" required>
+                                            <option value="Autre">Bâtiment</option>
+                                            <option>IHT</option>
+                                            <option>Ireste</option>
+                                            <option>Isitem</option>
+                                            <option>Autre</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-3">
+                                        <select class="form-control" id="etage_submit" name="etage" required>
+                                            <option value="0">Etage</option>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-6">
                                         <div class="row">
-                                            <div class= "col-5">
-                                                <label class="form-check-label col-form-label" for="videoproj">Video Projecteur</label>
-                                                <div class="form-group form-check float-right">
-                                                    <input type="checkbox" name="videoproj" class="form-check-input" id="videoproj" checked>
-                                                </div>
+                                            <label for="capacite2" class="col-sm-6 col-form-label">Capacité (pers.):</label>
+                                            <div class="col-sm-6">
+                                                <input type="number" name="capacite" id="capacite2" min="1" max="500" style="width:100px;" value="1">
                                             </div>
-                                            <div class= "col-4">
-                                                <label class="form-check-label col-form-label" for="tableaublanc">Tableau</label>
-                                                <div class="form-group form-check float-right">
-                                                    <input type="checkbox" name="tableau" class="form-check-input" id="tableaublanc" checked>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                        <label for="dispo" class="col-sm-4 col-form-label">Equipement :</label>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class= "col-5">
+                                                    <label class="form-check-label col-form-label" for="videoproj">Video Projecteur</label>
+                                                    <div class="form-group form-check float-right">
+                                                        <input type="checkbox" name="videoproj" class="form-check-input" id="videoproj" checked>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class= "col-4">
-                                                <label class="form-check-label col-form-label" for="ordis">Ordinateurs</label>
-                                                <div class="form-group form-check float-right">
-                                                    <input type="checkbox" name="ordinateurs" class="form-check-input" id="ordis" checked>
+                                                <div class= "col-4">
+                                                    <label class="form-check-label col-form-label" for="tableaublanc">Tableau</label>
+                                                    <div class="form-group form-check float-right">
+                                                        <input type="checkbox" name="tableau" class="form-check-input" id="tableaublanc" checked>
+                                                    </div>
+                                                </div>
+                                                <div class= "col-4">
+                                                    <label class="form-check-label col-form-label" for="ordis">Ordinateurs</label>
+                                                    <div class="form-group form-check float-right">
+                                                        <input type="checkbox" name="ordinateurs" class="form-check-input" id="ordis" checked>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            <div class="form-group row">
-                                <label for="dispo" class="col-sm-4 col-form-label">Notes/Description :</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="description" id="dispo" placeholder="Facultatif">
+                                <div class="form-group row">
+                                    <label for="dispo" class="col-sm-4 col-form-label">Notes/Description :</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="description" id="dispo" placeholder="Facultatif">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="mot-cle" id="mot-cle" placeholder="Séparés par des espaces">
+                                <div class="form-group row">
+                                    <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="mot-cle" id="mot-cle" placeholder="Séparés par des espaces">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
-                                <div class="form-group row col-sm-8 table-responsive">
-                                    <table id="tableau-sans-bordure-salle">
-                                        <tbody>
+                                <div class="form-group row">
+                                    <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
+                                    <div class="form-group row col-sm-8 table-responsive">
+                                        <table id="tableau-sans-bordure-salle">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group row">
+                                                            <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date" required><input type="time" name="heure-debut" required></p>
+                                                            <p>Au: <input class="float-right" type="date" name="date-fin" required><input type="time" name="heure-fin" required></p>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        &ensp;&ensp;
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="button" class="btn btn-primary" id="ajout_cren_salle">+ Ajouter une plage de disponibilité</button>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary col-2" value="Ajouter">
+                                </div>
+                            </form>
+                            <!-- fin salles -->
+                        </div>
+                        <div class="tab-pane container active" id="popupmateriel">
+
+
+                            <!-- début matériel -->
+                            <form method="post" action="/api/materiel/add">
+                                <div class="form-group row">
+                                    <div class="gauche col-3">
+                                        <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
+                                        <div class="form-group form-check float-right">
+                                            <input type="checkbox" class="form-check-input" name="validation_auto" id="validation_auto">
+                                        </div>
+                                    </div>
+                                    <label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
+                                    <div class="col-sm-3">
+                                        <input type="number" id="capacite" name="quantite" min="1" max="500" value="1">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="form-group col-4">
+                                        <input type="text" class="form-control" placeholder="Nom" name="nom" required>
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <select class="form-control" id="categorie" name="categorie" required>
+                                            <option value="Autre">Catégorie</option>
+                                            <option>Informatique</option>
+                                            <option>Mobilier</option>
+                                            <option>Instrument</option>
+                                            <option>Autre</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-5">
+                                        <label for="files_materiel" class="btn btn-dark">Ajouter une image...</label>
+                                        <input id="files_materiel" name="image" style="visibility: hidden;" type="file">
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" placeholder="Description" name="description" rows="3"></textarea>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="dispo" class="col-sm-4 col-form-label">Lieu de Disponibilité :</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="lieu-de-dispo" id="dispo" placeholder="Ex: Bâtiment, étage, salle, demander la clé à Didier" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="mot-cle" class="form-control" id= "mot-cle" placeholder="Séparés par des espaces">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
+                                    <div class="form-group row col-sm-8 table-responsive">
+                                        <table id="tableau-sans-bordure-materiel">
                                             <tr>
                                                 <td>
                                                     <div class="form-group row">
-                                                        <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date" required><input type="time" name="heure-debut" required></p>
-                                                        <p>Au: <input class="float-right" type="date" name="date-fin" required><input type="time" name="heure-fin" required></p>
+                                                        <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date" required><input name="heure-debut" type="time"required></p>
+                                                        <p>Au: <input class="float-right" name="date-fin" type="date" required><input type="time" name="heure-fin"required></p>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -360,171 +439,51 @@
                                                 <td>
                                                 </td>
                                             </tr>
-                                        </tbody>
-                                    </table>
-                                    <button type="button" class="btn btn-primary" id="ajout_cren_salle">+ Ajouter une plage de disponibilité</button>
-                                </div>
-                                <input type="submit" class="btn btn-primary col-2" value="Ajouter">
-                            </div>
-                        </form>
-                        <!-- fin salles -->
-                    </div>
-                    <div class="tab-pane container active" id="popupmateriel">
-
-
-                        <!-- début matériel -->
-                        <form method="post" action="/api/materiel/add">
-                            <div class="form-group row">
-                                <div class="gauche col-3">
-                                    <label class="form-check-label col-form-label" for="validation_auto">Validation auto :</label>
-                                    <div class="form-group form-check float-right">
-                                        <input type="checkbox" class="form-check-input" name="validation_auto" id="validation_auto">
+                                        </table>
+                                        <button type="button" class="btn btn-primary" id="ajout_cren_materiel">+ Ajouter une plage de disponibilité</button>
                                     </div>
+                                    <input type="submit" class="btn btn-primary col-2" value="Ajouter">
                                 </div>
-                                <label for="capacite" class="col-sm-2 col-form-label">Quantité :</label>
-                                <div class="col-sm-3">
-                                    <input type="number" id="capacite" name="quantite" min="1" max="500" value="1">
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <input type="text" class="form-control" placeholder="Nom" name="nom" required>
-                                </div>
-                                <div class="form-group col-3">
-                                    <select class="form-control" id="categorie" name="categorie" required>
-                                        <option value="Autre">Catégorie</option>
-                                        <option>Informatique</option>
-                                        <option>Mobilier</option>
-                                        <option>Instrument</option>
-                                        <option>Autre</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-5">
-                                    <label for="files_materiel" class="btn btn-dark">Ajouter une image...</label>
-                                    <input id="files_materiel" name="image" style="visibility: hidden;" type="file">
-                                </div>
+                            </form>
+                            <!--fin matériel -->
+                        </div>
 
-                            </div>
-                            <div class="form-group">
-                                <textarea class="form-control" placeholder="Description" name="description" rows="3"></textarea>
-                            </div>
-                            <div class="form-group row">
-                                <label for="dispo" class="col-sm-4 col-form-label">Lieu de Disponibilité :</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="lieu-de-dispo" id="dispo" placeholder="Ex: Bâtiment, étage, salle, demander la clé à Didier" required>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="mot-cle" class="col-sm-4 col-form-label">Mots clés :</label>
-                                <div class="col-sm-8">
-                                    <input type="text" name="mot-cle" class="form-control" id= "mot-cle" placeholder="Séparés par des espaces">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="mot-cle" class="col-sm-4 col-form-label">Disponibilités :</label>
-                                <div class="form-group row col-sm-8 table-responsive">
-                                    <table id="tableau-sans-bordure-materiel">
-                                        <tr>
-                                            <td>
-                                                <div class="form-group row">
-                                                    <p>Du: <input class="float-right" name="date-debut" style="margin-right: 2px;" type="date" required><input name="heure-debut" type="time"required></p>
-                                                    <p>Au: <input class="float-right" name="date-fin" type="date" required><input type="time" name="heure-fin"required></p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                &ensp;&ensp;
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <button type="button" class="btn btn-primary" id="ajout_cren_materiel">+ Ajouter une plage de disponibilité</button>
-                                </div>
-                                <input type="submit" class="btn btn-primary col-2" value="Ajouter">
-                            </div>
-                        </form>
-                         <!--fin matériel -->
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modals calendrier -->
-<div class="modal fade" id="calendrier2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!-- Modals calendrier -->
+    <div class="modal fade" id="calendrier" id-element="0" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header modal-header-calendrier">
-                    <h5 class="modal-title col-11 text-center" id="exampleModalLongTitle">Janvier 2019</h5>
+                        <button type="button" class="btn btn-light col-1" id="btn_min">&lt;</button>
+                    <h5 class="modal-title col-9 text-center" id="titre_calendrier">Titre</h5>
+                    <button type="button" class="btn btn-light col-1" id="btn_plus">&gt;</button>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body modal-body-calendrier calendrier">
-                    <table width="100%">
-                    <tr>
-                        <th>Lun<br></th>
-                        <th>Mar</th>
-                        <th>Mer</th>
-                        <th>Jeu</th>
-                        <th>Ven</th>
-                        <th>Sam</th>
-                        <th>Dim</th>
-                    </tr>
-                    <tr>
-                        <td>1<br/><br/></td>
-                        <td>2<br/><br/></td>
-                        <td>3<br/></td><br/></td>
-                        <td>4<br/><br/></td>
-                        <td>5<br/><br/></td>
-                        <td>6<br/><br/></td>
-                        <td>7<br/><br/></td>
-                    </tr>
-                    <tr>
-                        <td>8<br/><br/></td>
-                        <td>9<br/><br/></td>
-                        <td class= "en-cours">10<br/>10h00</td>
-                        <td class= "en-cours">11<br/><br/><a href="#" data-toggle="popover" title="Action" data-content="Accepeter / refuser"></a></td>
-                        <td class= "en-cours">12<br/>14h00</td>
-                        <td>13<br/><br/></td>
-                        <td>14<br/><br/></td>
-                    </tr>
-                    <tr>
-                        <td>15<br/><br/></td>
-                        <td>16<br/><br/></td>
-                        <td>17<br/><br/></td>
-                        <td>18<br/><br/></td>
-                        <td>19<br/><br/></td>
-                        <td>20<br/><br/></td>
-                        <td>21<br/><br/></td>
-                    </tr>
-                    <tr>
-                        <td>22<br/><br/></td>
-                        <td>23<br/><br/></td>
-                        <td>24<br/><br/></td>
-                        <td>25<br/><br/></td>
-                        <td>26<br/><br/></td>
-                        <td>27<br/><br/></td>
-                        <td>28<br/><br/></td>
-                    </tr>
-                    <tr>
-                        <td>29<br/><br/></td>
-                        <td>30<br/><br/></td>
-                        <td>31<br/><br/></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                <div class="modal-body modal-body-calendrier calendrier text-center" id="calendrier_body">
+                    <table class="table-bordered" width="100%"> <!-- table  -->
+                        <thead>
+                            <tr id="jours">
+                                <th>Heure</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
                     </table>
                 </div>
-        <!--<div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-        </div>-->
             </div>
         </div>
     </div>

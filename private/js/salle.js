@@ -223,10 +223,6 @@ function actuSalleReserv (event) {
     .catch(err => console.error(err));
 }
 
-function actuSalleCal (event) {
-
-}
-
 function askReserv () {
     let formBalise = document.getElementById('form-reserv');
     let formData = new FormData(formBalise);
