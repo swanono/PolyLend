@@ -5,9 +5,7 @@ function getAllMateriel () {
     .then( function (response) {
         if (response.ok) {
             response.json()
-            .then( function (data) {
-                insertMat(data);
-                })
+            .then(data => insertMat(data))
             .catch(err => console.error(err));
         }
         else {
@@ -340,9 +338,6 @@ async function searchMat (formBalise) {
         console.error(err);
     }
 }
-
-
-
 
 document.querySelector('button.btn.btn-danger.col-2').addEventListener('click', function () {
     let divAlert = document.querySelector('div.alert.alert-danger');
