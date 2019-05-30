@@ -2,9 +2,9 @@
  <html>
  <head>
  <title>calendrier</title>
-<script>
+<script src="./js/calendrier.js" defer>
 
-function calendar() {
+/*function calendar() {
 
 	var monthNames= ['Jan','Fev','Mar','Avr','Mai','Jui','Juil','Aou','Sep','Oct','Nov','Dec'];
 	var jours= ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
@@ -74,76 +74,76 @@ function calendar() {
 }
 
 typeof window.addEventListener == 'undefined' ? window.attachEvent("onload",calendar) : addEventListener('load',calendar,false);
-</script>
+*/</script>
+
+<link href="../../public/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
 <body>
-<div id='contcalendar'></div>
+<div id='contcalendar'>
+	<button class="btn btn-primary" data-toggle="modal" data-target="#calendrier">Calendrier</button>
+</div>
+<div class="modal fade" id="calendrier" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header modal-header-calendrier">
+					<button type="button" class="btn btn-light col-1" id="btn_min">&lt;</button>
+				<h5 class="modal-title col-9 text-center" id="exampleModalLongTitle">Titre</h5>
+				<button type="button" class="btn btn-light col-1" id="btn_plus">&gt;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body modal-body-calendrier calendrier text-center" id="calendrier_body">
+				<table class="table-bordered" width="100%"> <!-- table  -->
+					<thead>
+						<tr id="jours">
+							<th>Heure</th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 </body>
-</html>
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="./js/bootstrap.min.js"></script>
+
+<script>
+$(function() {
+	$("[data-toggle=popover]").popover({
+	html: true,
+	content: function() {
+		var content = $(this).attr("data-popover-content");
+		return $(content).children(".popover-body").html();
+	},
+	title: function() {
+		var title = $(this).attr("data-popover-content");
+		return $(title).children(".popover-heading").html();
+	}
+	});
+});
+</script>
+
+</html>
 <!--
-<table width="50%" border="1">
-	<tr>
-	    <th>Lun<br></th>
-	    <th>Mar</th>
-	    <th>Mer</th>
-	    <th>Jeu</th>
-	    <th>Ven</th>
-	    <th>Sam</th>
-	    <th>Dim</th>
-	</tr>
-	<tr>
-	    <td>1<br/><br/></td>
-	    <td>2<br/><br/></td>
-	    <td>3<br/></td><br/></td>
-	    <td>4<br/><br/></td>
-	    <td>5<br/><br/></td>
-	    <td>6<br/><br/></td>
-	    <td>7<br/><br/></td>
-	</tr>
-	<tr>
-	    <td>8<br/><br/></td>
-	    <td>9<br/><br/></td>
-	    <td class= "en-cours">10<br/>10h00</td>
-	    <td class= "en-cours">11<br/><br/></td>
-	    <td class= "en-cours">12<br/>14h00</td>
-	    <td>13<br/><br/></td>
-	    <td>14<br/><br/></td>
-	</tr>
-	<tr>
-	    <td>15<br/><br/></td>
-	    <td>16<br/><br/></td>
-	    <td>17<br/><br/></td>
-	    <td>18<br/><br/></td>
-	    <td>19<br/><br/></td>
-	    <td>20<br/><br/></td>
-	    <td>21<br/><br/></td>
-	</tr>
-	<tr>
-	    <td>22<br/><br/></td>
-	    <td>23<br/><br/></td>
-	    <td>24<br/><br/></td>
-	    <td>25<br/><br/></td>
-	    <td>26<br/><br/></td>
-	    <td>27<br/><br/></td>
-	    <td>28<br/><br/></td>
-	</tr>
-	<tr>
-	    <td>29<br/><br/></td>
-	    <td>30<br/><br/></td>
-	    <td>31<br/><br/></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	</tr>
-</table>
 
 <div id='contcalendar'></div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="./js/bootstrap.bundle.min.js "></script>		
 <script type="text/javascript">
 	function calendar() {
@@ -214,4 +214,4 @@ typeof window.addEventListener == 'undefined' ? window.attachEvent("onload",cale
 	}
 	document.getElementById('contcalendar').appendChild(tb);
 }
-</script>
+</script>-->

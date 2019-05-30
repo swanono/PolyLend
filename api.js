@@ -143,6 +143,12 @@ module.exports = (passport) => {
         .catch(err => {console.error(err); res.json(err);});
     });
 
+    app.post('/reservation/allbyElem', function (req, res) {
+        dbHelper.Reservation.allByElemId(req.body.id_Element)
+        .then(result => res.json(result))
+        .catch(err => {console.error(err); res.json(err);})
+    });
+
     app.post('/reservation/validate', function (req, res) {
         dbHelper.Reservation.validate(req.body.id_Reservation, req.body.validate)
         .then(result => res.json(result))
@@ -249,6 +255,12 @@ module.exports = (passport) => {
 
     app.post('/creneau/byid', function (req, res) {
         dbHelper.Creneau.byId(req.body.id_Creneau)
+        .then(result => res.json(result))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+    app.post('/creneau/allbyid', function (req, res) {
+        dbHelper.Creneau.allByElemId(req.body.id_Element)
         .then(result => res.json(result))
         .catch(err => {console.error(err); res.json(err);});
     });
