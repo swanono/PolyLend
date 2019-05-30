@@ -192,8 +192,6 @@ module.exports = (passport) => {
         else {
             dbHelper.Materiel.byId(req.body.id_Materiel)
             .then(function (data) {
-                console.log('On reserve l\'element :');
-                console.log(data.id_Element);
                 dbHelper.Reservation.allByElemId(data.id_Element)
                 .then(function (reservDatas) {
                     reservDatas.forEach(function (reservData) {
@@ -480,16 +478,9 @@ module.exports = (passport) => {
     app.get('/materiel/getall', function (req, res) {
         dbHelper.Materiel.all()
         .then(function (materiels) {
-            materiels.forEach( function (materiel) {
-                dbHelper.Creneau.allByElemId(materiel.id_Element)
-                .then( function (cren) {
-                    console.log(cren);
-                });
-                materiel.disponibilite = 'dispo';
-            });
+            materiels.forEach(materiel => materiel.disponibilite = 'dispo');
 
-            console.log(materiels);
-            return res.json(materiels);
+            res.json(materiels);
         })
         .catch(err => {console.error(err); res.json(err);});
     });
@@ -515,13 +506,9 @@ module.exports = (passport) => {
             date_heure_debut: hasDHD ? dhd : (hasDHF ? dhf : undefined),
             date_heure_fin: hasDHF ? dhf : (hasDHD ? dhd : undefined),
         };
-        console.log('crits :');
-        console.log(crits);
-        let promises = hasCrit ? [
 
+        let promises = hasCrit ? [
             ...crits.map(crit => {
-                console.log('crit :');
-                console.log(crit);
                 paramMat.lieu = undefined;
                 paramMat.description = undefined;
                 paramMat.nom = crit;

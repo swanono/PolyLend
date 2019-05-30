@@ -11,7 +11,7 @@ function getAllMateriel () {
             .catch(err => console.error(err));
         }
         else {
-            console.log(response.statusText);
+            console.error(response.statusText);
         }
     })
     .catch(err => console.error(err));
@@ -139,6 +139,7 @@ function insertMat (data) {
             buttonCalendar.setAttribute('data-target','#calendrier1');
             buttonCalendar.textContent = 'Planning complet';
             elemDivDroite.appendChild(buttonCalendar);
+            elemDivDroite.innerHTML += '&ensp;';
 
             //boutton Reserver
             let buttonRes  = document.createElement('button');
@@ -248,8 +249,6 @@ async function searchMat (formBalise) {
             headers: new Headers({'Content-type': 'application/json'}),
         });
         let MatDatas = await response.json();
-        console.log('matdata :')
-        console.log(MatDatas);
 
         let MatListe = document.getElementById('liste_materiel');
 
@@ -329,7 +328,6 @@ async function searchMat (formBalise) {
             }
             return res;
         });
-        console.log(MatDatas);
         insertMat(MatDatas);
     }
     catch (err) {
