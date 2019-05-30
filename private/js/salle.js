@@ -18,16 +18,94 @@ async function searchSalle (formBalise) {
                 capacite: formData.get('capacite'),
             }),
             headers: new Headers({'Content-type': 'application/json'}),
-        })
-        let salleDatas = await response.json()
+        });
+        let salleDatas = await response.json();
 
         let salleListe = document.getElementById('liste_salles');
         while (salleListe.firstChild) {
             salleListe.removeChild(salleListe.firstChild);
         }
 
-        // TODO : tri en fonction de l'option choisie
-        salleDatas.reverse().forEach(salle => insertSalle(salle));
+        
+        let crens = await fetch('../../api/creneau/getall');
+        let crenData = await crens.json();
+        crenData = crenData.map(c => {
+            let d = new Date();
+            return {
+                id: c.id,
+                date_heure_debut: Date.parse(c.date_heure_debut) - d.getTimezoneOffset()*60000,
+                date_heure_fin: Date.parse(c.date_heure_fin) - d.getTimezoneOffset()*60000,
+                id_Element: c.id_Element,
+            };
+        })
+        .filter(c => c.date_heure_fin > Date.now());
+
+        salleDatas.sort(function (salle1, salle2) {
+            let res = 0
+            switch (formData.get('tri')) {
+            case 'Par dates de disponibilité':
+                crenData.sort(function (cren1, cren2) {
+                    if ((cren1.id_Element === salle1.id_Element || cren1.id_Element === salle2.id_Element)
+                        && cren2.id_Element !== salle1.id_Element && cren2.id_Element !== salle2.id_Element) {
+                        return -1;
+                    }
+                    if ((cren2.id_Element === salle1.id_Element || cren2.id_Element === salle2.id_Element)
+                        && cren1.id_Element !== salle1.id_Element && cren1.id_Element !== salle2.id_Element) {
+                        return 1;
+                    }
+                    if (cren1.id_Element !== salle1.id_Element && cren1.id_Element !== salle2.id_Element
+                        && cren2.id_Element !== salle1.id_Element && cren2.id_Element !== salle2.id_Element) {
+                        return 0;
+                    }
+                    return cren1.date_heure_debut - cren2.date_heure_debut;
+                });
+                if (crenData[0]) {
+                    if (crenData[0].id_Element === salle1.id_Element) {
+                        res = -1;
+                    }
+                    if (crenData[0].id_Element === salle2.id_Element) {
+                        res = 1;
+                    }
+                }
+                break;
+            case 'Par dates de disponibilité décroissantes':
+                crenData.sort(function (cren1, cren2) {
+                    if ((cren1.id_Element === salle1.id_Element || cren1.id_Element === salle2.id_Element)
+                        && cren2.id_Element !== salle1.id_Element && cren2.id_Element !== salle2.id_Element) {
+                        return -1;
+                    }
+                    if ((cren2.id_Element === salle1.id_Element || cren2.id_Element === salle2.id_Element)
+                        && cren1.id_Element !== salle1.id_Element && cren1.id_Element !== salle2.id_Element) {
+                        return 1;
+                    }
+                    if (cren1.id_Element !== salle1.id_Element && cren1.id_Element !== salle2.id_Element
+                        && cren2.id_Element !== salle1.id_Element && cren2.id_Element !== salle2.id_Element) {
+                        return 0;
+                    }
+                    return cren2.date_heure_debut - cren1.date_heure_debut;
+                });
+                if (crenData[0]) {
+                    if (crenData[0].id_Element === salle1.id_Element) {
+                        res = -1;
+                    }
+                    if (crenData[0].id_Element === salle2.id_Element) {
+                        res = 1;
+                    }
+                }
+                break;
+            case 'Par capacités':
+                res = salle1.capacite - salle2.capacite;
+                break;
+            case 'Par capacités décroissantes':
+                res = salle2.capacite - salle1.capacite;
+                break;
+            default:
+                break;
+            }
+            return res;
+        });
+
+        salleDatas.forEach(salle => insertSalle(salle));
     }
     catch (err) {
         console.error(err);
@@ -82,7 +160,7 @@ function insertSalle(salleData) {
     divDroite.setAttribute('class', 'droite col-6');
 
     let pDispo = document.createElement('p');
-    pDispo.setAttribute('class', 'disponnible');
+    pDispo.setAttribute('class', 'disponible');
     pDispo.textContent = 'Disponible selon vos critères'; // TODO changer en fonction de si la case dispo est cochées
     divDroite.appendChild(pDispo);
 
@@ -91,23 +169,24 @@ function insertSalle(salleData) {
     buttonPlan.setAttribute('class', 'btn btn-light');
     buttonPlan.setAttribute('data-toggle', 'modal');
     buttonPlan.setAttribute('data-target', '#calendrier');
+    buttonPlan.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${salleData.id_Element});`);
     buttonPlan.textContent = 'Planning complet';
-    buttonPlan.addEventListener('click', actuSalleCal);
     divDroite.appendChild(buttonPlan);
+    divDroite.innerHTML += '&ensp;';
     
     let buttonRes = document.createElement('button');
     buttonRes.setAttribute('type', 'button');
     buttonRes.setAttribute('class', 'btn btn-primary');
     buttonRes.setAttribute('data-toggle', 'modal');
-    buttonRes.setAttribute('data-target', '#exampleModalCenter'); // TODO : changer l'id target
+    buttonRes.setAttribute('data-target', '#reservModal');
     buttonRes.textContent = 'Réserver';
     buttonRes.addEventListener('click', actuSalleReserv);
     divDroite.appendChild(buttonRes);
 
     divItemRow.appendChild(divDroite);
     
-    document.querySelector('#liste_salles').appendChild(divItemRow);
-    document.querySelector('#liste_salles').appendChild(document.createElement('br'));
+    document.getElementById('liste_salles').appendChild(divItemRow);
+    document.getElementById('liste_salles').appendChild(document.createElement('br'));
 }
 
 function actuSalleReserv (event) {
@@ -139,12 +218,10 @@ function actuSalleReserv (event) {
                 break;
             }
         });
+
+        document.getElementById('btn_planning_reserv').setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${salleData.id_Element});`);
     })
     .catch(err => console.error(err));
-}
-
-function actuSalleCal (event) {
-
 }
 
 function askReserv () {
@@ -198,5 +275,4 @@ document.querySelector('input.btn.btn-primary.col-2').addEventListener('click', 
     }
 });
 document.querySelector('input.btn.btn-primary.col-2').addEventListener('click', askReserv);
-document.getElementById('modal-btn-cal').addEventListener('click', actuSalleCal);
 getAllSalle();

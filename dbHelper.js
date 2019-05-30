@@ -195,23 +195,19 @@ module.exports.Materiel = {
 
     // récupération de tous les matériels répondant à des critères donnés
     allByParams: params => new Promise(function (resolve, reject) {
-        hasQuant = (params.quantite !== undefined);
-        hasLoc = (params.lieu !== undefined);
-        hasName = (params.nom !== undefined);
-        hasCateg = (params.categorie !== undefined);
-        hasDesc = (params.description !== undefined);
+        let hasLoc = (params.lieu !== undefined);
+        let hasName = (params.nom !== undefined);
+        let hasCateg = (params.categorie !== undefined);
+        let hasDesc = (params.description !== undefined);
+        let hasQuant = (params.quantite !== undefined);
 
         all(`SELECT * FROM MaterielFull WHERE (
-            ${hasName ? 'nom = "' + params.nom + '" ' : ''}
-            ${(hasName && (hasQuant || hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
-            ${hasQuant ? 'quantite = ' + params.quantite + ' ' : ''}
-            ${((hasName || hasQuant) && (hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
-            ${hasLoc ? 'lieu LIKE "%' + params.lieu + '%" ' : ''}
-            ${((hasName || hasQuant || hasLoc) && (hasCateg || hasDesc)) ? 'AND ' : ''}
-            ${hasCateg ? 'categorie = "' + params.categorie + '" ' : ''}
-            ${((hasName || hasQuant || hasLoc || hasCateg) && (hasDesc)) ? 'AND ' : ''}
-            ${hasDesc ? 'description LIKE "%' + params.description + '%" ' : ''}
-        );`)
+            ${hasName ? 'nom LIKE "%' + params.nom + '%" AND ' : ''}
+            ${hasLoc ? 'lieu LIKE "%' + params.lieu + '%" AND ' : ''}
+            ${hasCateg ? 'categorie = "' + params.categorie + '" AND ' : ''}
+            ${hasDesc ? 'description LIKE "%' + params.description + '%" AND ' : ''}
+            ${hasQuant ? 'quantite = ' + params.quantite + ' AND ' : ''}
+            0 = 0);`)
         .then(res => resolve(res))
         .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
     }),
@@ -567,7 +563,7 @@ module.exports.Reservation = {
 
     // récupération d'un élément grace à l'id de sa réservation
     // TODO : peut-être à changer
-    getElemData: id => get(`SELECT * FROM Element LEFT OUTER JOIN (SELECT Reservation.id as id, Creneau.id_Element FROM Reservation JOIN Creneau ON Reservation.id_Creneau = Creneau.id) WHERE Reservation.id = ${id};`),
+    getElemData: id => get(`SELECT * FROM Element LEFT OUTER JOIN (SELECT Reservation.id as id_Reservation, Creneau.id_Element as id_Element FROM Reservation JOIN Creneau ON Reservation.id_Creneau = Creneau.id) ON id_Element = Element.id WHERE id_Reservation = ${id};`),
 
     // récupération d'une ligne grace à l'id de la réservation
     byId: id => get(`SELECT * FROM Reservation WHERE id = ${id};`),
@@ -630,7 +626,15 @@ module.exports.Reservation = {
     deleteById: id => run(`DELETE FROM Reservation WHERE id = ${id};`),
 
     // délétion de toutes les réservations liées à un élément
-    deleteByElemId: elemId => run(`DELETE FROM Reservation WHERE (SELECT id_Element FROM Creneau WHERE id_Creneau = Creneau.id) = ${elemId};`),
+    deleteByElemId: elemId => new Promise(function (resolve, reject) {
+        all(`SELECT id FROM Reservation WHERE (SELECT id_Element FROM Creneau WHERE id_Creneau = Creneau.id) = ${elemId};`)
+        .then(function (reservIds) {
+            run(`DELETE FROM Reservation WHERE (SELECT id_Element FROM Creneau WHERE id_Creneau = Creneau.id) = ${elemId};`)
+            .then(() => resolve(reservIds))
+            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+        })
+        .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
+    }),
 
     // délétion de toutes les réservations liées à un créneau
     deleteByCrenId: crenId => run(`DELETE FROM Reservation WHERE id_Creneau = ${crenId};`),

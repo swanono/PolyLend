@@ -172,12 +172,16 @@ INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019
 INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019-01-03 19:30:00", "2019-01-05 20:00:00", 13);
 INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019-01-12 14:00:00", "2019-01-12 17:15:00", 8);
 INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019-01-01 14:00:00", "2019-01-01 16:00:00", 2);
+INSERT INTO Creneau (date_heure_debut, date_heure_fin, id_Element) VALUES ("2019-05-20 08:20:00", "2019-05-26 11:40:00", 1);
 
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("je veux chanter", 0, "2019-01-03 20:00:00", "2019-01-03 22:00:00", "E189415L", 1);
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("je veux chanter", 0, "2019-01-03 20:00:00", "2019-01-03 22:00:00", "E189415L", 5);
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("déplacement de classeurs IdeSYS", 1, "2019-01-10 08:00:00", "2019-01-10 19:00:00", "E154706J", 4);
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("je veux faire une conference", 0, "2019-01-12 15:00:00", "2019-01-12 16:30:00", "E168087D", 6);
 INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("je veux tester des trucs en info", -1, "2019-01-20 08:00:00", "2019-01-20 10:00:00", "E123456A", 3);
+INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("test calendrier attente", 0, "2019-05-21 04:20:00", "2019-05-21 07:40:00", "E189415L", 8);
+INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("test calendrier pris", 1, "2019-05-22 04:20:00", "2019-05-22 07:10:00", "E154706J", 8);
+INSERT INTO Reservation (raison, validation, date_heure_debut, date_heure_fin, id_Utilisateur, id_Creneau) VALUES ("test calendrier refusé", -1, "2019-05-22 07:50:00", "2019-05-22 08:20:00", "E189415L", 8);
 
 INSERT INTO MotCle VALUES (9, "électrique");
 INSERT INTO MotCle VALUES (9, "cool");
@@ -198,7 +202,7 @@ INSERT INTO Notification VALUES (5, 0);
 
 CREATE VIEW SalleFull AS
 SELECT Salle.id, batiment, etage, capacite, equipement, id_Element, nom, description, photo, validation_auto
-FROM Salle JOIN Element ON Salle.id = Element.id;
+FROM Salle JOIN Element ON Salle.id_Element = Element.id;
 
 
 --

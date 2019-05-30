@@ -97,14 +97,14 @@ function insertNotif(reservData) {
                     inputVal.setAttribute('type', 'submit');
                     inputVal.setAttribute('class', 'btn btn-success');
                     inputVal.setAttribute('value', 'Valider');
-                    inputVal.addEventListener('click', () => validateReserv(event, reservData.id, true));
+                    inputVal.addEventListener('click', () => validateReserv(reservData.id, true));
                     divButtons.appendChild(inputVal);
 
                     let inputRef = document.createElement('input');
                     inputRef.setAttribute('type', 'submit');
                     inputRef.setAttribute('class', 'btn btn-danger');
                     inputRef.setAttribute('value', 'Refuser');
-                    inputRef.addEventListener('click', () => {validateReserv(event, reservData.id, false);});
+                    inputRef.addEventListener('click', () => {validateReserv(reservData.id, false);});
                     divButtons.appendChild(inputRef);
                     divDroite.appendChild(divButtons);
                 }
@@ -131,7 +131,7 @@ function insertNotif(reservData) {
     .catch(err => console.error(err));
 }
 
-function validateReserv(event, id, valid) {
+function validateReserv(id, valid) {
     fetch('../../api/reservation/validate', {
         credentials: 'same-origin',
         method: 'POST',
@@ -180,8 +180,3 @@ async function getNbNotifs() {
 
 getNbNotifs();
 document.getElementById('btn-notifs').addEventListener('click', openNotifs);
-
-
-// à utiliser quand on saura comment ça marche
-/*let idIntervalNotif = setInterval(getNotifs, 1000);
-window.addEventListener('unload', clearInterval(idIntervalNotif));*/
