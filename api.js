@@ -516,8 +516,6 @@ module.exports = (passport) => {
         ] : [
             dbHelper.Materiel.allByParams(paramMat)
         ];
-
-
         dbHelper.MotCle.allBySentence(hasCrit ? req.body.critere : '1478562548632145863694520')
         .then(function (rows) {
             if (rows) {
@@ -528,6 +526,7 @@ module.exports = (passport) => {
             .then(function (allMats) {
                 let mats = [...new Set(allMats.map(matStack => {
                     if (matStack === null || matStack === undefined || typeof(matStack[Symbol.iterator]) !== 'function') {
+
                         return matStack;
                     }
                     else {
@@ -552,6 +551,7 @@ module.exports = (passport) => {
                     .catch(err => {console.error(err); res.json(err);});
                 }
                 else {
+
                     res.json(mats);
                 }
             })
