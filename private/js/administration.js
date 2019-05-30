@@ -44,7 +44,7 @@ async function searchSalle (formBalise) {
     let formData = new FormData(formBalise);
 
     try {
-        let response = await fetch(prefixDir + '/api/salle/search', {
+        let response = await fetch('../../api/salle/search', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({
@@ -66,7 +66,7 @@ async function searchSalle (formBalise) {
             salleListe.removeChild(salleListe.firstChild);
         }
         
-        let crens = await fetch(prefixDir + '/api/creneau/getall');
+        let crens = await fetch('../../api/creneau/getall');
         let crenData = await crens.json();
         crenData = crenData.map(c => {
             let d = new Date();
@@ -152,7 +152,7 @@ async function searchSalle (formBalise) {
 }
 
 async function getAllSalle () {
-    let response = await fetch(prefixDir + '/api/salle/getall');
+    let response = await fetch('../../api/salle/getall');
     if (response.ok) {
         let salles = await response.json();
         let salleListe = document.getElementById('liste_salle_materiel');
@@ -243,7 +243,7 @@ async function deleteSalle (event) {
     }
     
     try {
-        await fetch(prefixDir + '/api/salle/delete', {
+        await fetch('../../api/salle/delete', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({
@@ -266,7 +266,7 @@ document.getElementById('ajout_cren_materiel').addEventListener('click', () => a
 
 
 function getAllMateriel () {
-    fetch(prefixDir + '/api/materiel/getall')
+    fetch('../../api/materiel/getall')
     .then(function (response) {
         if (response.ok) {
             response.json()
@@ -341,7 +341,7 @@ function insertMat (data) {
             buttonCalendar.setAttribute('data-toggle','modal');
             buttonCalendar.setAttribute('data-target','#calendrier');
             buttonCalendar.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${materiel.id_Element});`);
-            buttonCalendar.textContent = 'Planning complet';
+            buttonCalendar.textContent = 'Planning';
             elemDivDroite.appendChild(buttonCalendar);
 
             //boutton Message
@@ -406,7 +406,7 @@ function insertMat (data) {
             buttonCalendar.setAttribute('data-toggle','modal');
             buttonCalendar.setAttribute('data-target','#calendrier');
             buttonCalendar.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${materiel.id_Element});`);
-            buttonCalendar.textContent = 'Planning complet';
+            buttonCalendar.textContent = 'Planning';
             elemDivDroite.appendChild(buttonCalendar);
             elemDivDroite.innerHTML += '&ensp;';
             
@@ -439,7 +439,7 @@ async function deleteMateriel (event) {
     }
     
     try {
-        await fetch(prefixDir + '/api/materiel/delete', {
+        await fetch('../../api/materiel/delete', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({
@@ -460,7 +460,7 @@ async function searchMat (formBalise) {
     let formData = new FormData(formBalise);
 
     try {
-        let response = await fetch(prefixDir + '/api/materiel/search', {
+        let response = await fetch('../../api/materiel/search', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({
@@ -480,7 +480,7 @@ async function searchMat (formBalise) {
             MatListe.removeChild(MatListe.firstChild);
         }
 
-        let crens = await fetch(prefixDir + '/api/creneau/getall');
+        let crens = await fetch('../../api/creneau/getall');
         let crenData = await crens.json();
         crenData = crenData.map(c => {
             let d = new Date();

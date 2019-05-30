@@ -1,7 +1,7 @@
 'use strict';
 
 async function getReservations () {
-    let response = await fetch(prefixDir + '/api/reservation/allbyuser');
+    let response = await fetch('../../api/reservation/allbyuser');
     if (response.ok) {
         let reservations = await response.json();
 
@@ -18,7 +18,7 @@ async function getReservations () {
 }
 
 function insertReservation(reservData) {
-    fetch(prefixDir + '/api/reservation/getelem', {
+    fetch('../../api/reservation/getelem', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({id_Reservation: reservData.id}),

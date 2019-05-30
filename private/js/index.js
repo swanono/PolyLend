@@ -1,7 +1,7 @@
 'use strict';
 
 function getAllMateriel () {
-    fetch(prefixDir + '/api/materiel/getall')
+    fetch('../../api/materiel/getall')
     .then( function (response) {
         if (response.ok) {
             response.json()
@@ -72,7 +72,7 @@ function insertMat (data) {
             buttonCalendar.setAttribute('data-toggle','modal');
             buttonCalendar.setAttribute('data-target','#calendrier');
             buttonCalendar.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${materiel.id_Element});`);
-            buttonCalendar.textContent = 'Planning complet';
+            buttonCalendar.textContent = 'Planning';
             elemDivDroite.appendChild(buttonCalendar);
 
             //boutton Message
@@ -137,7 +137,7 @@ function insertMat (data) {
             buttonCalendar.setAttribute('data-toggle','modal');
             buttonCalendar.setAttribute('data-target','#calendrier');
             buttonCalendar.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${materiel.id_Element});`);
-            buttonCalendar.textContent = 'Planning complet';
+            buttonCalendar.textContent = 'Planning';
             elemDivDroite.appendChild(buttonCalendar);
             elemDivDroite.innerHTML += '&ensp;';
 
@@ -161,7 +161,7 @@ function insertMat (data) {
 
 function actuMaterielReserv (event) {
     let idM = parseInt(event.target.parentElement.parentElement.attributes['id-materiel'].value);
-    fetch(prefixDir + '/api/materiel/byid', {
+    fetch('../../api/materiel/byid', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({id_Materiel: idM}),
@@ -201,7 +201,7 @@ function askReserv () {
     let formBalise = document.getElementById('form-reserv');
     let formData = new FormData(formBalise);
 
-    fetch(prefixDir + '/api/reservation/submit/materiel', {
+    fetch('../../api/reservation/submit/materiel', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({
@@ -240,7 +240,7 @@ async function searchMat (formBalise) {
     let formData = new FormData(formBalise);
 
     try {
-        let response = await fetch(prefixDir + '/api/materiel/search', {
+        let response = await fetch('../../api/materiel/search', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({
@@ -261,7 +261,7 @@ async function searchMat (formBalise) {
         }
 
 
-        let crens = await fetch(prefixDir + '/api/creneau/getall');
+        let crens = await fetch('../../api/creneau/getall');
         let crenData = await crens.json();
         crenData = crenData.map(c => {
             return {

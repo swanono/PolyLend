@@ -1,7 +1,7 @@
 'use strict';
 
 async function getNotifs () {
-    let response = await fetch(prefixDir + '/api/notification/getall');
+    let response = await fetch('../../api/notification/getall');
     if (response.ok) {
         let notifs = await response.json();
         if (notifs.length === undefined) {
@@ -9,7 +9,7 @@ async function getNotifs () {
         }
         document.querySelector('.badge.badge-danger').textContent = '' + notifs.length;
 
-        response = await fetch(prefixDir + '/api/reservation/allbyid', {
+        response = await fetch('../../api/reservation/allbyid', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify(notifs.map(notif => notif.id_Reservation)),
@@ -30,7 +30,7 @@ async function getNotifs () {
 }
 
 function insertNotif(reservData) {
-    fetch(prefixDir + '/api/creneau/byid', {
+    fetch('../../api/creneau/byid', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({id_Creneau: reservData.id_Creneau}),
@@ -38,7 +38,7 @@ function insertNotif(reservData) {
     })
     .then(crenDataj => crenDataj.json())
     .then(function (crenData) {
-        fetch(prefixDir + '/api/element/byid', {
+        fetch('../../api/element/byid', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({id_Element: crenData.id_Element}),
@@ -46,7 +46,7 @@ function insertNotif(reservData) {
         })
         .then(elemDataj => elemDataj.json())
         .then(function (elemData) {
-            fetch(prefixDir + '/api/utilisateur/bynum', {
+            fetch('../../api/utilisateur/bynum', {
                 credentials: 'same-origin',
                 method: 'POST',
                 body: JSON.stringify({id_Utilisateur: reservData.id_Utilisateur}),
@@ -132,8 +132,7 @@ function insertNotif(reservData) {
 }
 
 function validateReserv(id, valid) {
-    console.log('validate ' + id + ' ' + valid);
-    fetch(prefixDir + '/api/reservation/validate', {
+    fetch('../../api/reservation/validate', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({id_Reservation: id, validate: (!valid ? false : true)}),
@@ -145,12 +144,12 @@ function validateReserv(id, valid) {
 
 async function openNotifs() {
     await getNotifs();
-    let response = await fetch(prefixDir + '/api/notification/getall');
+    let response = await fetch('../../api/notification/getall');
     if (response.ok) {
         let notifs = await response.json();
         notifs.forEach(notif => {
             if (notif.admin === 0) {
-                fetch(prefixDir + '/api/notification/seen', {
+                fetch('../../api/notification/seen', {
                     credentials: 'same-origin',
                     method: 'POST',
                     body: JSON.stringify({id_Reservation: notif.id_Reservation}),
@@ -168,7 +167,7 @@ async function openNotifs() {
 }
 
 async function getNbNotifs() {
-    let response = await fetch(prefixDir + '/api/notification/getall');
+    let response = await fetch('../../api/notification/getall');
     if (response.ok) {
         let notifs = await response.json();
         document.querySelector('.badge.badge-danger').textContent = '' + notifs.length;
@@ -181,8 +180,3 @@ async function getNbNotifs() {
 
 getNbNotifs();
 document.getElementById('btn-notifs').addEventListener('click', openNotifs);
-
-
-// à utiliser quand on saura comment ça marche
-/*let idIntervalNotif = setInterval(getNotifs, 1000);
-window.addEventListener('unload', clearInterval(idIntervalNotif));*/

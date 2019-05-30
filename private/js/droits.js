@@ -3,7 +3,7 @@
 function ajoutUtilisateurs () {
     let table = document.querySelector('table.table.table-bordered').lastElementChild;
 
-    fetch(prefixDir + '/api/utilisateur/getall')
+    fetch('../../api/utilisateur/getall')
     .then(users => users.json())
     .then(function (userDatas) {
         userDatas.forEach(function (userData, index) {
@@ -50,7 +50,7 @@ function applyAdmin () {
         let button = tr.lastElementChild.firstElementChild;
         let numEtu = tr.lastElementChild.previousElementSibling.textContent;
 
-        fetch(prefixDir + '/api/utilisateur/setadminrights', {
+        fetch('../../api/utilisateur/setadminrights', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({

@@ -2,7 +2,7 @@
 
 async function fillSalle () {
     try {
-        let response = await fetch(prefixDir + '/api/salle/getall');
+        let response = await fetch('../../api/salle/getall');
         let salles = await response.json();
         let batBalises = document.getElementById('batiment');
         while (batBalises.firstChild) {

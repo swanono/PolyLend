@@ -1,10 +1,6 @@
 'use strict';
 
-var prod = false;
-
-var prefixDir = prod ? '/4C' : '';
-
-fetch(prefixDir + '/api/whoami')
+fetch('../../api/whoami')
 .then(response => response.json())
 .then(function (result) {
 	if(result.admin === 1){

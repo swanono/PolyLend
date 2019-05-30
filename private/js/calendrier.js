@@ -41,7 +41,7 @@ function updateCalendar (focusDateLun, idE) {
         }
     });
 
-    fetch('/api/reservation/allbyElem', {
+    fetch('../../api/reservation/allbyElem', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({id_Element: idE,}),
@@ -50,7 +50,7 @@ function updateCalendar (focusDateLun, idE) {
     .then(response => response.json())
     .then(r => {if (!r.errno) {return r;} else {throw r;}})
     .then(function (reservData) {
-        fetch('/api/creneau/allbyid', {
+        fetch('../../api/creneau/allbyid', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({id_Element: idE,}),
