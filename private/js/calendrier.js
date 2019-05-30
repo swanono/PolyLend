@@ -88,7 +88,8 @@ function updateCalendar (focusDateLun, idE) {
                     if (reserv_Over && reserv_Over.validation !== -1) {
                         let divOver = document.createElement('div');
                         if (reserv_Over.validation === 0 && window.location.pathname.includes('administration')) {
-                            divOver.setAttribute('data-toggle', 'popover');
+                            divOver.setAttribute('data-toggle', 'modal');
+                            divOver.setAttribute('data-target','#validation-reservation');
                             divOver.addEventListener('click', function () {
                                 document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_Over.id);
                                 document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_Over.id);
@@ -111,8 +112,8 @@ function updateCalendar (focusDateLun, idE) {
                     if (reserv_End && reserv_End.validation !== -1) {
                         let divEnd = document.createElement('div');
                         if (reserv_End.validation === 0 && window.location.pathname.includes('administration')) {
-                            divEnd.setAttribute('data-toggle', 'popover');
-                            divEnd.setAttribute('data-target','validation-reservation');
+                            divEnd.setAttribute('data-toggle', 'modal');
+                            divEnd.setAttribute('data-target','#validation-reservation');
                             divEnd.addEventListener('click', function () {
                                 document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_End.id);
                                 document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_End.id);
@@ -138,8 +139,8 @@ function updateCalendar (focusDateLun, idE) {
                         if (reserv.validation !== -1) {
                             let divIn = document.createElement('div');
                             if (reserv.validation === 0 && window.location.pathname.includes('administration')) {
-                                divIn.setAttribute('data-toggle', 'popover');
-                                divIn.setAttribute('data-target','validation-reservation');
+                                divIn.setAttribute('data-toggle', 'modal');
+                                divIn.setAttribute('data-target','#validation-reservation');
                                 divIn.addEventListener('click', function () {
                                     document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv.id);
                                     document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv.id);
@@ -165,8 +166,8 @@ function updateCalendar (focusDateLun, idE) {
                     if (reserv_Begin && reserv_Begin.validation !== -1) {
                         let divBegin = document.createElement('div');
                         if (reserv_Begin.validation === 0 && window.location.pathname.includes('administration')) {
-                            divBegin.setAttribute('data-toggle', 'popover');
-                            divBegin.setAttribute('data-target','validation-reservation');
+                            divBegin.setAttribute('data-toggle', 'modal');
+                            divBegin.setAttribute('data-target','#validation-reservation');
                             divBegin.addEventListener('click', function () {
                                 document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_Begin.id);
                                 document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_Begin.id);
