@@ -97,14 +97,14 @@ function insertNotif(reservData) {
                     inputVal.setAttribute('type', 'submit');
                     inputVal.setAttribute('class', 'btn btn-success');
                     inputVal.setAttribute('value', 'Valider');
-                    inputVal.addEventListener('click', () => validateReserv(event, reservData.id, true));
+                    inputVal.addEventListener('click', () => validateReserv(reservData.id, true));
                     divButtons.appendChild(inputVal);
 
                     let inputRef = document.createElement('input');
                     inputRef.setAttribute('type', 'submit');
                     inputRef.setAttribute('class', 'btn btn-danger');
                     inputRef.setAttribute('value', 'Refuser');
-                    inputRef.addEventListener('click', () => {validateReserv(event, reservData.id, false);});
+                    inputRef.addEventListener('click', () => {validateReserv(reservData.id, false);});
                     divButtons.appendChild(inputRef);
                     divDroite.appendChild(divButtons);
                 }
@@ -131,7 +131,8 @@ function insertNotif(reservData) {
     .catch(err => console.error(err));
 }
 
-function validateReserv(event, id, valid) {
+function validateReserv(id, valid) {
+    console.log('validate ' + id + ' ' + valid);
     fetch(prefixDir + '/api/reservation/validate', {
         credentials: 'same-origin',
         method: 'POST',

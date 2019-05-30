@@ -87,6 +87,13 @@ function updateCalendar (focusDateLun, idE) {
 
                     if (reserv_Over && reserv_Over.validation !== -1) {
                         let divOver = document.createElement('div');
+                        if (reserv_Over.validation === 0 && window.location.pathname.includes('administration')) {
+                            divOver.setAttribute('data-toggle', 'popover');
+                            divOver.addEventListener('click', function () {
+                                document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_Over.id);
+                                document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_Over.id);
+                            });
+                        }
                         divOver.style.position = 'absolute';
                         divOver.style.zIndex = 1;
                         divOver.style.width = '99%';
@@ -103,6 +110,14 @@ function updateCalendar (focusDateLun, idE) {
 
                     if (reserv_End && reserv_End.validation !== -1) {
                         let divEnd = document.createElement('div');
+                        if (reserv_End.validation === 0 && window.location.pathname.includes('administration')) {
+                            divEnd.setAttribute('data-toggle', 'popover');
+                            divEnd.setAttribute('data-target','validation-reservation');
+                            divEnd.addEventListener('click', function () {
+                                document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_End.id);
+                                document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_End.id);
+                            });
+                        }
                         divEnd.style.position = 'absolute';
                         divEnd.style.zIndex = 1;
                         divEnd.setAttribute('date_fin', '' + (Date.parse(reserv_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
@@ -120,8 +135,16 @@ function updateCalendar (focusDateLun, idE) {
                     });
 
                     reserv_In.forEach(reserv => {
-                        if (reserv_In.validation !== -1) {
+                        if (reserv.validation !== -1) {
                             let divIn = document.createElement('div');
+                            if (reserv.validation === 0 && window.location.pathname.includes('administration')) {
+                                divIn.setAttribute('data-toggle', 'popover');
+                                divIn.setAttribute('data-target','validation-reservation');
+                                divIn.addEventListener('click', function () {
+                                    document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv.id);
+                                    document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv.id);
+                                });
+                            }
                             divIn.style.position = 'absolute';
                             divIn.style.zIndex = 1;
                             divIn.setAttribute('date_fin', '' + (Date.parse(reserv_In.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
@@ -141,6 +164,14 @@ function updateCalendar (focusDateLun, idE) {
 
                     if (reserv_Begin && reserv_Begin.validation !== -1) {
                         let divBegin = document.createElement('div');
+                        if (reserv_Begin.validation === 0 && window.location.pathname.includes('administration')) {
+                            divBegin.setAttribute('data-toggle', 'popover');
+                            divBegin.setAttribute('data-target','validation-reservation');
+                            divBegin.addEventListener('click', function () {
+                                document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_Begin.id);
+                                document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_Begin.id);
+                            });
+                        }
                         divBegin.style.position = 'absolute';
                         divBegin.style.zIndex = 1;
                         divBegin.style.width = '99%';

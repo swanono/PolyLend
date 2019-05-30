@@ -499,16 +499,8 @@
                     </button>
                 </div>
                 <div class="modal-footer">
-                    <form method="post" action="">
-                        <input type="hidden" value="valider" name="etat">
-                        <input type="hidden" value="" name="id">
-                        <input type="submit" class="btn btn-success" value="Valider">
-                    </form>
-                    <form method="post" action="">
-                        <input type="hidden" value="refuser" name="etat">
-                        <input type="hidden" value="" name="id">
-                        <input type="submit" class="btn btn-danger" value="Refuser">
-                    </form>
+                    <button type="button" class="btn btn-success" id="btn_valid_calendrier" id-reserv="0" onclick="validateReserv(parseInt(this.getAttribute('id-reserv')), true);">Valider</button>
+                    <button type="button" class="btn btn-danger" id="btn_refuse_calendrier" id-reserv="0" onclick="validateReserv(parseInt(this.getAttribute('id-reserv')), false);">Refuser</button>
                </div>
             </div>
         </div>
