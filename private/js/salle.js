@@ -30,10 +30,11 @@ async function searchSalle (formBalise) {
         let crens = await fetch('../../api/creneau/getall');
         let crenData = await crens.json();
         crenData = crenData.map(c => {
+            let d = new Date();
             return {
                 id: c.id,
-                date_heure_debut: Date.parse(c.date_heure_debut) + 3600000,
-                date_heure_fin: Date.parse(c.date_heure_fin) + 3600000,
+                date_heure_debut: Date.parse(c.date_heure_debut) - d.getTimezoneOffset()*60000,
+                date_heure_fin: Date.parse(c.date_heure_fin) - d.getTimezoneOffset()*60000,
                 id_Element: c.id_Element,
             };
         })
@@ -177,7 +178,7 @@ function insertSalle(salleData) {
     buttonRes.setAttribute('type', 'button');
     buttonRes.setAttribute('class', 'btn btn-primary');
     buttonRes.setAttribute('data-toggle', 'modal');
-    buttonRes.setAttribute('data-target', '#exampleModalCenter'); // TODO : changer l'id target
+    buttonRes.setAttribute('data-target', '#reservModal');
     buttonRes.textContent = 'Réserver';
     buttonRes.addEventListener('click', actuSalleReserv);
     divDroite.appendChild(buttonRes);

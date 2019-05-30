@@ -146,7 +146,7 @@ function insertMat (data) {
             buttonRes.setAttribute('type','button');
             buttonRes.setAttribute('class','btn btn-primary');
             buttonRes.setAttribute('data-toggle','modal');
-            buttonRes.setAttribute('data-target','#exampleModalCenter');
+            buttonRes.setAttribute('data-target','#reservModal');
             buttonRes.textContent = 'Reserver';
             buttonRes.addEventListener('click', actuMaterielReserv);
             elemDivDroite.appendChild(buttonRes);
@@ -264,10 +264,11 @@ async function searchMat (formBalise) {
         let crens = await fetch('../../api/creneau/getall');
         let crenData = await crens.json();
         crenData = crenData.map(c => {
+            let d = new Date();
             return {
                 id: c.id,
-                date_heure_debut: Date.parse(c.date_heure_debut) + 3600000,
-                date_heure_fin: Date.parse(c.date_heure_fin) + 3600000,
+                date_heure_debut: Date.parse(c.date_heure_debut) - d.getTimezoneOffset()*60000,
+                date_heure_fin: Date.parse(c.date_heure_fin) - d.getTimezoneOffset()*60000,
                 id_Element: c.id_Element,
             };
         })
