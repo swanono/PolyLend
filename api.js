@@ -125,6 +125,18 @@ module.exports = (passport) => {
         .catch(err => {console.error(err); res.json(err);});
     });
 
+    app.get('/reservation/allbyuser', function (req, res) {
+        dbHelper.Reservation.allByUserId(req.user.numero_etudiant)
+        .then(result => res.json(result))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+    app.post('/reservation/getelem', function (req, res) {
+        dbHelper.Reservation.getElemData(req.body.id_Reservation)
+        .then(result => res.json(result))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
     app.post('/reservation/allbyid', function (req, res) {
         dbHelper.Reservation.allById(req.body)
         .then(result => res.json(result))
