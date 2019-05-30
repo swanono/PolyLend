@@ -439,11 +439,11 @@ async function deleteMateriel (event) {
     }
     
     try {
-        await fetch(prefixDir + '/api/salle/delete', {
+        await fetch(prefixDir + '/api/materiel/delete', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({
-                id_Salle: divItem.getAttribute('id-materiel'),
+                id_Materiel: divItem.getAttribute('id-materiel'),
                 id_Element: divItem.getAttribute('id-element'),
             }),
             headers: new Headers({'Content-type': 'application/json'}),
