@@ -299,29 +299,35 @@ async function searchMat (formBalise) {
                 }
                 break;
             case 'Par dates de disponibilité décroissantes':
-                    crenData.sort(function (cren1, cren2) {
-                        if ((cren1.id_Element === Mat1.id_Element || cren1.id_Element === Mat2.id_Element)
-                            && cren2.id_Element !== Mat1.id_Element && cren2.id_Element !== Mat2.id_Element) {
-                            return -1;
-                        }
-                        if ((cren2.id_Element === Mat1.id_Element || cren2.id_Element === Mat2.id_Element)
-                            && cren1.id_Element !== Mat1.id_Element && cren1.id_Element !== Mat2.id_Element) {
-                            return 1;
-                        }
-                        if (cren1.id_Element !== Mat1.id_Element && cren1.id_Element !== Mat2.id_Element
-                            && cren2.id_Element !== Mat1.id_Element && cren2.id_Element !== Mat2.id_Element) {
-                            return 0;
-                        }
-                        return cren2.date_heure_debut - cren1.date_heure_debut;
-                    });
-                    if (crenData[0]) {
-                        if (crenData[0].id_Element === Mat1.id_Element) {
-                            res = -1;
-                        }
-                        if (crenData[0].id_Element === Mat2.id_Element) {
-                            res = 1;
-                        }
+                crenData.sort(function (cren1, cren2) {
+                    if ((cren1.id_Element === Mat1.id_Element || cren1.id_Element === Mat2.id_Element)
+                        && cren2.id_Element !== Mat1.id_Element && cren2.id_Element !== Mat2.id_Element) {
+                        return -1;
                     }
+                    if ((cren2.id_Element === Mat1.id_Element || cren2.id_Element === Mat2.id_Element)
+                        && cren1.id_Element !== Mat1.id_Element && cren1.id_Element !== Mat2.id_Element) {
+                        return 1;
+                    }
+                    if (cren1.id_Element !== Mat1.id_Element && cren1.id_Element !== Mat2.id_Element
+                        && cren2.id_Element !== Mat1.id_Element && cren2.id_Element !== Mat2.id_Element) {
+                        return 0;
+                    }
+                    return cren2.date_heure_debut - cren1.date_heure_debut;
+                });
+                if (crenData[0]) {
+                    if (crenData[0].id_Element === Mat1.id_Element) {
+                        res = -1;
+                    }
+                    if (crenData[0].id_Element === Mat2.id_Element) {
+                        res = 1;
+                    }
+                }
+                break;
+            case 'Par quantités':
+                res = Mat1.quantite - Mat2.quantite;
+                break;
+            case 'Par quantités décroissantes':
+                res = Mat2.quantite - Mat1.quantite;
                 break;
             default:
                 break;
