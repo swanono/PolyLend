@@ -108,7 +108,7 @@ module.exports = (passport) => {
         .then(function (notifs) {
             dbHelper.Reservation.all()
             .then(function (reservs) {
-                // TODO : vérifier qu'on envoie bien les bonnes notifs 
+                // TODO : vérifier qu'on envoie bien les bonnes notifs
                 notifs = notifs.filter(notif => {
                     return (reservs.find(reserv => reserv.id === notif.id_Reservation).id_Utilisateur === req.user.numero_etudiant && notif.admin === 0) || (req.user.admin === 1 && notif.admin === 1);
                 });
@@ -159,7 +159,7 @@ module.exports = (passport) => {
                             return (Date.parse(req.body.date_heure_debut) >= Date.parse(crenData.date_heure_debut)
                                     && Date.parse(req.body.date_heure_fin) <= Date.parse(crenData.date_heure_fin));
                         });
-            
+
                         if (cren === undefined) {
                             res.json({ok: false, outOfCren: true});
                         }
@@ -174,6 +174,58 @@ module.exports = (passport) => {
                                 validation: elemData.validation_auto,
                             }))
                             .then(result => res.json(result))
+                            .catch(err => {console.error(err); res.json(err);});
+                        }
+                    })
+                    .catch(err => {console.error(err); res.json(err);});
+                })
+                .catch(err => {console.error(err); res.json(err);});
+            })
+            .catch(err => {console.error(err); res.json(err);});
+        }
+    });
+
+    app.post('/reservation/submit/materiel', function (req, res) {
+        if (Date.parse(req.body.date_heure_debut) >= Date.parse(req.body.date_heure_fin)) {
+            res.json({ok: false, wrongCren: true});
+        }
+        else {
+            dbHelper.Materiel.byId(req.body.id_Materiel)
+            .then(function (data) {
+                console.log('On reserve l\'element :');
+                console.log(data.id_Element);
+                dbHelper.Reservation.allByElemId(data.id_Element)
+                .then(function (reservDatas) {
+                    reservDatas.forEach(function (reservData) {
+                        if (Date.parse(reservData.date_heure_debut) < Date.parse(req.body.date_heure_fin)
+                            && Date.parse(reservData.date_heure_fin) > Date.parse(req.body.date_heure_debut)) {
+                            res.json({ok: false, alreadyTaken: true,});
+                        }
+                    });
+
+                    dbHelper.Creneau.allByElemId(data.id_Element)
+                    .then(function (crenDatas) {
+                        let cren = crenDatas.find(function (crenData) {
+                            return (Date.parse(req.body.date_heure_debut) >= Date.parse(crenData.date_heure_debut)
+                                    && Date.parse(req.body.date_heure_fin) <= Date.parse(crenData.date_heure_fin));
+                        });
+
+                        if (cren === undefined) {
+                            res.json({ok: false, outOfCren: true});
+                        }
+                        else {
+                            dbHelper.Element.byId(data.id_Element)
+                            .then(elemData => dbHelper.Reservation.insert({
+                                raison: req.body.raison,
+                                date_heure_debut: req.body.date_heure_debut,
+                                date_heure_fin: req.body.date_heure_fin,
+                                id_Utilisateur: req.user.numero_etudiant,
+                                id_Creneau: cren.id,
+                                validation: elemData.validation_auto,
+                            }))
+                            .then( function (result) {
+                                res.json(result);
+                            })
                             .catch(err => {console.error(err); res.json(err);});
                         }
                     })
@@ -214,12 +266,18 @@ module.exports = (passport) => {
             validation_auto: !req.body.validation_auto ? '0' : '1',
         })
         .then(function (resultat) {
+            if (typeof(req.body['date-fin']) === 'string' || req.body['date-fin'] instanceof String) {
+                req.body['date-debut'] = [req.body['date-debut']];
+                req.body['date-fin'] = [req.body['date-fin']];
+                req.body['heure-debut'] = [req.body['heure-debut']];
+                req.body['heure-fin'] = [req.body['heure-fin']];
+            }
             let promises = [];
             for (let i = 0; i < req.body['date-fin'].length; i += 1) {
                 promises.push(dbHelper.Creneau.insert({
                     date_heure_debut : `${req.body['date-debut'][i]} ${req.body['heure-debut'][i]}`,
                     date_heure_fin : `${req.body['date-fin'][i]} ${req.body['heure-fin'][i]}`,
-                    id_Element : resultat.id,
+                    id_Element : resultat.id_Element,
                 }));
             }
             promises.push(dbHelper.MotCle.insert({
@@ -271,7 +329,15 @@ module.exports = (passport) => {
         })
         .then(function (resultat) {
             let promises = [];
+            if (typeof(req.body['date-fin']) === 'string' || req.body['date-fin'] instanceof String) {
+                req.body['date-debut'] = [req.body['date-debut']];
+                req.body['date-fin'] = [req.body['date-fin']];
+                req.body['heure-debut'] = [req.body['heure-debut']];
+                req.body['heure-fin'] = [req.body['heure-fin']];
+            }
+
             for (let i = 0; i < req.body['date-fin'].length; i+=1 ) {
+
                 promises.push(dbHelper.Creneau.insert({
                     date_heure_debut : `${req.body['date-debut'][i]} ${req.body['heure-debut'][i]}`,
                     date_heure_fin : `${req.body['date-fin'][i]} ${req.body['heure-fin'][i]}`,
@@ -280,7 +346,7 @@ module.exports = (passport) => {
             }
             promises.push(dbHelper.MotCle.insert({
                 mots: req.body['mot-cle'],
-                id_Element: resultat.id,
+                id_Element: resultat.id_Element,
             }));
 
             Promise.all(promises)
@@ -359,13 +425,13 @@ module.exports = (passport) => {
                         return [...salleStack];
                     }
                 }))][0];
-                
+
                 if(cren.date_heure_debut) {
                     let crenPromises = salles.map(s => dbHelper.Creneau.allByElemIncluding(s.id_Element, cren));
-    
+
                     Promise.all(crenPromises)
                     .then(function (crenValids) {
-                        let sallesValids = [].concat.apply([], crenValids.filter((v, i, a) => 
+                        let sallesValids = [].concat.apply([], crenValids.filter((v, i, a) =>
                             a.indexOf(a.find(crf => v.id_Element === crf.id_Element)) === i && v.length > 0
                         ))
                         .map(cr => dbHelper.Element.byIdFull(cr.id_Element));
@@ -390,6 +456,124 @@ module.exports = (passport) => {
         .then(result => res.json(result))
         .catch(err => {console.error(err); res.json(err);});
     });
+
+    app.post('/materiel/byid', function (req, res) {
+        dbHelper.Materiel.byId(req.body.id_Materiel)
+        .then(result => res.json(result))
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+    app.get('/materiel/getall', function (req, res) {
+        dbHelper.Materiel.all()
+        .then(function (materiels) {
+            materiels.forEach( function (materiel) {
+                dbHelper.Creneau.allByElemId(materiel.id_Element)
+                .then( function (cren) {
+                    console.log(cren);
+                });
+                materiel.disponibilite = 'dispo';
+            });
+
+            console.log(materiels);
+            return res.json(materiels);
+        })
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+
+    app.post('/materiel/search', function (req, res) {
+        let hasCrit = !isEmptyOrSpaces(req.body.critere);
+        let dhd = normalizeDH(req.body.date_heure_debut);
+        let hasDHD = !isEmptyOrSpaces(req.body.date_heure_debut) && dhd !== undefined;
+        let dhf = normalizeDH(req.body.date_heure_fin);
+        let hasDHF = !isEmptyOrSpaces(req.body.date_heure_fin) && dhf !== undefined;
+        let hasVproj = !isEmptyOrSpaces(req.body.videoproj);
+        let hasTab = !isEmptyOrSpaces(req.body.tableau);
+        let hasOrdi = !isEmptyOrSpaces(req.body.ordinateurs);
+        let hasCap = !isEmptyOrSpaces(req.body.capacite);
+
+        let crits = hasCrit ? req.body.critere.split(' ') : [];
+        let paramMat = {
+            categorie: (req.body.categorie === 'Non précisé') ? undefined : req.body.categorie,
+        };
+
+        let cren = {
+            date_heure_debut: hasDHD ? dhd : (hasDHF ? dhf : undefined),
+            date_heure_fin: hasDHF ? dhf : (hasDHD ? dhd : undefined),
+        };
+        console.log('crits :');
+        console.log(crits);
+        let promises = hasCrit ? [
+
+            ...crits.map(crit => {
+                console.log('crit :');
+                console.log(crit);
+                paramMat.lieu = undefined;
+                paramMat.description = undefined;
+                paramMat.nom = crit;
+                return dbHelper.Materiel.allByParams(paramMat);
+            }),
+            ...crits.map(crit => {
+                paramMat.nom = undefined;
+                paramMat.description = undefined;
+                paramMat.lieu = crit;
+                return dbHelper.Materiel.allByParams(paramMat);
+            }),
+            ...crits.map(crit => {
+                paramMat.nom = undefined;
+                paramMat.lieu = undefined;
+                paramMat.description = crit;
+                return dbHelper.Materiel.allByParams(paramMat);
+            }),
+        ] : [
+            dbHelper.Materiel.allByParams(paramMat)
+        ];
+        dbHelper.MotCle.allBySentence(hasCrit ? req.body.critere : '1478562548632145863694520')
+        .then(function (rows) {
+            if (rows) {
+                rows.forEach(row => promises.push(dbHelper.Element.byIdFull(row.id_Element)));
+            }
+
+            Promise.all(promises)
+            .then(function (allMats) {
+                let mats = [...new Set(allMats.map(matStack => {
+                    if (matStack === null || matStack === undefined || typeof(matStack[Symbol.iterator]) !== 'function') {
+
+                        return matStack;
+                    }
+                    else {
+                        return [...matStack];
+                    }
+                }))][0];
+
+                if(cren.date_heure_debut) {
+                    let crenPromises = mats.map(s => dbHelper.Creneau.allByElemIncluding(s.id_Element, cren));
+
+                    Promise.all(crenPromises)
+                    .then(function (crenValids) {
+                        let matsValids = [].concat.apply([], crenValids.filter((v, i, a) =>
+                            a.indexOf(a.find(crf => v.id_Element === crf.id_Element)) === i && v.length > 0
+                        ))
+                        .map(cr => dbHelper.Element.byIdFull(cr.id_Element));
+
+                        Promise.all(matsValids)
+                        .then(final => res.json(final))
+                        .catch(err => {console.error(err); res.json(err);});
+                    })
+                    .catch(err => {console.error(err); res.json(err);});
+                }
+                else {
+
+                    res.json(mats);
+                }
+            })
+            .catch(err => {console.error(err); res.json(err);});
+        })
+        .catch(err => {console.error(err); res.json(err);});
+    });
+
+
+
 
     return app;
 }

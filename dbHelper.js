@@ -195,24 +195,23 @@ module.exports.Materiel = {
 
     // récupération de tous les matériels répondant à des critères donnés
     allByParams: params => new Promise(function (resolve, reject) {
-        hasQuant = (params.quantite !== undefined);
-        hasLoc = (params.lieu !== undefined);
-        hasName = (params.nom !== undefined);
-        hasCateg = (params.categorie !== undefined);
-        hasDesc = (params.description !== undefined);
+        let hasLoc = (params.lieu !== undefined);
+        let hasName = (params.nom !== undefined);
+        let hasCateg = (params.categorie !== undefined);
+        let hasDesc = (params.description !== undefined);
+        let hasQuant = (params.quantite !== undefined);
 
         all(`SELECT * FROM MaterielFull WHERE (
-            ${hasName ? 'nom = "' + params.nom + '" ' : ''}
-            ${(hasName && (hasQuant || hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
-            ${hasQuant ? 'quantite = ' + params.quantite + ' ' : ''}
-            ${((hasName || hasQuant) && (hasLoc || hasCateg || hasDesc)) ? 'AND ' : ''}
-            ${hasLoc ? 'lieu LIKE "%' + params.lieu + '%" ' : ''}
-            ${((hasName || hasQuant || hasLoc) && (hasCateg || hasDesc)) ? 'AND ' : ''}
-            ${hasCateg ? 'categorie = "' + params.categorie + '" ' : ''}
-            ${((hasName || hasQuant || hasLoc || hasCateg) && (hasDesc)) ? 'AND ' : ''}
-            ${hasDesc ? 'description LIKE "%' + params.description + '%" ' : ''}
-        );`)
-        .then(res => resolve(res))
+            ${hasName ? 'nom LIKE "%' + params.nom + '%" AND ' : ''}
+            ${hasLoc ? 'lieu LIKE "%' + params.lieu + '%" AND ' : ''}
+            ${hasCateg ? 'categorie = "' + params.categorie + '" AND ' : ''}
+            ${hasDesc ? 'description LIKE "%' + params.description + '%" AND ' : ''}
+            ${hasQuant ? 'quantite = ' + params.quantite + ' AND ' : ''}
+            0 = 0);`)
+        .then(function(res) {
+            console.log(res);
+            resolve(res);
+        })
         .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
     }),
 
