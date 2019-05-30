@@ -9,6 +9,7 @@
         <title>PolyLend</title>
 
         <script src="../js/common.js" defer></script>
+        <script src="../js/calendrier.js" defer></script>
         <script src="../js/notifs.js" defer></script>
         <script src="../js/fill_forms.js" defer></script>
         <script src="../js/admin_nav.js" defer></script>
@@ -149,79 +150,37 @@
 </div>
 
 <!-- Modals calendrier -->
-<div class="modal fade" id="calendrier1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header modal-header-calendrier">
-                <h5 class="modal-title col-11 text-center" id="exampleModalLongTitle">Janvier 2019</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body modal-body-calendrier calendrier">
-                <table width="100%">
-                  <tr>
-                    <th>Lun<br></th>
-                    <th>Mar</th>
-                    <th>Mer</th>
-                    <th>Jeu</th>
-                    <th>Ven</th>
-                    <th>Sam</th>
-                    <th>Dim</th>
-                  </tr>
-                  <tr>
-                    <td class="dispo">1<br/><br/></td>
-                    <td class="dispo">2<br/><br/></td>
-                    <td class="reserve">3<br/>14h00</td>
-                    <td class="reserve">4<br/><br/></td>
-                    <td class="reserve">5<br/><br/></td>
-                    <td class="reserve">6<br/><br/></td>
-                    <td class="reserve">7<br/><br/></td>
-                  </tr>
-                  <tr>
-                    <td class="reserve">8<br/><br/></td>
-                    <td class="reserve">9<br/>16h00</td>
-                    <td>10<br/><br/></td>
-                    <td>11<br/><br/></td>
-                    <td>12<br/><br/></td>
-                    <td>13<br/><br/></td>
-                    <td>14<br/><br/></td>
-                  </tr>
-                  <tr>
-                    <td>15<br/><br/></td>
-                    <td>16<br/><br/></td>
-                    <td>17<br/><br/></td>
-                    <td>18<br/><br/></td>
-                    <td>19<br/><br/></td>
-                    <td>20<br/><br/></td>
-                    <td>21<br/><br/></td>
-                  </tr>
-                  <tr>
-                    <td>22<br/><br/></td>
-                    <td>23<br/><br/></td>
-                    <td>24<br/><br/></td>
-                    <td>25<br/><br/></td>
-                    <td>26<br/><br/></td>
-                    <td>27<br/><br/></td>
-                    <td>28<br/><br/></td>
-                  </tr>
-                  <tr>
-                    <td>29<br/><br/></td>
-                    <td>30<br/><br/></td>
-                    <td>31<br/><br/></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </table>
-            </div>
-      <!--<div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>-->
-        </div>
-    </div>
+<div class="modal fade" id="calendrier" id-element="0" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header modal-header-calendrier">
+					<button type="button" class="btn btn-light col-1" id="btn_min">&lt;</button>
+				<h5 class="modal-title col-9 text-center" id="titre_calendrier">Titre</h5>
+				<button type="button" class="btn btn-light col-1" id="btn_plus">&gt;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body modal-body-calendrier calendrier text-center" id="calendrier_body">
+				<table class="table-bordered" width="100%"> <!-- table  -->
+					<thead>
+						<tr id="jours">
+							<th>Heure</th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 
 

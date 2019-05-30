@@ -70,7 +70,8 @@ function insertMat (data) {
             buttonCalendar.setAttribute('type','button');
             buttonCalendar.setAttribute('class','btn btn-light');
             buttonCalendar.setAttribute('data-toggle','modal');
-            buttonCalendar.setAttribute('data-target','#calendrier1');
+            buttonCalendar.setAttribute('data-target','#calendrier');
+            buttonCalendar.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${materiel.id_Element});`);
             buttonCalendar.textContent = 'Planning complet';
             elemDivDroite.appendChild(buttonCalendar);
 
@@ -134,7 +135,8 @@ function insertMat (data) {
             buttonCalendar.setAttribute('type','button');
             buttonCalendar.setAttribute('class','btn btn-light');
             buttonCalendar.setAttribute('data-toggle','modal');
-            buttonCalendar.setAttribute('data-target','#calendrier1');
+            buttonCalendar.setAttribute('data-target','#calendrier');
+            buttonCalendar.setAttribute('onclick', `resetFocusDate();updateCalendar(focusDate, ${materiel.id_Element});`);
             buttonCalendar.textContent = 'Planning complet';
             elemDivDroite.appendChild(buttonCalendar);
             elemDivDroite.innerHTML += '&ensp;';
@@ -168,7 +170,7 @@ function actuMaterielReserv (event) {
     .then(result => result.json())
     .then(function (data) {
         document.getElementById('form-reserv').setAttribute('id-materiel', data.id);
-        let divGauche = document.querySelector('#form-reserv')
+        let divGauche = document.getElementById('form-reserv')
                                 .lastElementChild
                                 .firstElementChild
                                 .firstElementChild;
