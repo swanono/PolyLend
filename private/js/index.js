@@ -49,7 +49,7 @@ function insertMat (data) {
             //ajout de la description
             let elemPDescription = document.createElement('p');
             elemPDescription.setAttribute('class','description');
-            elemPDescription.textContent = materiel.description;
+            elemPDescription.innerHTML = materiel.description + '<br/>Lieu : ' + materiel.lieu + '<br/>Type : ' + materiel.categorie;
             elemDivGauche.appendChild(elemPDescription);
 
 
@@ -116,7 +116,7 @@ function insertMat (data) {
             //ajout de la description
             let elemPDescription = document.createElement('p');
             elemPDescription.setAttribute('class','description');
-            elemPDescription.textContent = materiel.description;
+            elemPDescription.innerHTML = materiel.description + '<br/>Lieu : ' + materiel.lieu + '<br/>Type : ' + materiel.categorie;
             elemDivGauche.appendChild(elemPDescription);
 
 
