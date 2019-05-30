@@ -208,10 +208,7 @@ module.exports.Materiel = {
             ${hasDesc ? 'description LIKE "%' + params.description + '%" AND ' : ''}
             ${hasQuant ? 'quantite = ' + params.quantite + ' AND ' : ''}
             0 = 0);`)
-        .then(function(res) {
-            console.log(res);
-            resolve(res);
-        })
+        .then(res => resolve(res))
         .catch(err => reject('erreur dans le lancement de  la commande all :\n' + err));
     }),
 
