@@ -567,7 +567,7 @@ module.exports.Reservation = {
 
     // récupération d'un élément grace à l'id de sa réservation
     // TODO : peut-être à changer
-    getElemData: id => get(`SELECT * FROM Element LEFT OUTER JOIN (SELECT Reservation.id as id, Creneau.id_Element FROM Reservation JOIN Creneau ON Reservation.id_Creneau = Creneau.id) WHERE Reservation.id = ${id};`),
+    getElemData: id => get(`SELECT * FROM Element LEFT OUTER JOIN (SELECT Reservation.id as id_Reservation, Creneau.id_Element as id_Element FROM Reservation JOIN Creneau ON Reservation.id_Creneau = Creneau.id) ON id_Element = Element.id WHERE id_Reservation = ${id};`),
 
     // récupération d'une ligne grace à l'id de la réservation
     byId: id => get(`SELECT * FROM Reservation WHERE id = ${id};`),
