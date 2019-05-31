@@ -4,7 +4,7 @@ async function searchSalle (formBalise) {
     let formData = new FormData(formBalise);
 
     try {
-        let response = await fetch('../../api/salle/search', {
+        let response = await fetch('../../api/salle/search/', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({
@@ -27,7 +27,7 @@ async function searchSalle (formBalise) {
         }
 
         
-        let crens = await fetch('../../api/creneau/getall');
+        let crens = await fetch('../../api/creneau/getall/');
         let crenData = await crens.json();
         crenData = crenData.map(c => {
             let d = new Date();
@@ -113,7 +113,7 @@ async function searchSalle (formBalise) {
 }
 
 async function getAllSalle () {
-    let response = await fetch('../../api/salle/getall');
+    let response = await fetch('../../api/salle/getall/');
     if (response.ok) {
         let salles = await response.json();
         let salleListe = document.querySelector('#liste_salles');
@@ -191,7 +191,7 @@ function insertSalle(salleData) {
 
 function actuSalleReserv (event) {
     let idS = parseInt(event.target.parentElement.parentElement.attributes['id-salle'].value);
-    fetch('../../api/salle/byid', {
+    fetch('../../api/salle/byid/', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({id_Salle: idS}),
@@ -228,7 +228,7 @@ function askReserv () {
     let formBalise = document.getElementById('form-reserv');
     let formData = new FormData(formBalise);
 
-    fetch('../../api/reservation/submit/salle', {
+    fetch('../../api/reservation/submit/salle/', {
         credentials: 'same-origin',
         method: 'POST',
         body: JSON.stringify({
