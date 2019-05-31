@@ -12,7 +12,6 @@
   "scripts": {
     "createDB": "sqlite3 Database-PolyLend.db < createDB.sql",
     "start": "sqlite3 Database-PolyLend.db < createDB.sql && nodemon server.js",
-    "test": "node ./node_modules/gulp/bin/gulp.js"
   },
   "devDependencies": {
     "nodemon": "^1.19.0"
