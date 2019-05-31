@@ -10,7 +10,7 @@ const express = require('express');
 // Notre module nodejs d'accès simplifié à la base de données
 const dbHelper = require('./dbHelper.js');
 
-const prod = true;
+const prod = false;
 
 const prefixDir = prod ? '/4C' : '';
 

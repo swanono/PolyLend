@@ -59,202 +59,216 @@ function updateCalendar (focusDateLun, idE) {
         .then(r => {if (r.ok) {return r;} else {throw r;}})
         .then(response => response.json())
         .then(function (crenDatas) {
-            let tbody = document.getElementById('calendrier_body').firstElementChild.lastElementChild;
-            while (tbody.firstChild) {
-                tbody.removeChild(tbody.firstChild);
-            }
-            for (let i = 0; i < 24; i += 1) {
-                let tr = document.createElement('tr');
-
-                let th = document.createElement('th');
-                th.setAttribute('id', 'heure-' + (i < 10 ? '0' : '') + i + ':00');
-                th.textContent = (i < 10 ? '0' : '') + i + ':00';
-                tr.appendChild(th);
-
-                for (let j = 0; j < 7; j += 1) {
-                    // j+1 % 7
-                    let tdDate = new Date(yearFocus, focusDateLun.getMonth(), focusDateLun.getDate() + j, i - focusDateLun.getTimezoneOffset()/60);
-
-                    let td = document.createElement('td');
-                    td.style.position = 'relative';
-                    td.style.height = '4em';
-                    td.style.verticalAlign = 'top';
-
-                    let reserv_Over = reservData.find(cren => {
-                        return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
-                    });
-
-                    if (reserv_Over && reserv_Over.validation !== -1) {
-                        let divOver = document.createElement('div');
-                        if (reserv_Over.validation === 0 && window.location.pathname.includes('administration')) {
-                            divOver.setAttribute('data-toggle', 'modal');
-                            divOver.setAttribute('data-target','#validation-reservation');
-                            divOver.addEventListener('click', function () {
-                                document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_Over.id);
-                                document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_Over.id);
-                            });
-                        }
-                        divOver.style.position = 'absolute';
-                        divOver.style.zIndex = 1;
-                        divOver.style.width = '99%';
-                        divOver.style.height = '99%';
-                        divOver.style.backgroundColor = reserv_Over.validation === 1 ? 'red' : 'orange';
-                        td.appendChild(divOver);
-                    }
-
-                    let reserv_End = reservData.find(cren => {
-                        return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
-                    });
-
-                    if (reserv_End && reserv_End.validation !== -1) {
-                        let divEnd = document.createElement('div');
-                        if (reserv_End.validation === 0 && window.location.pathname.includes('administration')) {
-                            divEnd.setAttribute('data-toggle', 'modal');
-                            divEnd.setAttribute('data-target','#validation-reservation');
-                            divEnd.addEventListener('click', function () {
-                                document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_End.id);
-                                document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_End.id);
-                            });
-                        }
-                        divEnd.style.position = 'absolute';
-                        divEnd.style.zIndex = 1;
-                        divEnd.setAttribute('date_fin', '' + (Date.parse(reserv_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
-                        divEnd.style.width = '99%';
-                        divEnd.style.height = (Date.parse(reserv_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000 + '%';
-                        divEnd.style.backgroundColor = reserv_End.validation === 1 ? 'red' : 'orange';
-                        td.appendChild(divEnd);
-                    }
-                    
-                    let reserv_In = reservData.filter(cren => {
-                        return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
-                    });
-
-                    reserv_In.forEach(reserv => {
-                        if (reserv.validation !== -1) {
-                            let divIn = document.createElement('div');
-                            if (reserv.validation === 0 && window.location.pathname.includes('administration')) {
-                                divIn.setAttribute('data-toggle', 'modal');
-                                divIn.setAttribute('data-target','#validation-reservation');
-                                divIn.addEventListener('click', function () {
-                                    document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv.id);
-                                    document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv.id);
+            fetch('../../api/utilisateur/getall/')
+            .then(r => {if (r.ok) {return r;} else {throw r;}})
+            .then(response => response.json())
+            .then(function (userDatas) {
+                let tbody = document.getElementById('calendrier_body').firstElementChild.lastElementChild;
+                while (tbody.firstChild) {
+                    tbody.removeChild(tbody.firstChild);
+                }
+                for (let i = 0; i < 24; i += 1) {
+                    let tr = document.createElement('tr');
+    
+                    let th = document.createElement('th');
+                    th.setAttribute('id', 'heure-' + (i < 10 ? '0' : '') + i + ':00');
+                    th.textContent = (i < 10 ? '0' : '') + i + ':00';
+                    tr.appendChild(th);
+    
+                    for (let j = 0; j < 7; j += 1) {
+                        // j+1 % 7
+                        let tdDate = new Date(yearFocus, focusDateLun.getMonth(), focusDateLun.getDate() + j, i - focusDateLun.getTimezoneOffset()/60);
+    
+                        let td = document.createElement('td');
+                        td.style.position = 'relative';
+                        td.style.height = '4em';
+                        td.style.verticalAlign = 'top';
+    
+                        let reserv_Over = reservData.find(cren => {
+                            return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
+                        });
+    
+                        if (reserv_Over && reserv_Over.validation !== -1) {
+                            let divOver = document.createElement('div');
+                            if (reserv_Over.validation === 0 && window.location.pathname.includes('administration')) {
+                                divOver.setAttribute('data-toggle', 'modal');
+                                divOver.setAttribute('data-target','#validation-reservation');
+                                divOver.addEventListener('click', function () {
+                                    document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_Over.id);
+                                    document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_Over.id);
                                 });
                             }
-                            divIn.style.position = 'absolute';
-                            divIn.style.zIndex = 1;
-                            divIn.setAttribute('date_fin', '' + (Date.parse(reserv_In.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
-                            divIn.style.width = '99%';
-                            divIn.style.height = (Date.parse(reserv.date_heure_fin) - Date.parse(reserv.date_heure_debut))/36000 + '%';
-                            divIn.style.top = ((Date.parse(reserv.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000) + '%';
-                            divIn.style.backgroundColor = reserv_In.validation === 1 ? 'red' : 'orange';
-                            td.appendChild(divIn);
+                            let userReserv = userDatas.find(u => u.numero_etudiant === reserv_Over.id_Utilisateur);
+                            divOver.setAttribute('title', userReserv.numero_etudiant + '\n' + userReserv.prenom + ' ' + userReserv.nom + '\n' + reserv_Over.raison);
+                            divOver.style.position = 'absolute';
+                            divOver.style.zIndex = 1;
+                            divOver.style.width = '99%';
+                            divOver.style.height = '99%';
+                            divOver.style.backgroundColor = reserv_Over.validation === 1 ? 'red' : 'orange';
+                            td.appendChild(divOver);
                         }
-                    });
-
-                    let reserv_Begin = reservData.find(cren => {
-                        return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
-                    });
-
-                    if (reserv_Begin && reserv_Begin.validation !== -1) {
-                        let divBegin = document.createElement('div');
-                        if (reserv_Begin.validation === 0 && window.location.pathname.includes('administration')) {
-                            divBegin.setAttribute('data-toggle', 'modal');
-                            divBegin.setAttribute('data-target','#validation-reservation');
-                            divBegin.addEventListener('click', function () {
-                                document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_Begin.id);
-                                document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_Begin.id);
-                            });
+    
+                        let reserv_End = reservData.find(cren => {
+                            return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
+                        });
+    
+                        if (reserv_End && reserv_End.validation !== -1) {
+                            let divEnd = document.createElement('div');
+                            if (reserv_End.validation === 0 && window.location.pathname.includes('administration')) {
+                                divEnd.setAttribute('data-toggle', 'modal');
+                                divEnd.setAttribute('data-target','#validation-reservation');
+                                divEnd.addEventListener('click', function () {
+                                    document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_End.id);
+                                    document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_End.id);
+                                });
+                            }
+                            let userReserv = userDatas.find(u => u.numero_etudiant === reserv_End.id_Utilisateur);
+                            divEnd.setAttribute('title', userReserv.numero_etudiant + '\n' + userReserv.prenom + ' ' + userReserv.nom + '\n' + reserv_End.raison);
+                            divEnd.style.position = 'absolute';
+                            divEnd.style.zIndex = 1;
+                            divEnd.setAttribute('date_fin', '' + (Date.parse(reserv_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
+                            divEnd.style.width = '99%';
+                            divEnd.style.height = (Date.parse(reserv_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000 + '%';
+                            divEnd.style.backgroundColor = reserv_End.validation === 1 ? 'red' : 'orange';
+                            td.appendChild(divEnd);
                         }
-                        divBegin.style.position = 'absolute';
-                        divBegin.style.zIndex = 1;
-                        divBegin.style.width = '99%';
-                        divBegin.style.height = (Date.parse(tdDate) + 3600000 - (Date.parse(reserv_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000))/36000 + '%';
-                        divBegin.style.top = ((Date.parse(reserv_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000) + '%';
-                        divBegin.style.backgroundColor = reserv_Begin.validation === 1 ? 'red' : 'orange';
-                        td.appendChild(divBegin);
-                    }
-
-                    ////////
-
-                    let cren_Over = crenDatas.find(cren => {
-                        return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
-                    });
-
-                    if (cren_Over && cren_Over.validation !== -1) {
-                        let divOver = document.createElement('div');
-                        divOver.style.position = 'absolute';
-                        divOver.style.width = '99%';
-                        divOver.style.height = '99%';
-                        divOver.style.backgroundColor = 'green';
-                        td.appendChild(divOver);
-                    }
-
-                    let cren_End = crenDatas.find(cren => {
-                        return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
-                    });
-
-                    if (cren_End && cren_End.validation !== -1) {
-                        let divEnd = document.createElement('div');
-                        divEnd.style.position = 'absolute';
-                        divEnd.setAttribute('date_fin', '' + (Date.parse(cren_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
-                        divEnd.style.width = '99%';
-                        divEnd.style.height = (Date.parse(cren_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000 + '%';
-                        divEnd.style.backgroundColor = 'green';
-                        td.appendChild(divEnd);
-                    }
-                    
-                    let cren_In = crenDatas.filter(cren => {
-                        return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
-                    });
-
-                    cren_In.forEach(reserv => {
-                        if (cren_In.validation !== -1) {
-                            let divIn = document.createElement('div');
-                            divIn.style.position = 'absolute';
-                            divIn.setAttribute('date_fin', '' + (Date.parse(cren_In.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
-                            divIn.style.width = '99%';
-                            divIn.style.height = (Date.parse(reserv.date_heure_fin) - Date.parse(reserv.date_heure_debut))/36000 + '%';
-                            divIn.style.top = ((Date.parse(reserv.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000) + '%';
-                            divIn.style.backgroundColor = 'green';
-                            td.appendChild(divIn);
+                        
+                        let reserv_In = reservData.filter(cren => {
+                            return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
+                        });
+    
+                        reserv_In.forEach(reserv => {
+                            if (reserv.validation !== -1) {
+                                let divIn = document.createElement('div');
+                                if (reserv.validation === 0 && window.location.pathname.includes('administration')) {
+                                    divIn.setAttribute('data-toggle', 'modal');
+                                    divIn.setAttribute('data-target','#validation-reservation');
+                                    divIn.addEventListener('click', function () {
+                                        document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv.id);
+                                        document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv.id);
+                                    });
+                                }
+                                let userReserv = userDatas.find(u => u.numero_etudiant === reserv.id_Utilisateur);
+                                divIn.setAttribute('title', userReserv.numero_etudiant + '\n' + userReserv.prenom + ' ' + userReserv.nom + '\n' + reserv.raison);
+                                divIn.style.position = 'absolute';
+                                divIn.style.zIndex = 1;
+                                divIn.setAttribute('date_fin', '' + (Date.parse(reserv_In.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
+                                divIn.style.width = '99%';
+                                divIn.style.height = (Date.parse(reserv.date_heure_fin) - Date.parse(reserv.date_heure_debut))/36000 + '%';
+                                divIn.style.top = ((Date.parse(reserv.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000) + '%';
+                                divIn.style.backgroundColor = reserv_In.validation === 1 ? 'red' : 'orange';
+                                td.appendChild(divIn);
+                            }
+                        });
+    
+                        let reserv_Begin = reservData.find(cren => {
+                            return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
+                        });
+    
+                        if (reserv_Begin && reserv_Begin.validation !== -1) {
+                            let divBegin = document.createElement('div');
+                            if (reserv_Begin.validation === 0 && window.location.pathname.includes('administration')) {
+                                divBegin.setAttribute('data-toggle', 'modal');
+                                divBegin.setAttribute('data-target','#validation-reservation');
+                                divBegin.addEventListener('click', function () {
+                                    document.getElementById('btn_valid_calendrier').setAttribute('id-reserv', '' + reserv_Begin.id);
+                                    document.getElementById('btn_refuse_calendrier').setAttribute('id-reserv', '' + reserv_Begin.id);
+                                });
+                            }
+                            let userReserv = userDatas.find(u => u.numero_etudiant === reserv_Begin.id_Utilisateur);
+                            divBegin.setAttribute('title', userReserv.numero_etudiant + '\n' + userReserv.prenom + ' ' + userReserv.nom + '\n' + reserv_Begin.raison);
+                            divBegin.style.position = 'absolute';
+                            divBegin.style.zIndex = 1;
+                            divBegin.style.width = '99%';
+                            divBegin.style.height = (Date.parse(tdDate) + 3600000 - (Date.parse(reserv_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000))/36000 + '%';
+                            divBegin.style.top = ((Date.parse(reserv_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000) + '%';
+                            divBegin.style.backgroundColor = reserv_Begin.validation === 1 ? 'red' : 'orange';
+                            td.appendChild(divBegin);
                         }
-                    });
-
-                    let cren_Begin = crenDatas.find(cren => {
-                        return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
-                            && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
-                            && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
-                    });
-
-                    if (cren_Begin && cren_Begin.validation !== -1) {
-                        let divBegin = document.createElement('div');
-                        divBegin.style.position = 'absolute';
-                        divBegin.style.width = '99%';
-                        divBegin.style.height = (Date.parse(tdDate) + 3600000 - (Date.parse(cren_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000))/36000 + '%';
-                        divBegin.style.top = ((Date.parse(cren_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000) + '%';
-                        divBegin.style.backgroundColor = 'green';
-                        td.appendChild(divBegin);
+    
+                        ////////
+    
+                        let cren_Over = crenDatas.find(cren => {
+                            return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
+                        });
+    
+                        if (cren_Over && cren_Over.validation !== -1) {
+                            let divOver = document.createElement('div');
+                            divOver.style.position = 'absolute';
+                            divOver.style.width = '99%';
+                            divOver.style.height = '99%';
+                            divOver.style.backgroundColor = 'green';
+                            td.appendChild(divOver);
+                        }
+    
+                        let cren_End = crenDatas.find(cren => {
+                            return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
+                        });
+    
+                        if (cren_End && cren_End.validation !== -1) {
+                            let divEnd = document.createElement('div');
+                            divEnd.style.position = 'absolute';
+                            divEnd.setAttribute('date_fin', '' + (Date.parse(cren_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
+                            divEnd.style.width = '99%';
+                            divEnd.style.height = (Date.parse(cren_End.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000 + '%';
+                            divEnd.style.backgroundColor = 'green';
+                            td.appendChild(divEnd);
+                        }
+                        
+                        let cren_In = crenDatas.filter(cren => {
+                            return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000);
+                        });
+    
+                        cren_In.forEach(reserv => {
+                            if (cren_In.validation !== -1) {
+                                let divIn = document.createElement('div');
+                                divIn.style.position = 'absolute';
+                                divIn.setAttribute('date_fin', '' + (Date.parse(cren_In.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000));
+                                divIn.style.width = '99%';
+                                divIn.style.height = (Date.parse(reserv.date_heure_fin) - Date.parse(reserv.date_heure_debut))/36000 + '%';
+                                divIn.style.top = ((Date.parse(reserv.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000) + '%';
+                                divIn.style.backgroundColor = 'green';
+                                td.appendChild(divIn);
+                            }
+                        });
+    
+                        let cren_Begin = crenDatas.find(cren => {
+                            return (Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate)
+                                && Date.parse(cren.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 <= Date.parse(tdDate) + 3600000
+                                && Date.parse(cren.date_heure_fin) - focusDateLun.getTimezoneOffset()*60000 >= Date.parse(tdDate) + 3600000);
+                        });
+    
+                        if (cren_Begin && cren_Begin.validation !== -1) {
+                            let divBegin = document.createElement('div');
+                            divBegin.style.position = 'absolute';
+                            divBegin.style.width = '99%';
+                            divBegin.style.height = (Date.parse(tdDate) + 3600000 - (Date.parse(cren_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000))/36000 + '%';
+                            divBegin.style.top = ((Date.parse(cren_Begin.date_heure_debut) - focusDateLun.getTimezoneOffset()*60000 - Date.parse(tdDate))/36000) + '%';
+                            divBegin.style.backgroundColor = 'green';
+                            td.appendChild(divBegin);
+                        }
+    
+                        tr.appendChild(td);
                     }
-
-                    tr.appendChild(td);
+    
+                    tbody.appendChild(tr);
                 }
-
-                tbody.appendChild(tr);
-            }
+            })
+            .catch(err => console.error(err));
         })
         .catch(err => console.error(err));
     })

@@ -435,15 +435,29 @@ module.exports.Utilisateur = {
     insert: userData => new Promise(function (resolve, reject) {
         checkUserData(userData)
         .then(function (userData) {
-            run(`INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe)
-                VALUES ("${userData.numero_etudiant}",
-                        "${userData.nom}",
-                        "${userData.prenom}",
-                        "${userData.mot_de_passe}");`)
-            .then(function () {
-                resolve(Object.assign(userData, {admin: 0}));
-            })
-            .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            if (userData.nom.includes('Lehn') || userData.nom.includes('Perreira') || userData.nom.includes('Normand')) {
+                run(`INSERT INTO Utilisateur
+                    VALUES ("${userData.numero_etudiant}",
+                            "${userData.nom}",
+                            "${userData.prenom}",
+                            "${userData.mot_de_passe}"
+                            1);`)
+                .then(function () {
+                    resolve(Object.assign(userData, {admin: 1}));
+                })
+                .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            }
+            else {
+                run(`INSERT INTO Utilisateur (numero_etudiant, nom, prenom, mot_de_passe)
+                    VALUES ("${userData.numero_etudiant}",
+                            "${userData.nom}",
+                            "${userData.prenom}",
+                            "${userData.mot_de_passe}");`)
+                .then(function () {
+                    resolve(Object.assign(userData, {admin: 0}));
+                })
+                .catch(err => reject('erreur dans le lancement de  la commande run :\n' + err));
+            }
         })
         .catch(err => reject(err));
     }),
