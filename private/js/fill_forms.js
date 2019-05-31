@@ -3,6 +3,9 @@
 async function fillSalle () {
     try {
         let response = await fetch('../../api/salle/getall/');
+        if (!response.ok) {
+            throw response;
+        }
         let salles = await response.json();
         let batBalises = document.getElementById('batiment');
         while (batBalises.firstChild) {

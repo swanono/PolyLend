@@ -59,6 +59,9 @@ async function searchSalle (formBalise) {
             }),
             headers: new Headers({'Content-type': 'application/json'}),
         });
+        if (!response.ok) {
+            throw response;
+        }
         let salleDatas = await response.json();
 
         let salleListe = document.getElementById('liste_salle_materiel');
@@ -67,6 +70,9 @@ async function searchSalle (formBalise) {
         }
         
         let crens = await fetch('../../api/creneau/getall/');
+        if (!crens.ok) {
+            throw crens;
+        }
         let crenData = await crens.json();
         crenData = crenData.map(c => {
             let d = new Date();
@@ -152,8 +158,11 @@ async function searchSalle (formBalise) {
 }
 
 async function getAllSalle () {
-    let response = await fetch('../../api/salle/getall/');
-    if (response.ok) {
+    try {
+        let response = await fetch('../../api/salle/getall/');
+        if (!response.ok) {
+            throw response;
+        }
         let salles = await response.json();
         let salleListe = document.getElementById('liste_salle_materiel');
         while (salleListe.firstChild) {
@@ -161,8 +170,8 @@ async function getAllSalle () {
         }
         salles.reverse().forEach(salle => insertSalle(salle));
     }
-    else {
-        console.error('response not ok !');
+    catch (err) {
+        console.error(err);
     }
 }
 
@@ -243,7 +252,7 @@ async function deleteSalle (event) {
     }
     
     try {
-        await fetch('../../api/salle/delete/', {
+        let response = await fetch('../../api/salle/delete/', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({
@@ -252,6 +261,9 @@ async function deleteSalle (event) {
             }),
             headers: new Headers({'Content-type': 'application/json'}),
         });
+        if (!response.ok) {
+            throw response;
+        }
 
         divItem.remove();
     }
@@ -267,16 +279,9 @@ document.getElementById('ajout_cren_materiel').addEventListener('click', () => a
 
 function getAllMateriel () {
     fetch('../../api/materiel/getall/')
-    .then(function (response) {
-        if (response.ok) {
-            response.json()
-            .then(data => insertMat(data.reverse()))
-            .catch(err => console.error(err));
-        }
-        else {
-            console.error(response.statusText);
-        }
-    })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
+    .then(response => response.json())
+    .then(data => insertMat(data))
     .catch(err => console.error(err));
 }
 
@@ -439,7 +444,7 @@ async function deleteMateriel (event) {
     }
     
     try {
-        await fetch('../../api/materiel/delete/', {
+        let response = await fetch('../../api/materiel/delete/', {
             credentials: 'same-origin',
             method: 'POST',
             body: JSON.stringify({
@@ -448,6 +453,9 @@ async function deleteMateriel (event) {
             }),
             headers: new Headers({'Content-type': 'application/json'}),
         });
+        if (!response.ok) {
+            throw response;
+        }
 
         divItem.remove();
     }
@@ -471,6 +479,9 @@ async function searchMat (formBalise) {
             }),
             headers: new Headers({'Content-type': 'application/json'}),
         });
+        if (!response.ok) {
+            throw response;
+        }
         let MatDatas = await response.json();
 
         let MatListe = document.getElementById('liste_salle_materiel');
@@ -481,6 +492,9 @@ async function searchMat (formBalise) {
         }
 
         let crens = await fetch('../../api/creneau/getall/');
+        if (!crens.ok) {
+            throw crens;
+        }
         let crenData = await crens.json();
         crenData = crenData.map(c => {
             let d = new Date();

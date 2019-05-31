@@ -1,8 +1,11 @@
 'use strict';
 
 async function getReservations () {
-    let response = await fetch('../../api/reservation/allbyuser/');
-    if (response.ok) {
+    try {
+        let response = await fetch('../../api/reservation/allbyuser/');
+        if (!response.ok) {
+            throw response;
+        }
         let reservations = await response.json();
 
         let liste = document.getElementById('liste_reserv');
@@ -11,9 +14,8 @@ async function getReservations () {
         }
         reservations.sort((reserv1, reserv2) => reserv2.id - reserv1.id).forEach(reserv => insertReservation(reserv));
     }
-    else {
-        console.error('response not ok : ');
-        console.error(response);
+    catch (err) {
+        console.error(err);
     }
 }
 
@@ -24,6 +26,7 @@ function insertReservation(reservData) {
         body: JSON.stringify({id_Reservation: reservData.id}),
         headers: new Headers({'Content-type': 'application/json'}),
     })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
     .then(elemDataj => elemDataj.json())
     .then(function (elemData) {
         let divItemRow = document.createElement('div');

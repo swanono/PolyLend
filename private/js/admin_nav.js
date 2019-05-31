@@ -1,6 +1,7 @@
 'use strict';
 
 fetch('../../api/whoami/')
+.then(r => {if (r.ok) {return r;} else {throw r;}})
 .then(response => response.json())
 .then(function (result) {
 	if(result.admin === 1){
@@ -22,6 +23,7 @@ fetch('../../api/whoami/')
 		div_nav.insertBefore(aBalise, div_nav.lastElementChild);
 
 	}
-});
+})
+.catch(err => console.error(err));
 
 

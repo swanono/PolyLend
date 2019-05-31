@@ -47,8 +47,8 @@ function updateCalendar (focusDateLun, idE) {
         body: JSON.stringify({id_Element: idE,}),
         headers: new Headers({'Content-type': 'application/json'}),
     })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
     .then(response => response.json())
-    .then(r => {if (!r.errno) {return r;} else {throw r;}})
     .then(function (reservData) {
         fetch('../../api/creneau/allbyid/', {
             credentials: 'same-origin',
@@ -56,8 +56,8 @@ function updateCalendar (focusDateLun, idE) {
             body: JSON.stringify({id_Element: idE,}),
             headers: new Headers({'Content-type': 'application/json'}),
         })
+        .then(r => {if (r.ok) {return r;} else {throw r;}})
         .then(response => response.json())
-        .then(r => {if (!r.errno) {return r;} else {throw r;}})
         .then(function (crenDatas) {
             let tbody = document.getElementById('calendrier_body').firstElementChild.lastElementChild;
             while (tbody.firstChild) {

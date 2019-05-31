@@ -1,8 +1,11 @@
 'use strict';
 
 async function getNotifs () {
-    let response = await fetch('../../api/notification/getall/');
-    if (response.ok) {
+    try {
+        let response = await fetch('../../api/notification/getall/');
+        if (!response.ok) {
+            throw response
+        }
         let notifs = await response.json();
         if (notifs.length === undefined) {
             notifs = [];
@@ -15,6 +18,9 @@ async function getNotifs () {
             body: JSON.stringify(notifs.map(notif => notif.id_Reservation)),
             headers: new Headers({'Content-type': 'application/json'}),
         });
+        if (!response.ok) {
+            throw response;
+        }
         let reservs = await response.json();
 
         let liste = document.querySelector('#liste_notifs');
@@ -23,9 +29,8 @@ async function getNotifs () {
         }
         reservs.forEach(reserv => insertNotif(reserv));
     }
-    else {
-        console.error('response not ok :');
-        console.error(response);
+    catch (err) {
+        console.error(err);
     }
 }
 
@@ -36,6 +41,7 @@ function insertNotif(reservData) {
         body: JSON.stringify({id_Creneau: reservData.id_Creneau}),
         headers: new Headers({'Content-type': 'application/json'}),
     })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
     .then(crenDataj => crenDataj.json())
     .then(function (crenData) {
         fetch('../../api/element/byid/', {
@@ -44,6 +50,7 @@ function insertNotif(reservData) {
             body: JSON.stringify({id_Element: crenData.id_Element}),
             headers: new Headers({'Content-type': 'application/json'}),
         })
+        .then(r => {if (r.ok) {return r;} else {throw r;}})
         .then(elemDataj => elemDataj.json())
         .then(function (elemData) {
             fetch('../../api/utilisateur/bynum/', {
@@ -52,6 +59,7 @@ function insertNotif(reservData) {
                 body: JSON.stringify({id_Utilisateur: reservData.id_Utilisateur}),
                 headers: new Headers({'Content-type': 'application/json'}),
             })
+            .then(r => {if (r.ok) {return r;} else {throw r;}})
             .then(userDataj => userDataj.json())
             .then(function (userData) {
                 let divItemRow = document.createElement('div');
@@ -138,14 +146,18 @@ function validateReserv(id, valid) {
         body: JSON.stringify({id_Reservation: id, validate: (!valid ? false : true)}),
         headers: new Headers({'Content-type': 'application/json'}),
     })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
     .then(() => getNotifs())
     .catch(err => console.error(err));
 }
 
 async function openNotifs() {
-    await getNotifs();
-    let response = await fetch('../../api/notification/getall/');
-    if (response.ok) {
+    try {
+        await getNotifs();
+        let response = await fetch('../../api/notification/getall/');
+        if (!response.ok) {
+            throw response;
+        }
         let notifs = await response.json();
         notifs.forEach(notif => {
             if (notif.admin === 0) {
@@ -155,26 +167,28 @@ async function openNotifs() {
                     body: JSON.stringify({id_Reservation: notif.id_Reservation}),
                     headers: new Headers({'Content-type': 'application/json'}),
                 })
+                .then(r => {if (r.ok) {return r;} else {throw r;}})
                 .catch(err => console.error(err));
             }
         });
     }
-    else {
-        console.error('response not ok :');
-        console.error(response);
+    catch (err) {
+        console.error(err);
     }
     getNbNotifs();
 }
 
 async function getNbNotifs() {
-    let response = await fetch('../../api/notification/getall/');
-    if (response.ok) {
+    try {
+        let response = await fetch('../../api/notification/getall/');
+        if (!response.ok) {
+            throw response;
+        }
         let notifs = await response.json();
         document.querySelector('.badge.badge-danger').textContent = '' + notifs.length;
     }
-    else {
-        console.error('response not ok :');
-        console.error(response);
+    catch (err) {
+        console.error(err);
     }
 }
 
