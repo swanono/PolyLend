@@ -2,9 +2,9 @@
 
 Partie 3 (web) du sujet 4 : **Réservation de ressources étudiant**
 
-[![Logo PolyLend](./public/image/logo.png "Lien vers le serveur distant de PolyLend")](http://hyblab.polytech.univ-nantes.fr/4C/)
+[![Logo PolyLend](http://hyblab.polytech.univ-nantes.fr/4C/public/image/logo.png "Lien vers le serveur distant de PolyLend")](http://hyblab.polytech.univ-nantes.fr/4C/)
 
-### Accès Rapides
+### Sommaire
 
 - [Rapports des phases précédentes](#Rapports-des-phases-précédentes)
 - [Dépôt GitLab](#Dépôt-GitLab)
