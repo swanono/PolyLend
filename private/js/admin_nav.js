@@ -1,6 +1,6 @@
 'use strict';
 
-fetch('../../api/whoami')
+fetch('../../api/whoami/')
 .then(response => response.json())
 .then(function (result) {
 	if(result.admin === 1){
