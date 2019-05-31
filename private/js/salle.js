@@ -121,7 +121,7 @@ async function searchSalle (formBalise) {
 async function getAllSalle () {
     try {
         let response = await fetch('../../api/salle/getall/');
-        if (!response.ok) {
+        if (response.ok) {
             throw response;
         }
         let salles = await response.json();
