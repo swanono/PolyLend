@@ -1,14 +1,32 @@
 # Projet Génie Logiciel - Groupe 4C
 
-Partie 3 (web) du sujet 4 : réservation de ressources étudiant
+Partie 3 (web) du sujet 4 : **Réservation de ressources étudiant**
 
-[![Logo PolyLend](./public/image/logo.png "un lien vers le serveur distant de PolyLend")](http://hyblab.polytech.univ-nantes.fr/4C/)
+[![Logo PolyLend](./public/image/logo.png "Lien vers le serveur distant de PolyLend")](http://hyblab.polytech.univ-nantes.fr/4C/)
+
+### Accès Rapides
+
+- [Rapports des phases précédentes](#Rapports-des-phases-précédentes)
+- [Dépôt GitLab](#Dépôt-GitLab)
+- [Installation en local](#Installation-en-local)
+- [Dépendances](#Dépendances)
+- [Notice d'utilisation du site](#Notice-d'utilisation-du-site)
+- [Routes](#Routes)
+- [Bugs connus](#Bugs-connus)
+- [Fonctionnalités non implémentées](#Fonctionnalités-non-implémentées)
+- [Retour d'expérience](#Retour-d'expérience)
+
+## Rapports des phases précédentes
+
+[Rapport Phase 1 IHM](https://docs.google.com/document/d/1yN1q8FLshcoPevb3HeBBLGbJEP1rozqiiMuzPevZynI/edit?usp=sharing)
+
+[Rapport Phase 2 Conception](http://madoc.univ-nantes.fr/mod/wiki/view.php?pageid=11511)
 
 ## Dépôt GitLab
 
-ssh : git@gitlab.univ-nantes.fr:E154706J/projet-genie-logiciel.git
+ssh : `git@gitlab.univ-nantes.fr:E154706J/projet-genie-logiciel.git`
 
-https : https://gitlab.univ-nantes.fr/E154706J/projet-genie-logiciel.git
+https : `https://gitlab.univ-nantes.fr/E154706J/projet-genie-logiciel.git`
 
 ## Installation en local
 
@@ -68,7 +86,7 @@ Les dépendances sont :
 ## Fonctionnalités non implémentées
 
 - Dans la page /private/admin/administration.html, un administrateur est sensé pouvoir modifier un élément, matériel ou salle, mais nous n'avons pas eu le temps d'implémenter cette fonctionnalité.
-- Dans les prototypes fournis dans la phase 1 de ce sujet, on pouvait voir apparaître les matériels et salles déjà réservés par quelqu'un d'autre. Cela aurait impliqué un total remaniement de la base de données (qui était déjà bancale) fournie dans la phase de conception et un travail trop important sur les critères de recherches et l'affichage de leurs résultats.
-- Dans les prototypes, un bouton message était affiché sur les éléments déjà réservés ou sur les notifications de demandes de réservations refusées. Ce bouton n'a pas été implémenté partiellement à cause du point précédent mais aussi parce qu'il aurait impliqué encore plus de modification de base de données et l'implémentation d'un système de messages jamais décrit dans la phase de conception.
+- Dans les prototypes fournis dans la [phase IHM]() de ce sujet, on pouvait voir apparaître les matériels et salles déjà réservés par quelqu'un d'autre. Cela aurait impliqué un total remaniement de la base de données (qui était déjà bancale) fournie dans la [phase de conception]() et un travail trop important sur les critères de recherches et l'affichage de leurs résultats.
+- Dans les prototypes, un bouton message était affiché sur les éléments déjà réservés ou sur les notifications de demandes de réservations refusées. Ce bouton n'a pas été implémenté partiellement à cause du point précédent mais aussi parce qu'il aurait impliqué encore plus de modification de base de données et l'implémentation d'un système de messages jamais décrit dans la [phase de conception]().
 
 ## Retour d'expérience
