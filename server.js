@@ -7,7 +7,7 @@ const auth = require('./auth.js');
 const dbHelper = require('./dbHelper.js');
 const passport = auth(app);
 
-const prod = false;
+const prod = true;
 
 const prefixDir = prod ? '/4C' : '';
 
