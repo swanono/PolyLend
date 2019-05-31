@@ -2,16 +2,9 @@
 
 function getAllMateriel () {
     fetch('../../api/materiel/getall/')
-    .then( function (response) {
-        if (response.ok) {
-            response.json()
-            .then(data => insertMat(data))
-            .catch(err => console.error(err));
-        }
-        else {
-            console.error(response.statusText);
-        }
-    })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
+    .then(response => response.json())
+    .then(data => insertMat(data))
     .catch(err => console.error(err));
 }
 
@@ -167,6 +160,7 @@ function actuMaterielReserv (event) {
         body: JSON.stringify({id_Materiel: idM}),
         headers: new Headers({'Content-type': 'application/json'}),
     })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
     .then(result => result.json())
     .then(function (data) {
         document.getElementById('form-reserv').setAttribute('id-materiel', data.id);
@@ -212,6 +206,7 @@ function askReserv () {
         }),
         headers: new Headers({'Content-type': 'application/json'}),
     })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
     .then(response => response.json())
     .then(function (result) {
         if (result.ok === false) {
@@ -251,6 +246,9 @@ async function searchMat (formBalise) {
             }),
             headers: new Headers({'Content-type': 'application/json'}),
         });
+        if (!response.ok) {
+            throw response;
+        }
         let MatDatas = await response.json();
 
         let MatListe = document.getElementById('liste_materiel');
@@ -262,6 +260,9 @@ async function searchMat (formBalise) {
 
 
         let crens = await fetch('../../api/creneau/getall/');
+        if (!crens.ok) {
+            throw crens;
+        }
         let crenData = await crens.json();
         crenData = crenData.map(c => {
             let d = new Date();

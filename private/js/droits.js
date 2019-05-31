@@ -4,6 +4,7 @@ function ajoutUtilisateurs () {
     let table = document.querySelector('table.table.table-bordered').lastElementChild;
 
     fetch('../../api/utilisateur/getall/')
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
     .then(users => users.json())
     .then(function (userDatas) {
         userDatas.forEach(function (userData, index) {
@@ -59,6 +60,7 @@ function applyAdmin () {
             }),
             headers: new Headers({'Content-type': 'application/json'}),
         })
+        .then(r => {if (r.ok) {return r;} else {throw r;}})
         .then(res => res.json())
         .then(function (result) {
             if (result.ok) {

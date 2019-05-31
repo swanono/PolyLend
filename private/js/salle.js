@@ -19,6 +19,9 @@ async function searchSalle (formBalise) {
             }),
             headers: new Headers({'Content-type': 'application/json'}),
         });
+        if (!response.ok) {
+            throw response;
+        }
         let salleDatas = await response.json();
 
         let salleListe = document.getElementById('liste_salles');
@@ -28,6 +31,9 @@ async function searchSalle (formBalise) {
 
         
         let crens = await fetch('../../api/creneau/getall/');
+        if (!crens.ok) {
+            throw crens;
+        }
         let crenData = await crens.json();
         crenData = crenData.map(c => {
             let d = new Date();
@@ -113,8 +119,11 @@ async function searchSalle (formBalise) {
 }
 
 async function getAllSalle () {
-    let response = await fetch('../../api/salle/getall/');
-    if (response.ok) {
+    try {
+        let response = await fetch('../../api/salle/getall/');
+        if (response.ok) {
+            throw response;
+        }
         let salles = await response.json();
         let salleListe = document.querySelector('#liste_salles');
         while (salleListe.firstChild) {
@@ -122,8 +131,8 @@ async function getAllSalle () {
         }
         salles.reverse().forEach(salle => insertSalle(salle));
     }
-    else {
-        console.error('response not ok !');
+    catch (err) {
+        console.error(err);
     }
 }
 
@@ -197,6 +206,7 @@ function actuSalleReserv (event) {
         body: JSON.stringify({id_Salle: idS}),
         headers: new Headers({'Content-type': 'application/json'}),
     })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
     .then(result => result.json())
     .then(function (salleData) {
         document.getElementById('form-reserv').setAttribute('id-salle', salleData.id);
@@ -239,6 +249,7 @@ function askReserv () {
         }),
         headers: new Headers({'Content-type': 'application/json'}),
     })
+    .then(r => {if (r.ok) {return r;} else {throw r;}})
     .then(response => response.json())
     .then(function (result) {
         if (result.ok === false) {
