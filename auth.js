@@ -9,6 +9,10 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const dbHelper = require('./dbHelper.js');
 
+// BCrypt module
+const bcrypt = require('bcrypt');
+const saltRounds = 11;
+
 // LocalStrategy = stockage des identifiants et mots de passe
 // des utilisateurs en local dans notre base de données
 passport.use(new LocalStrategy({
@@ -26,12 +30,21 @@ passport.use(new LocalStrategy({
                     cb(null, false);
                 }
                 // Utilisateur dans la base de données et mot de passe ok
-                else if (user.mot_de_passe === password) {
+                else if (user.mot_de_passe === password && username === 'FIRST_ADMIN_SERVER' && password === 'un truc absurde') {
                     cb(null, user);
                 }
                 // Utilisateur dans la base de données mais mauvais mot de passe
                 else {
-                    cb(null, false);
+                    bcrypt.compare(password, user.mot_de_passe)
+                    .then(function (res) {
+                        if (!res) {
+                            cb(null, false);
+                        }
+                        else {
+                            cb(null, user);
+                        }
+                    })
+                    .catch(err => {console.log(err); cb(null, false);})
                 }
             },
             err => {

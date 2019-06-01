@@ -7,12 +7,13 @@
     "express-session": "^1.16.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "sqlite3": "^4.0.6"
+    "sqlite3": "^4.0.6",
+    "bcrypt": "^3.0.6"
   },
   "scripts": {
     "createDB": "sqlite3 Database-PolyLend.db < createDB.sql",
-    "start": "sqlite3 Database-PolyLend.db < createDB.sql && nodemon server.js",
-    "test": "node ./node_modules/gulp/bin/gulp.js"
+    "fillDB": "node createDBtest.js",
+    "start": "nodemon server.js"
   },
   "devDependencies": {
     "nodemon": "^1.19.0"
