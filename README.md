@@ -2,19 +2,19 @@
 
 Partie 3 (web) du sujet 4 : **Réservation de ressources étudiant**
 
-[![Logo PolyLend](./public/image/logo.png "Lien vers le serveur distant de PolyLend")](http://hyblab.polytech.univ-nantes.fr/4C/)
+[![Logo PolyLend](./public/image/logo-readme.png "Lien vers le serveur distant de PolyLend")](http://hyblab.polytech.univ-nantes.fr/4C/)
 
 ### Sommaire
 
-- [Rapports des phases précédentes](#Rapports-des-phases-précédentes)
-- [Dépôt GitLab](#Dépôt-GitLab)
-- [Installation en local](#Installation-en-local)
-- [Dépendances](#Dépendances)
-- [Notice d'utilisation du site](#Notice-d'utilisation-du-site)
-- [Routes](#Routes)
-- [Bugs connus](#Bugs-connus)
-- [Fonctionnalités non implémentées](#Fonctionnalités-non-implémentées)
-- [Retour d'expérience](#Retour-d'expérience)
+- [Rapports des phases précédentes](#rapports-des-phases-précédentes)
+- [Dépôt GitLab](#dépôt-gitlab)
+- [Installation en local](#installation-en-local)
+- [Dépendances](#dépendances)
+- [Notice d'utilisation du site](#notice-dutilisation-du-site)
+- [Routes](#routes)
+- [Bugs connus](#bugs-connus)
+- [Fonctionnalités non implémentées](#fonctionnalités-non-implémentées)
+- [Retour d'expérience](#retour-dexpérience)
 
 ## Rapports des phases précédentes
 
@@ -78,6 +78,128 @@ Les dépendances sont :
 ### Routes des pages
 
 ### Routes de l'API
+
+Toutes ces routes sont préfixées de `/api`.
+
+> - GET /whoami/
+>
+> Permet de récupérer les données de profil de l'utilisateur connecté.
+
+> - GET /logout/
+>
+> Permet à un utilisateur connecté de se déconnecter et de retourner à la page de connexion.
+
+> - POST /utilisateur/register/
+>
+> Permet à l'utilisateur de s'inscrire sur le site en renseignant son numéro étudiant, son prénom, son nom et son mot de passe.
+
+> - POST /utilisateur/login/
+>
+> Permet à un utilisateur enregistré de se connecter au site en renseignant son numéro étudiant et son mot de passe.
+
+> - POST /utilisateur/bynum/
+>
+> Permet de récupérer les données d'un utilisateur via son numéro étudiant.
+
+> - GET /utilisateur/getall/
+>
+> Permet de récupérer la liste des utilisateurs enregistrés dans le serveur.
+
+> - POST /utilisateur/setadminrights/
+>
+> Permet modifier les droits administrateurs d'un utilisateur en précisant son numéro étudiant et un booléen lui donnant les droits ou non.
+
+> - GET /notification/getall/
+>
+> Permet à un utilisateur de récupérer toutes les notifications le concernant (il devra faire une autre requête api si il veut plus d'informations sur les réservations correspondant à ces notifications).
+
+> - POST /notification/seen/
+>
+> Permet à l'utilisateur de prévenir le serveur qu'il a vu une notification particulière.
+
+> - GET /reservation/allbyuser/
+>
+> Permet à un utilisateur de récupérer toutes les réservations le concernant.
+
+> - POST /reservation/getelem/
+>
+> Permet de récupérer les données de l'élément concerné par un réservation donnée.
+
+> - POST /reservation/allbyid/
+>
+> Permet de récupérer une liste de réservations correspondant à une liste d'id de réservations fournis.
+
+> - POST /reservation/allbyElem/
+>
+> Permet de récupérer la liste des réservations annexées à un élément particulier.
+
+> - POST /reservation/validate/
+>
+> Permet à un administrateur de valider ou refuser une réservation donnée.
+
+> - POST /reservation/submit/salle/
+>
+> Permet à un utilisateur de faire une demande de réservation de salle.
+
+> - POST /reservation/submit/materiel/
+>
+> Permet à un utilisateur de faire une demande de réservation de matériel.
+
+> - POST /creneau/byid/
+>
+> Permet de récupérer un créneau par son id.
+
+> - POST /creneau/allbyid/
+>
+> Permet de récupérer tous les créneaux concernant un élément en particulier.
+
+> - GET /creneau/getall/
+>
+> Permet de récupérer tous les créneaux de la base de données.
+
+> - POST /element/byid/
+>
+> Permet de récupérer toutes les données d'un élément via son id.
+
+> - GET /salle/getall/
+>
+> Permet de récupérer toutes les salles de la base de données.
+
+> - POST /salle/add/
+>
+> Permet à un administrateur de rajouter une salle avec des créneaux et mots-clés associés.
+
+> - POST /salle/delete/
+>
+> Permet à un administrateur de supprimer une salle et tous les créneaux, réservations et mot-clés associés de la base de données.
+
+> - POST /salle/search/
+>
+> Permet de récupérer une liste de salles correspondant à certains critères spécifiques.
+
+> - POST /salle/byid/
+>
+> Permet de récupérer une salle via son id.
+
+> - POST /materiel/byid/
+>
+> Permet de récupérer un matériel via son id.
+
+> - GET /materiel/getall/
+>
+> Permet de récupérer tous les matériels de la base de données.
+
+> - POST /materiel/delete/
+>
+>Permet à un administrateur de supprimer un matériel et tous les créneaux, réservations et mot-clés associés de la base de données.
+
+> - POST /materiel/search/
+>
+> Permet de récupérer une liste de matériels correspondant à certains critères spécifiques.
+
+> - POST /materiel/add/
+>
+> Permet à un administrateur d'ajouter un matériel avec des créneaux et mots-clés associés.
 
 ## Bugs connus
 
