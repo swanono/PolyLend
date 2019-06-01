@@ -2,6 +2,8 @@
 
 Partie 3 (web) du sujet 4 : **Réservation de ressources étudiant**
 
+Auteurs : Éléa Thuilier, Thomas Choquard, Sacha Wanono, Ulysse Guyon
+
 [![Logo PolyLend](./public/image/logo-readme.png "Lien vers le serveur distant de PolyLend")](http://hyblab.polytech.univ-nantes.fr/4C/)
 
 ### Sommaire
@@ -58,9 +60,7 @@ Si la variable d'environnement $PORT est définie sur un port spécifique pour a
 
 ## Dépendances
 
-Aucune dépendance autre que celles données dans le sujet de madoc n'est nécessaire.
-
-Les dépendances sont :
+- bcrypt pour le hashage des mots de passe
 - sqlite3 pour la base de données
 - express et passport pour la gestion des routes et midlewares du serveur
 - Bootstrap 4 et JQuery sont utilisés pour la partie client mais ne nécessitent aucune installation
@@ -208,7 +208,9 @@ Toutes ces routes sont préfixées de `/api`.
 ## Fonctionnalités non implémentées
 
 - Dans la page /private/admin/administration.html, un administrateur est sensé pouvoir modifier un élément, matériel ou salle, mais nous n'avons pas eu le temps d'implémenter cette fonctionnalité.
+
 - Dans les prototypes fournis dans la [phase IHM](https://docs.google.com/document/d/1yN1q8FLshcoPevb3HeBBLGbJEP1rozqiiMuzPevZynI/edit?usp=sharing) de ce sujet, on pouvait voir apparaître les matériels et salles déjà réservés par quelqu'un d'autre. Cela aurait impliqué un total remaniement de la base de données (qui était déjà bancale) fournie dans la [phase de conception](http://madoc.univ-nantes.fr/mod/wiki/view.php?pageid=11511) et un travail trop important sur les critères de recherches et l'affichage de leurs résultats.
+
 - Dans les prototypes, un bouton message était affiché sur les éléments déjà réservés ou sur les notifications de demandes de réservations refusées. Ce bouton n'a pas été implémenté partiellement à cause du point précédent mais aussi parce qu'il aurait impliqué encore plus de modification de base de données et l'implémentation d'un système de messages jamais décrit dans la [phase de conception](http://madoc.univ-nantes.fr/mod/wiki/view.php?pageid=11511).
 
 ## Retour d'expérience

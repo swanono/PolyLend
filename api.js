@@ -10,6 +10,11 @@ const express = require('express');
 // Notre module nodejs d'accès simplifié à la base de données
 const dbHelper = require('./dbHelper.js');
 
+// BCrypt module
+const bcrypt = require('bcrypt');
+const saltRounds = 11;
+
+
 const prod = false;
 
 const prefixDir = prod ? '/4C' : '';
@@ -47,13 +52,17 @@ module.exports = (passport) => {
                 res.send({success: false, message: 'username already exists'});
             }
             else {
-                dbHelper.Utilisateur.insert({
-                    numero_etudiant: req.body['numero-etu'],
-                    nom: req.body.nom,
-                    prenom: req.body.prenom,
-                    mot_de_passe: req.body.password,
+                bcrypt.hash(req.body.password, saltRounds)
+                .then(psw => {
+                    dbHelper.Utilisateur.insert({
+                        numero_etudiant: req.body['numero-etu'],
+                        nom: req.body.nom,
+                        prenom: req.body.prenom,
+                        mot_de_passe: psw,
+                    })
+                    .then(() => res.redirect(prefixDir + '/public/connexion.html'))
+                    .catch(err => {console.error(err); res.json(err);});
                 })
-                .then(() => res.redirect(prefixDir + '/public/connexion.html'))
                 .catch(err => {console.error(err); res.json(err);});
             }
         })
