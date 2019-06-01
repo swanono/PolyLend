@@ -51,7 +51,11 @@ npm install
 ```bash
 npm run createDB
 ```
-- Lancez le serveur (cette commande inclu aussi la création de la base de données, rendant la commande précédente optionnelle) :
+- Si vous souhaitez insérer des données préconstruites dans la base de données, vous pouvez executer cette commande :
+```bash
+npm run fillDB
+```
+- Lancez le serveur :
 ```bash
 npm start
 ```

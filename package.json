@@ -12,7 +12,8 @@
   },
   "scripts": {
     "createDB": "sqlite3 Database-PolyLend.db < createDB.sql",
-    "start": "sqlite3 Database-PolyLend.db < createDB.sql && nodemon server.js"
+    "fillDB": "node createDBtest.js",
+    "start": "nodemon server.js"
   },
   "devDependencies": {
     "nodemon": "^1.19.0"
