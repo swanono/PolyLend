@@ -96,7 +96,8 @@ Une fois connecté, rendez-vous sur l'onglet Matériel :
 - Indiquez votre raison de la réservation (Soyez explicite, afin que l'administrateur de ce matériel accepte votre réservation)
 - Appuyez sur le bouton "Réserver"
 
->  Vous pouvez désormais consulter votre réservation dans l'onglet "Réservation"
+>  Vous pouvez désormais consulter votre réservation dans l'onglet "Réservation" 
+> **Attention :** Certaines réservations nécessite la validation d'un administrateur, vous recevrez une notifications une fois celle-ci acceptée. 
 
 #### Réserver une salle
 
@@ -107,19 +108,94 @@ Une fois connecté, rendez-vous sur l'onglet Salle :
 - Appuyez sur le bouton "Réserver"
 
 >  Vous pouvez désormais consulter votre réservation dans l'onglet "Réservation"
+> **Attention :** Certaines réservations nécessite la validation d'un administrateur, vous recevrez une notifications une fois celle-ci acceptée. 
 
 #### Rechercher un matériel
 
-Une fois connecté, rendez-vous sur l'onglet Matériel, sur votre gauche se trouve un champ de recherche :
+Une fois connecté, rendez-vous sur l'onglet Matériel, sur la gauche de l'écran se trouve un champ de recherche :
 
 - Le champ "Critère" permet la recherche d'un ou plusieurs mots dans le nom, les mots-clés, la description
 - Lorsque vous cochez "disponibilité", vous pouvez rentrez un créneau souhaité
 - Le tri peut s'effectuer par date de disponibilité (croissante/décroissante) ou par quantité (croissante/Décroissante)
 - Vous pouvez également précisé le type de matériel recherché (informatique, instrument, mobilier, autre). 
-  Le choix "..." signifique que vous rechercher tous type de matériel.
+  Le choix "..." signifie que vous rechercher tous type de matériel.
+
+#### Rechercher une salle
+
+Une fois connecté, rendez-vous sur l'onglet Salle, sur la gauche de l'écran se trouve un champ de recherche :
+
+- Le champ "Critère" permet la recherche d'un ou plusieurs mots dans le nom, les mots-clés, la description
+- Lorsque vous cochez "disponibilité", vous pouvez rentrez un créneau souhaité
+- Le tri peut s'effectuer par date de disponibilité (croissante/décroissante), par quantité (croissante/Décroissante), ou par capacités (croissante/décroissante).
+- Vous pouvez également précisé le bâtiment dans lequel se situe la salle recherché (Ireste,IHT). 
+  Le choix "..." signifie que vous rechercher dans tous les bâtiments.
+- Vous pouvez précisé les équipements présents dans la salle recherché.
+- Vous pouvez également chercher en fonction de la capacité de la salle.
 
 
 ### En tant qu'administrateur
+
+#### Valider/refuser une réservation
+
+Une fois connecté en tant qu'administrateur.
+Lorsqu'un item nécessite une valdiation, une notification apparait sur le profil d'un administrateur : 
+- Cliquez sur la cloche (en haut à droite de l'écran)
+- Une liste de notification apparaît dont la demande réservation : "Prenom Nom souhaite emprunter Element du AAAA-MM-DD hh:mm:ss au AAAA-MM-DD hh:mm:ss. Raison : ...."
+- Cliquez sur Valider ou Refuser en fonction de votre choix.
+
+#### Proposer un nouveau matériel 
+
+Une fois connecté en tant qu'administrateur, rendez vous sur l'onglet "Administration" :
+- Cliquez sur "Ajouter un élement"
+- Cliquez sur l'onglet Matériel (c'est l'onglet par défaut)
+- Cochez la case "validation auto" indique que le matériel pourra être réserver sans demande à un administrateur.
+- Indiquez la quantité, le nom, la catégorie, la description, le lieu de disponibilité, les mots clés **(séparez les mots par des espace)**
+- Précisez le(s) créneau(x) de disponibilités du matériel (Par défaut un seul créneau est proposé).
+- Pour ajouter un créneau appuyez sur le bouton "Ajouter une plage de disponibilité"
+- Validez votre ajout en appuyant sur "Ajouter"
+
+> **Attention :** On ne peut pour l'instant par proposer une image pour représenter un matériel
+
+#### Proposer une nouvelle salle
+
+Une fois connecté en tant qu'administrateur, rendez vous sur l'onglet "Administration" :
+- Cliquez sur "Ajouter un élement"
+- Cliquez sur l'onglet Salle
+- Cochez la case "validation auto" indique que la salle pourra être réserver sans demande à un administrateur.
+- Indiquez le nom, le bâtiment, l'étage, la capacité, la description (facultatif), les mots clés **(séparez les mots par des espace)**
+- Cochez les équipements présents dans la salle
+- Précisez le(s) créneau(x) de disponibilités de la salle (Par défaut un seul créneau est proposé).
+- Pour ajouter un créneau appuyez sur le bouton "Ajouter une plage de disponibilité"
+- Validez votre ajout en appuyant sur "Ajouter"
+
+> **Attention :** On ne peut pour l'instant par proposer une image pour représenter une salle
+
+
+#### Rechercher un matériel
+
+Une fois connecté en tant qu'administrateur, rendez vous sur l'onglet "Administration". Sur la gauche de l'écran se trouve un champ de recherche :
+- cliquer sur l'onglet matériel
+- Référez vous à "Rechercher un matériel" dans la section utilisateur
+
+#### Rechercher une salle
+
+Une fois connecté en tant qu'administrateur, rendez vous sur l'onglet "Administration". Sur la gauche de l'écran se trouve un champ de recherche :
+- cliquer sur l'onglet salle
+- Référez vous à "Rechercher une salle" dans la section utilisateur
+
+#### Supprimer un matériel/une salle
+
+Une fois connecté en tant qu'administrateur, rendez vous sur l'onglet "Administration" :
+- Cliquez l'icône poubelle du matériel/de la salle à supprimer
+
+#### Changer les droits administrateurs d'un utilisateur
+
+Une fois connecté en tant qu'administrateur, rendez vous sur l'onglet "Administration" :
+- Cliquez sur le bouton "Editer les droits d'administrateur"
+- Lorsque l'icône d'un utilisateur possède un bouton rouge, celui-ci ne possède pas les droits administrateurs. Inversement avec le bouton vert.
+- Pour donner les droits administrateur à un utilisateur lambda appuyer sur son bouton rouge.
+- Pour enlever les droits administrateur à un administrateur appuyer sur son bouton vert.
+
 
 ## Routes
 
