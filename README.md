@@ -265,18 +265,18 @@ Toutes ces routes sont préfixées de `/api`.
 
 > Difficultés rencontrées : 
     
-    - Partie HTML/CSS : 
-        - Difficulté pour correspondre au prototype créés lors de la première phase.
-        - Création de multiple pop-up les uns sur les autres.
-        - Création d'une première version du calendrier ainsi que d'un calendrier cliquable.
+- Partie HTML/CSS : 
+    - Difficulté pour correspondre au prototype créés lors de la première phase.
+    - Création de multiple pop-up les uns sur les autres.
+    - Création d'une première version du calendrier ainsi que d'un calendrier cliquable.
+    
+    Ces deux dernières difficultés nous ont imposées d'adapter la demande à nos capacités en favorisant la fonctionnalité lors de la création.
         
-        Ces deux dernières difficultés nous ont imposées d'adapter la demande à nos capacités en favorisant la fonctionnalité lors de la création.
-        
-    - Partie javascript: 
-        - Obligation de refaire la base de données car celle fournie n'était pas adaptée.
-        - Création du système de recherche de salle compliqué. Nous avons donc tenté de l'implémenter avec nos compétences.
-        - Intégration du service sur le serveur distant. Cela nous a permis de nous apercevoir de l'importance de mettre les routes en relatif.
-        
+- Partie javascript: 
+    - Obligation de refaire la base de données car celle fournie n'était pas adaptée.
+    - Création du système de recherche de salle compliqué. Nous avons donc tenté de l'implémenter avec nos compétences.
+    - Intégration du service sur le serveur distant. Cela nous a permis de nous apercevoir de l'importance de mettre les routes en relatif.
+
 > Ce que nous avons appris : 
 
 Durant ce projet, nous pour avons appris à mener un projet de développement.
