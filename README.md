@@ -262,3 +262,24 @@ Toutes ces routes sont préfixées de `/api`.
 - Dans les prototypes, un bouton message était affiché sur les éléments déjà réservés ou sur les notifications de demandes de réservations refusées. Ce bouton n'a pas été implémenté partiellement à cause du point précédent mais aussi parce qu'il aurait impliqué encore plus de modification de base de données et l'implémentation d'un système de messages jamais décrit dans la [phase de conception](http://madoc.univ-nantes.fr/mod/wiki/view.php?pageid=11511).
 
 ## Retour d'expérience
+
+> Difficultés rencontrées : 
+    
+    - Partie HTML/CSS : 
+        - Difficulté pour correspondre au prototype créés lors de la première phase.
+        - Création de multiple pop-up les uns sur les autres.
+        - Création d'une première version du calendrier ainsi que d'un calendrier cliquable.
+        
+        Ces deux dernières difficultés nous ont imposées d'adapter la demande à nos capacités en favorisant la fonctionnalité lors de la création.
+        
+    - Partie javascript: 
+        - Obligation de refaire la base de données car celle fournie n'était pas adaptée.
+        - Création du système de recherche de salle compliqué. Nous avons donc tenté de l'implémenter avec nos compétences.
+        - Intégration du service sur le serveur distant. Cela nous a permis de nous apercevoir de l'importance de mettre les routes en relatif.
+        
+> Ce que nous avons appris : 
+
+Durant ce projet, nous pour avons appris à mener un projet de développement.
+Nous avons dû nous répartir les tâches en prenant en compte l'importance des tâches à effectuer et leur ordre.
+Ce projet nous a aussi permis de développer nos compétences en HTML, CSS (notamment avec Bootstrap) et JavaScript.
+Nous avons pu observer l'importance de l'adaptation. En effet nous devions sans arrêt adapter notre travail, ou celui effectué par les groupes précédents, en fonciton de nos capacités ou de la demande.
