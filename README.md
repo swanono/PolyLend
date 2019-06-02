@@ -73,7 +73,51 @@ Si la variable d'environnement $PORT est définie sur un port spécifique pour a
 
 ### En tant que nouvel utilisateur
 
+#### Inscription
+
+Pour vous inscrire, rendez-vous sur la page d'accueil :
+- Cliquez sur "Pas encore inscrit ?".
+- Complétez vos informations.
+- **Attention :** Le mot de passe doit contenir au moins : 1 majuscule, 1 minuscule et 1 chiffre.
+
 ### En tant qu'utilisateur enregistré
+
+#### Connexion
+
+Pour vous connecter, rendez-vous sur la page d'accueil :
+- Rentrez votre numéro étudiant et votre mot de passe
+- Cliquez sur Se connecter ou appuyer sur la touche Entrée
+
+#### Réserver un matériel
+
+Une fois connecté, rendez-vous sur l'onglet Matériel :
+- Cliquez sur le bouton "Reserver" du matériel souhaité. Une pop-up apparaît.
+- Remplissez le créneau que vous souhaité réservé.
+- Indiquez votre raison de la réservation (Soyez explicite, afin que l'administrateur de ce matériel accepte votre réservation)
+- Appuyez sur le bouton "Réserver"
+
+>  Vous pouvez désormais consulter votre réservation dans l'onglet "Réservation"
+
+#### Réserver une salle
+
+Une fois connecté, rendez-vous sur l'onglet Salle :
+- Cliquez sur le bouton "Réserver" de la salle souhaité. Une pop-up apparaît.
+- Remplissez le créneau que vous souhaité réservé.
+- Indiquez votre raison de la réservation (Soyez explicite, afin que l'administrateur de ce matériel accepte votre réservation)
+- Appuyez sur le bouton "Réserver"
+
+>  Vous pouvez désormais consulter votre réservation dans l'onglet "Réservation"
+
+#### Rechercher un matériel
+
+Une fois connecté, rendez-vous sur l'onglet Matériel, sur votre gauche se trouve un champ de recherche :
+
+- Le champ "Critère" permet la recherche d'un ou plusieurs mots dans le nom, les mots-clés, la description
+- Lorsque vous cochez "disponibilité", vous pouvez rentrez un créneau souhaité
+- Le tri peut s'effectuer par date de disponibilité (croissante/décroissante) ou par quantité (croissante/Décroissante)
+- Vous pouvez également précisé le type de matériel recherché (informatique, instrument, mobilier, autre). 
+  Le choix "..." signifique que vous rechercher tous type de matériel.
+
 
 ### En tant qu'administrateur
 

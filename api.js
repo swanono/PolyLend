@@ -292,7 +292,7 @@ module.exports = (passport) => {
             nom: req.body.nom,
             description: req.body.description,
             photo: 'https://via.placeholder.com/100',
-            validation_auto: !req.body.validation_auto ? '0' : '1',
+            validation_auto: !req.body.validation_auto ? 0 : 1,
         })
         .then(function (resultat) {
             if (typeof(req.body['date-fin']) === 'string' || req.body['date-fin'] instanceof String) {
@@ -360,7 +360,7 @@ module.exports = (passport) => {
             nom: req.body.nom,
             description: req.body.description,
             photo: 'https://via.placeholder.com/100',
-            validation_auto: !req.body.validation_auto ? '0' : '1',
+            validation_auto: !req.body.validation_auto ? 0 : 1,
         })
         .then(function (resultat) {
             let promises = [];
