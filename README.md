@@ -266,9 +266,11 @@ Toutes ces routes sont préfixées de `/api`.
 > Difficultés rencontrées : 
     
 - Partie HTML/CSS : 
-    - Difficulté pour correspondre au prototype créés lors de la première phase.
-    - Création de multiple pop-up les uns sur les autres.
-    - Création d'une première version du calendrier ainsi que d'un calendrier cliquable.
+    - Difficulté pour correspondre au prototype créés lors de la première phase : 
+    Nous souhaitions que nos templates ressemblent le plus possible aux prototype proposés par le groupe de la phase 1 mais ce n'était pas toujours possible.
+    - Création de pop-up :
+    La création d'un pop-up n'était pas une vrai difficulté car nous utilisions Bootstrap. Cependant nous devions imbriquer jusqu'à quatre pop-up et cela pouvait être un peu plus compliqué.
+    - Création d'une première version du calendrier ainsi que d'un calendrier cliquable. En attendans un calendrier JavaScript nous avons créé un tableau d'exemple que nous colorions en fonction de l'état (disponible, réservé, en attente), cela ne respectait pas la forme du prototype.
     
     Ces deux dernières difficultés nous ont imposées d'adapter la demande à nos capacités en favorisant les fonctionnalités lors de la création.
         
