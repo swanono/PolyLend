@@ -284,4 +284,4 @@ Toutes ces routes sont préfixées de `/api`.
 Durant ce projet, nous pour avons appris à mener un projet de développement.
 Nous avons dû nous répartir les tâches en prenant en compte l'importance des tâches à effectuer et leur ordre.
 Ce projet nous a aussi permis de développer nos compétences en HTML, CSS (notamment avec Bootstrap) et JavaScript.
-Nous avons pu observer l'importance de l'adaptation. En effet nous devions sans arrêt adapter notre travail, ou celui effectué par les groupes précédents, en fonciton de nos capacités ou de la demande.
+Nous avons pu observer l'importance de l'adaptation. En effet nous devions sans arrêt adapter notre travail, ou celui effectué par les groupes précédents, en fonction de nos capacités ou de la demande du client.
