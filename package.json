@@ -8,7 +8,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "sqlite3": "^4.0.6",
-    "bcrypt": "^3.0.6"
+    "bcrypt": "^5.0.0"
   },
   "scripts": {
     "createDB": "sqlite3 Database-PolyLend.db < createDB.sql",
